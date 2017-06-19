@@ -44,7 +44,6 @@ Display.prototype.generateTables = function(level){
         canvas.appendChild(tr);
         for (var j = 0; j < this.width; j++){
             var td = document.createElement("td");
-            var key = j + "," + i + "," + level;
             this.squares[j][i][level] = new DisplayBlock(j, i, level); 
             this.squares[j][i][level].td = td;
             td.style.width = width + "px";
@@ -160,6 +159,14 @@ Display.prototype.drawIcon = function(x, y, level, icon) {
 Display.prototype.drawExp = function(x, y, icon, color) {
 };
 
+Display.prototype.setLevelOpacity = function(level, op){
+    for(var i = 0; i < this.width; i++){
+        for(var j = 0; j < this.height; j++){
+            this.squares[i][j][level].td.style.opacity = op;
+            this.draw(i, j, level);
+        }
+    }
+};
 
 Display.prototype.clear = function(x, y, level){
     var s = this.squares[x][y][level];
@@ -170,15 +177,12 @@ Display.prototype.clear = function(x, y, level){
     var height = 46 + level*1.8;
     if(level == 0){
         var bC = "#734";
-        var opacity = 1;
     }
     if(level == 1){
         var bC = "#777";
-        var opacity = 0.1;
     }
     if(level == 2){
         var bC = "#4f5";
-        var opacity = 0.1;
     }
     s.td.style.width = width + "px";
     s.td.style.height = height + "px";
@@ -189,7 +193,6 @@ Display.prototype.clear = function(x, y, level){
     s.td.style.textAlign = "center";
     s.td.style.backgroundColor = bC;
     s.td.style.color = "white";
-    s.td.style.opacity = opacity;
 
 }
 

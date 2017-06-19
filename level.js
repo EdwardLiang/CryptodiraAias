@@ -48,6 +48,19 @@ Level.prototype.checkMovable = function(x, y, z){
     }
     return false;
 }
+Level.prototype.canGoUp = function(x, y, z){
+    if (this.map[x][y][z] instanceof StaircaseUpBlock){
+        return true;
+    }
+    return false;
+}
+Level.prototype.canGoDown = function(x, y, z){
+    if (this.map[x][y][z] instanceof StaircaseDownBlock){
+        return true;
+    }
+    return false;
+}
+
 
 function MapBlock(x, y, z){
     this.x = x;
@@ -91,6 +104,31 @@ MapBlock.prototype.setIcon = function(icon, color){
 MapBlock.prototype.getStyle = function(e){
 }
 
+function StaircaseBlock(x, y, z){
+    MapBlock.call(this, x, y, z);
+}
+StaircaseBlock.prototype = Object.create(MapBlock.prototype);
+
+function StaircaseUpBlock(x, y, z){
+    StaircaseBlock.call(this, x, y, z);
+    this.icon = "<";
+}
+StaircaseUpBlock.prototype = Object.create(StaircaseBlock.prototype);
+StaircaseUpBlock.prototype.clear = function() {
+    this.icon = "<";
+    this.iconColor = "white";
+}
+
+function StaircaseDownBlock(x, y, z){
+    StaircaseBlock.call(this, x, y, z);
+    this.icon = ">";
+}
+StaircaseDownBlock.prototype = Object.create(StaircaseBlock.prototype);
+StaircaseDownBlock.prototype.clear = function() {
+    this.icon = ">";
+    this.iconColor = "white";
+}
+
 function SolidBlock(x, y, z){
     MapBlock.call(this, x, y, z);
     this.movable = false;
@@ -132,5 +170,5 @@ Distance.prototype.getY = function() {
     return this.y;
 }
 Distance.prototype.getZ = function() {
-    return this.Z;
+    return this.z;
 }
