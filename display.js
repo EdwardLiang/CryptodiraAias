@@ -33,17 +33,17 @@ class Display {
         let opacity = 0.1;
         if(level % 3 == 0){
             //bC = "#734";
-            bC = "#" + (734 + Math.ceil(level / 3) * 2);
+            bC = "#" + (734 + Math.ceil(level / 3) * 5);
         }
         if(level % 3 == 1){
             //bC = "#777";
-            bC = "#" + (777 + Math.ceil(level / 3) * 2);
+            bC = "#" + (760 + Math.ceil(level / 3) * 5);
         }
         if(level % 3 == 2){
             //bC = "#4f5";
             //bC = "#780";
 
-            bC = "#" + (780 + Math.ceil(level / 3) * 2);
+            bC = "#" + (780 + Math.ceil(level / 3) * 5);
         }
         if(level == 0){
             opacity = 1;
@@ -158,16 +158,16 @@ class Display {
         let height = 46 + level*1.8;
         let bC;
         if(level % 3 == 0){
-            bC = "#" + (734 + Math.ceil(level / 3) * 2);
+            bC = "#" + (734 + Math.ceil(level / 3) * 5);
         }
         if(level % 3 == 1){
             //bC = "#777";
-            bC = "#" + (777 + Math.ceil(level / 3) * 2);
+            bC = "#" + (760 + Math.ceil(level / 3) * 5);
         }
         if(level % 3 == 2){
             //bC = "#4f5";
             //
-            bC = "#" + (780 + Math.ceil(level / 3) * 2);
+            bC = "#" + (780 + Math.ceil(level / 3) * 5);
             //bC = "#780";
         }
         s.td.style.width = width + "px";
