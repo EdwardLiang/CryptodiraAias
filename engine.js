@@ -1,14 +1,17 @@
-function Engine() {
-    this.events = [];
-}
-
-Engine.prototype.addEvent = function(e) {
-    this.events.push(e);
-}
-
-Engine.prototype.timeStep = function() {
-    for (var i = 0; i < this.events.length; i++){
-        this.events[i]();
+class Engine {
+    constructor(){
+        this.events = [];
     }
-    this.events = [];
+
+    addEvent(e) {
+        this.events.push(e);
+    }
+
+    timeStep() {
+        for (let i = 0; i < this.events.length; i++){
+            this.events[i]();
+        }
+        this.events = [];
+    }
 }
+

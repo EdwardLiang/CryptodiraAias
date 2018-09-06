@@ -6,86 +6,87 @@ DIRS[76] = new Distance(1, 0, 0);
 DIRS[188] = new Distance(0, 0, 1);
 DIRS[190] = new Distance(0, 0, -1);
 
-var PlayerEventListener = {
+let PlayerEventListener = {
 
     player: null,
     level: null,
     engine: null,
     display: null,
 
-    handleEvent: function(e){
-        var code = e.keyCode;
+    handleEvent(e){
+        let code = e.keyCode;
 
         if(!(code in DIRS)){return;}
 
-        var diff = DIRS[code];
+        let diff = DIRS[code];
 
         if((code == 188 || code == 190) && !e.shiftKey){
             return;
         }
         if(code == 188 && e.shiftKey){
-            if(!this.level.canGoUp(this.player.getX(), this.player.getY(), this.player.getZ())){
+            if(!this.level.canGoUp(this.player.x, this.player.y, this.player.z)){
                 return;
             }
         }
         if(code == 190 && e.shiftKey){
-            if(!this.level.canGoDown(this.player.getX(), this.player.getY(), this.player.getZ())){
+            if(!this.level.canGoDown(this.player.x, this.player.y, this.player.z)){
                 return;
             }
         }
-        var playerMove = function(){
-            var player = PlayerEventListener.player;
-            var level = PlayerEventListener.level;
-            var display = PlayerEventListener.display;
-            var newX = player.getX() + diff.getX();
-            var newY = player.getY() + diff.getY();
-            var newZ = player.getZ() + diff.getZ();
+        let playerMove = function(){
+            let player = PlayerEventListener.player;
+            let level = PlayerEventListener.level;
+            let display = PlayerEventListener.display;
+            let newX = player.x + diff.x;
+            let newY = player.y + diff.y;
+            let newZ = player.z + diff.z;
             if(!level.checkMovable(newX, newY, newZ)) {return;}
 
-            display.clear(player.getX(), player.getY(), player.getZ());
-            level.map[player.getX()][player.getY()][player.getZ()].clear();
-            display.clearBlock(player.getX(), player.getY(), player.getZ());
-            display.setBlock(player.getX(), player.getY(), player.getZ(), level.map[player.getX()][player.getY()][player.getZ()]);
+            display.clear(player.x, player.y, player.z);
 
-            display.draw(player.getX(), player.getY(), player.getZ());
+            level.map[player.x][player.y][player.z].clear();
+            display.clearBlock(player.x, player.y, player.z);
+            display.setBlock(player.x, player.y, player.z, level.map[player.x][player.y][player.z]);
 
-            if (newZ > player.getZ()){
+            display.draw(player.x, player.y, player.z);
+
+            if (newZ > player.z){
                 display.setLevelOpacity(newZ, "1");
             }
 
-            if (newZ < player.getZ()){
-                display.setLevelOpacity(player.getZ(), "0.1");
+            if (newZ < player.z){
+                display.setLevelOpacity(player.z, "0.1");
             }
 
-            if(newZ + 1 < level.getLevels()){
+            if(newZ + 1 < level.levels){
                 if (level.map[newX][newY][newZ + 1] instanceof SolidBlock){
                     display.setLevelOpacity(newZ + 1, "0.5");
                 }
             }
             if (level.map[newX][newY][newZ + 1] instanceof SolidBlock &&
-                    newZ + 2 < level.getLevels()
+                    newZ + 2 < level.levels
                     && level.map[newX][newY][newZ + 2] instanceof SolidBlock){
                 display.setLevelOpacity(newZ + 2, "0.5");
             }
 
-            if (newZ + 1 < level.getLevels() && !(level.map[newX][newY][newZ + 1] instanceof SolidBlock)){
+            if (newZ + 1 < level.levels && !(level.map[newX][newY][newZ + 1] instanceof SolidBlock)){
                 display.setLevelOpacity(newZ + 1, "0.1");
             }
-            if(newZ + 2 < level.getLevels()){
+            if(newZ + 2 < level.levels){
                 if (!(level.map[newX][newY][newZ + 1] instanceof SolidBlock) 
                         || !(level.map[newX][newY][newZ + 2] instanceof SolidBlock)){
                     display.setLevelOpacity(newZ + 2, "0.1");
                 }
             }
 
-            player.setX(newX);
-            player.setY(newY);
-            player.setZ(newZ);
+            player.x = newX;
+            player.y = newY;
+            player.z = newZ;
 
-            display.clear(player.getX(), player.getY(), player.getZ());
-            level.map[player.getX()][player.getY()][player.getZ()].setIcon("@", "yellow");
-            display.setBlock(player.getX(), player.getY(), player.getZ(), level.map[player.getX()][player.getY()][player.getZ()]);
-            display.draw(player.getX(), player.getY(), player.getZ());
+            display.clear(player.x, player.y, player.z);
+            level.map[player.x][player.y][player.z].setIcon("@", "yellow");
+            display.setBlock(player.x, player.y, player.z, level.map[player.x][player.y][player.z]);
+            display.draw(player.x, player.y, player.z);
         }
 
         this.engine.addEvent(playerMove);

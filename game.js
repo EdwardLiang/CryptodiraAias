@@ -1,7 +1,7 @@
 var Game = {
     display: null,
 
-    init: function(){
+    init(){
         this.display = new Display();
         this.engine = new Engine();
         //for(var i = 0 ; i < this.display.canvases.length; i++){
@@ -63,8 +63,8 @@ var Game = {
 
         this.display.displayLevel(this.level);
         this.level.map[1][1][0].setIcon("@", "yellow");
-        this.display.setBlock(this.player.getX(), this.player.getY(), this.player.getZ(), this.level.map[this.player.getX()][this.player.getY()][this.player.getZ()]);
-        this.display.draw(this.player.getX(), this.player.getY(), this.player.getZ());
+        this.display.setBlock(this.player.x, this.player.y, this.player.z, this.level.map[this.player.x][this.player.y][this.player.z]);
+        this.display.draw(this.player.x, this.player.y, this.player.z);
         //this.display.drawIcon(1, 1, 0, "@"); 
 
         PlayerEventListener.player = this.player;
