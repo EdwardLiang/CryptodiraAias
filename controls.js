@@ -50,6 +50,33 @@ let PlayerEventListener = {
 
             display.draw(player.x, player.y, player.z);
 
+           
+            /*
+            if(newZ + 1 < level.levels){
+                if (level.map[newX][newY][newZ + 1] instanceof SolidBlock){
+                    display.setLevelOpacity(newZ + 1, "0.5");
+                }
+            }
+            */
+            
+            let solidAbove = true;
+            for(let i = newZ + 1; i < level.levels; i++){
+                if(!(level.map[newX][newY][i] instanceof SolidBlock)){
+                    solidAbove = false; 
+                }
+            }
+
+            if(solidAbove){
+                for(let i = newZ + 1; i < level.levels; i++){
+                    display.setLevelOpacity(i, "0.5");
+                }
+            }
+            else{
+                for(let i = newZ + 1; i < level.levels; i++){
+                    display.setLevelOpacity(i, "0.1");
+                }
+            }
+
             if (newZ > player.z){
                 display.setLevelOpacity(newZ, "1");
             }
@@ -58,26 +85,24 @@ let PlayerEventListener = {
                 display.setLevelOpacity(player.z, "0.1");
             }
 
-            if(newZ + 1 < level.levels){
-                if (level.map[newX][newY][newZ + 1] instanceof SolidBlock){
-                    display.setLevelOpacity(newZ + 1, "0.5");
-                }
-            }
-            if (level.map[newX][newY][newZ + 1] instanceof SolidBlock &&
-                    newZ + 2 < level.levels
-                    && level.map[newX][newY][newZ + 2] instanceof SolidBlock){
-                display.setLevelOpacity(newZ + 2, "0.5");
-            }
 
-            if (newZ + 1 < level.levels && !(level.map[newX][newY][newZ + 1] instanceof SolidBlock)){
-                display.setLevelOpacity(newZ + 1, "0.1");
-            }
-            if(newZ + 2 < level.levels){
-                if (!(level.map[newX][newY][newZ + 1] instanceof SolidBlock) 
-                        || !(level.map[newX][newY][newZ + 2] instanceof SolidBlock)){
-                    display.setLevelOpacity(newZ + 2, "0.1");
-                }
-            }
+            /*
+               if (level.map[newX][newY][newZ + 1] instanceof SolidBlock &&
+               newZ + 2 < level.levels
+               && level.map[newX][newY][newZ + 2] instanceof SolidBlock){
+               display.setLevelOpacity(newZ + 2, "0.5");
+               }
+
+               if (newZ + 1 < level.levels && !(level.map[newX][newY][newZ + 1] instanceof SolidBlock)){
+               display.setLevelOpacity(newZ + 1, "0.1");
+               }
+               if(newZ + 2 < level.levels){
+               if (!(level.map[newX][newY][newZ + 1] instanceof SolidBlock) 
+               || !(level.map[newX][newY][newZ + 2] instanceof SolidBlock)){
+               display.setLevelOpacity(newZ + 2, "0.1");
+               }
+               }
+               */
 
             player.x = newX;
             player.y = newY;
