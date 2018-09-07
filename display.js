@@ -198,11 +198,11 @@ class Display {
     clear(x, y, level, player){
         let s = this.squares[x][y][level];
         s.td.innerHtml = ""; 
-        s.td.style.color = "white";
+       //s.td.style.color = "white";
 
         //let width = 46 + level*1.8;
         //let height = 46 + level*1.8;
-
+/*
         let width = this.view.blockWidthPx + level*1.8;
         let height = this.view.blockHeightPx + level*1.8; 
         let bC;
@@ -219,7 +219,8 @@ class Display {
             bC = "#" + (780 + Math.ceil(level / 3) * 5);
             //bC = "#780";
         }
-        s.td.style.width = width + "px";
+        */
+        /*s.td.style.width = width + "px";
         s.td.style.height = height + "px";
         s.td.style.overflow = "hidden";
         s.td.style.content = "center";
@@ -228,6 +229,7 @@ class Display {
         s.td.style.textAlign = "center";
         s.td.style.backgroundColor = bC;
         s.td.style.color = "white";
+        */
         if(s.level <= player.z){
             s.td.style.opacity = "1";
         }
