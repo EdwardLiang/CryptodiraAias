@@ -14,25 +14,14 @@ let PlayerEventListener = {
     display: null,
 
     handleEvent(e){
-        let code = e.keyCode;
 
-        if(!(code in DIRS)){return;}
-
-        let diff = DIRS[code];
-
-        if((code == 188 || code == 190) && !e.shiftKey){
-            return;
-        }
-        if(code == 188 && e.shiftKey){
-            if(!this.level.canGoUp(this.player.x, this.player.y, this.player.z)){
-                return;
-            }
-        }
-        if(code == 190 && e.shiftKey){
-            if(!this.level.canGoDown(this.player.x, this.player.y, this.player.z)){
-                return;
-            }
-        }
+        let pickUp = function(){
+            let player = PlayerEventListener.player;
+            let level = PlayerEventListener.level;
+            player.items.concat(level.map[player.x][player.y][player.z].items);
+            level.map[player.x][player.y][player.z].clearItems();
+            console.log(player.items);
+        };
         let playerMove = function(){
             let player = PlayerEventListener.player;
             let level = PlayerEventListener.level;
@@ -51,15 +40,15 @@ let PlayerEventListener = {
 
             display.draw(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z);
 
-           
+
             /*
-            if(newZ + 1 < level.levels){
-                if (level.map[newX][newY][newZ + 1] instanceof SolidBlock){
-                    display.setLevelOpacity(newZ + 1, "0.5");
-                }
-            }
-            */
-            
+               if(newZ + 1 < level.levels){
+               if (level.map[newX][newY][newZ + 1] instanceof SolidBlock){
+               display.setLevelOpacity(newZ + 1, "0.5");
+               }
+               }
+               */
+
             let solidAbove = true;
             let prevSolidAbove = true;
             for(let i = newZ + 1; i < level.levels; i++){
@@ -72,7 +61,7 @@ let PlayerEventListener = {
             let newZTemp = newZ;
             let newYTemp = newY;
             let newXTemp = newX;
-            
+
 
 
             /*
@@ -151,7 +140,33 @@ let PlayerEventListener = {
             display.setBlock(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z, level.map[player.x][player.y][player.z]);
             display.draw(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z);
 
+        };
+
+        let code = e.keyCode;
+
+        if(!(code in DIRS)){return;}
+
+        let diff = DIRS[code];
+
+        if(code == 190 && !e.shiftKey){
+            return;
         }
+        if(code == 188 && !e.shiftKey){
+            this.engine.addEvent(pickUp);
+            this.engine.timeStep();
+            return;
+        }
+        if(code == 188 && e.shiftKey){
+            if(!this.level.canGoUp(this.player.x, this.player.y, this.player.z)){
+                return;
+            }
+        }
+        if(code == 190 && e.shiftKey){
+            if(!this.level.canGoDown(this.player.x, this.player.y, this.player.z)){
+                return;
+            }
+        }
+
 
         this.engine.addEvent(playerMove);
         this.engine.timeStep();

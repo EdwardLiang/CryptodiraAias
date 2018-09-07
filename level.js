@@ -98,15 +98,30 @@ class MapBlock{
         this.movable = true;
         this.icon = "";
         this.iconColor = "white";
+        this.items = [];
     }
     checkMovable() {
         return this.movable;
     }
-
     clear() {
         this.icon = "";
         this.iconColor = "white";
+        this.calculateIcon();
     }
+    clearItems(){
+        this.items = [];
+    }
+    /*clearAndCalculateIcon(){
+        clear();
+        calculateIcon();
+    }*/
+    calculateIcon(){
+        if(this.items.length > 0){
+            this.icon = this.items[0].icon;
+            this.iconColor = this.items[0].iconColor;
+        }
+    }
+
     setIcon(icon, color){
         this.icon = icon;
         this.iconColor = color;

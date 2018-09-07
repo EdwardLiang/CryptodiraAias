@@ -134,6 +134,7 @@ class Display {
                     //console.log(this.squares);
                     //this.clearBlock(i, j, z);
                     //this.clear(i, j, z);
+                    level.map[i + this.view.xOffset][j + this.view.yOffset][z].calculateIcon();
                     this.setBlock(i, j, z, level.map[i + this.view.xOffset][j + this.view.yOffset][z]);
 
                     //this.setBlock(i, j, z, level.map[i][j][z]);

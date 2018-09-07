@@ -9,6 +9,7 @@ var Game = {
         //}
        /*this.display.drawAll();
         this.display.clear(3,3);
+
         this.display.squares[getKey(3,3)].icon = "@";
         this.display.squares[getKey(3,3)].color = "yellow";
         this.display.draw(3,3);*/
@@ -78,6 +79,7 @@ var Game = {
 
         this.level.map[6][6][3] = new StaircaseUpBlock(6,6,3);
         this.level.map[3][3][4] = new StaircaseDownBlock(3,3,4);
+        this.level.map[5][5][0].items.push(new Item("%", "orange", "orange"));
 
         this.display.displayLevel(this.level);
         this.level.map[1][1][0].setIcon("@", "yellow");
