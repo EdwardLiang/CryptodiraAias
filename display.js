@@ -23,6 +23,15 @@ class Display {
         this.canvases = [];
         this.squares = [];
 
+        let canvas = document.createElement("table");
+        canvas.style.position = "absolute";
+        canvas.style.top = "7.4%";
+        canvas.style.left = "5.4%";
+        canvas.style.backgroundColor = "black";
+        canvas.style.opacity = "0";
+        this.inventory = canvas;
+        this.inventoryVisible = false;
+
     }
 
     //this.generateTables(0);
@@ -30,6 +39,49 @@ class Display {
     //this.generateTables(2);
     //canvas.width = (this.width) * this.blockWidth + 3;
     //canvas.height = (this.height) * this.blockHeight + 3;
+    //
+    clearInventory(){
+        this.inventory.innerHTML = "";
+    }
+    hideInventory(){
+        this.clearInventory();
+        this.inventory.style.opacity = "0";
+        this.inventoryVisible = false;
+    }
+    showInventory(items){
+        let th = document.createElement("caption");
+
+        th.style.fontSize = "25px";
+        th.style.font = "25px monospace";
+        th.style.color = "white";
+        th.innerHTML = "Inventory";
+        this.inventory.append(th);
+        for(let i in items){
+            let tr = document.createElement("tr");
+            this.inventory.append(tr);
+            let td1 = document.createElement("td");
+            let td2 = document.createElement("td");
+            let td3 = document.createElement("td");
+            td1.style.fontSize = "25px";
+            td2.style.fontSize = "25px";
+            td3.style.fontSize = "25px";
+            td1.style.font = "25px monospace";
+            td2.style.font = "25px monospace";
+            td3.style.font = "25px monospace";
+
+            td1.style.color = "white";
+            td2.style.color = "white";
+            td3.style.color = "white";
+            td1.innerHTML = i;
+            td2.innerHTML = "-";
+            td3.innerHTML = items[i].name;
+            tr.append(td1);
+            tr.append(td2);
+            tr.append(td3);
+        }
+        this.inventory.style.opacity = "0.5";
+        this.inventoryVisible = true;
+    }
 
     generateTables(level){
         let canvas = document.createElement("table"); 
@@ -142,6 +194,8 @@ class Display {
                 }
             }
         }
+
+        document.body.appendChild(this.inventory);
 
     }
     /*getBlockWidth() {

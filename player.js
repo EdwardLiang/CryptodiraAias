@@ -3,20 +3,19 @@ class Player{
         this.x = x;
         this.y = y;
         this.z = z;
-        this.items = {
-            concat(array){
-                for(let i = 0; i < array.length; i++){
-                    if(availableSymbols.length > 0){
-                        var letter = availableSymbols[0];
-                        availableSymbols.shift();
-                    }
-                    else{
-                        break;
-                    }
-                    this[letter] = array[i];
-                }
+        this.items = {};
+    }
+    addItems(array){
+        for(let i = 0; i < array.length; i++){
+            if(availableSymbols.length > 0){
+                var letter = availableSymbols[0];
+                availableSymbols.shift();
             }
-        };
+            else{
+                break;
+            }
+            this.items[letter] = array[i];
+        }
     }
     get key(){
         return this.x + "," + this.y;

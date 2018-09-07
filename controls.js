@@ -18,9 +18,8 @@ let PlayerEventListener = {
         let pickUp = function(){
             let player = PlayerEventListener.player;
             let level = PlayerEventListener.level;
-            player.items.concat(level.map[player.x][player.y][player.z].items);
+            player.addItems(level.map[player.x][player.y][player.z].items);
             level.map[player.x][player.y][player.z].clearItems();
-            console.log(player.items);
         };
         let playerMove = function(){
             let player = PlayerEventListener.player;
@@ -144,6 +143,15 @@ let PlayerEventListener = {
 
         let code = e.keyCode;
 
+        if(code == 73){
+            if(this.display.inventoryVisible){
+                this.display.hideInventory();
+            }
+            else{
+                this.display.showInventory(this.player.items);
+            }
+        }
+
         if(!(code in DIRS)){return;}
 
         let diff = DIRS[code];
@@ -166,6 +174,7 @@ let PlayerEventListener = {
                 return;
             }
         }
+
 
 
         this.engine.addEvent(playerMove);
