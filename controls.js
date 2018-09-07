@@ -42,13 +42,14 @@ let PlayerEventListener = {
             let newZ = player.z + diff.z;
             if(!level.checkMovable(newX, newY, newZ)) {return;}
 
-            display.clear(player.x, player.y, player.z);
+            display.clear(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z);
+            //console.log(player.x);
 
             level.map[player.x][player.y][player.z].clear();
-            display.clearBlock(player.x, player.y, player.z);
-            display.setBlock(player.x, player.y, player.z, level.map[player.x][player.y][player.z]);
+            display.clearBlock(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z);
+            display.setBlock(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z, level.map[player.x][player.y][player.z]);
 
-            display.draw(player.x, player.y, player.z);
+            display.draw(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z);
 
            
             /*
@@ -66,24 +67,11 @@ let PlayerEventListener = {
                 }
             }
 
-            if(solidAbove){
-                for(let i = newZ + 1; i < level.levels; i++){
-                    display.setLevelOpacity(i, "0.5");
-                }
-            }
-            else{
-                for(let i = newZ + 1; i < level.levels; i++){
-                    display.setLevelOpacity(i, "0.1");
-                }
-            }
 
-            if (newZ > player.z){
-                display.setLevelOpacity(newZ, "1");
-            }
-
-            if (newZ < player.z){
-                display.setLevelOpacity(player.z, "0.1");
-            }
+            let newZTemp = newZ;
+            let newYTemp = newY;
+            let newXTemp = newX;
+            
 
 
             /*
@@ -103,15 +91,65 @@ let PlayerEventListener = {
                }
                }
                */
+            let tX = player.x;
+            let tY = player.y;
+            let tZ = player.z;
 
             player.x = newX;
             player.y = newY;
             player.z = newZ;
 
-            display.clear(player.x, player.y, player.z);
+            display.clear(tX - display.view.xOffset, tY - display.view.yOffset, tZ);
             level.map[player.x][player.y][player.z].setIcon("@", "yellow");
-            display.setBlock(player.x, player.y, player.z, level.map[player.x][player.y][player.z]);
-            display.draw(player.x, player.y, player.z);
+
+            let offsetChange = false;
+
+
+            //viewwindow setting
+            display.view.xOffset = player.x - Math.floor(display.width / 2);
+            var restWidth = (display.width) - (player.x - display.view.xOffset); 
+            if(player.x + restWidth >= level.width){
+                display.view.xOffset = level.width - display.width;
+            }
+            if(display.view.xOffset < 0){
+                display.view.xOffset = 0;
+            }
+
+            display.view.yOffset = player.y - Math.floor(display.height / 2);
+            var restHeight = (display.height) - (player.y - display.view.yOffset); 
+
+            if(player.y + restHeight >= level.height){
+                display.view.yOffset = level.height - display.height;
+            }
+
+            if(display.view.yOffset < 0){
+                display.view.yOffset = 0;
+            }
+
+            display.redraw();
+
+            if(solidAbove){
+                for(let i = newZTemp + 1; i < level.levels; i++){
+                    display.setLevelOpacity(i, "0.5");
+                }
+            }
+            else{
+                for(let i = newZTemp + 1; i < level.levels; i++){
+                    display.setLevelOpacity(i, "0.1");
+                }
+            }
+
+            if (newZTemp > tZ){
+                display.setLevelOpacity(newZ, "1");
+            }
+
+            if (newZTemp < tZ){
+                display.setLevelOpacity(tZ, "0.1");
+            }
+
+            display.setBlock(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z, level.map[player.x][player.y][player.z]);
+            display.draw(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z);
+
         }
 
         this.engine.addEvent(playerMove);

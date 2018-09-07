@@ -4,6 +4,7 @@ class Level {
         this.width = width;
         this.height = height;
         this.levels = levels;
+        //this is some bad naming here.
         this.map = new Array(width);
         for (let i = 0; i < this.map.length; i++){
             this.map[i] = new Array(height);

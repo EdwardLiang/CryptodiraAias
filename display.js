@@ -1,12 +1,24 @@
+class View {
+    constructor(){
+        this.width = 32;
+        this.height = 16;
+        this.widthPx = window.innerWidth;
+        this.heightPx = window.innerHeight;
+        this.blockWidthPx = Math.floor(this.widthPx / 40);
+        this.blockHeightPx = Math.floor(this.heightPx / 20);
+        this.xOffset = 0;
+        this.yOffset = 0;
+    }
+}
 class Display {
 
-    constructor(widthBlock = 20, heightBlock = 13, levels = 3){
-        this.width = widthBlock;
-        this.height = heightBlock;
-        this.levels = levels;
+    constructor(){
+        this.view = new View();
 
         //this.width = "1000";
         //this.height = "500"
+        this.width = this.view.width;
+        this.height = this.view.height;
 
         this.canvases = [];
         this.squares = [];
@@ -22,13 +34,17 @@ class Display {
     generateTables(level){
         let canvas = document.createElement("table"); 
         canvas.style.position = "absolute";
-        canvas.style.bottom =  (14.8 - level*1) + "%";
-        canvas.style.left = (10.8 - level*1) + "%";
+        canvas.style.bottom =  (7.4 - level*1) + "%";
+        //14.8
+        canvas.style.left = (5.4 - level*1) + "%";
+        //10.8
         this.canvases.push(canvas);
 
 
-        let width = 46 + level*1.8;
-        let height = 46 + level*1.8;
+        //let width = 46 + level*1.8;
+        //let height = 46 + level*1.8;
+        let width = this.view.blockWidthPx + level*1.8;
+        let height = this.view.blockHeightPx + level*1.8; 
         let bC;
         let opacity = 0.1;
         if(level % 3 == 0){
@@ -74,10 +90,32 @@ class Display {
     clearBody(){
         document.body.innerHTML = "";
     }
+    redraw(){
+        for(let i = 0; i < this.squares.length; i++){
+            for(let j = 0; j < this.squares[i].length; j++){
+                for(let z = 0; z < this.squares[i][j].length; z++){
+                    //console.log(this.squares);
+                    this.clearBlock(i, j, z);
+                    this.clear(i, j, z);
+                    this.setBlock(i, j, z, this.level.map[i + this.view.xOffset][j + this.view.yOffset][z]);
+
+                    //this.setBlock(i, j, z, level.map[i][j][z]);
+                    this.draw(i, j, z);
+                }
+            }
+        }
+    }
     displayLevel(level) {
-        this.width = level.width;
-        this.height = level.height;
+        //this.width = level.width;
+        //this.height = level.height;
         this.levels = level.levels;
+        this.level = level;
+        if(level.width < this.view.width){
+            this.width = level.width;
+        }
+        if(level.height < this.view.height){
+            this.height = level.height;
+        }
 
         this.squares = new Array(this.width);
         for (let i = 0; i < this.width; i++){
@@ -94,7 +132,11 @@ class Display {
             for(let j = 0; j < this.squares[i].length; j++){
                 for(let z = 0; z < this.squares[i][j].length; z++){
                     //console.log(this.squares);
-                    this.setBlock(i, j, z, level.map[i][j][z]);
+                    //this.clearBlock(i, j, z);
+                    //this.clear(i, j, z);
+                    this.setBlock(i, j, z, level.map[i + this.view.xOffset][j + this.view.yOffset][z]);
+
+                    //this.setBlock(i, j, z, level.map[i][j][z]);
                     this.draw(i, j, z);
                 }
             }
@@ -102,11 +144,11 @@ class Display {
 
     }
     /*getBlockWidth() {
-        return this.blockWidth;
-    }
-    getBlockHeight() {
-        return this.blockHeight;
-    }*/
+      return this.blockWidth;
+      }
+      getBlockHeight() {
+      return this.blockHeight;
+      }*/
 
 
     setBlock(x, y, level, block){
@@ -154,8 +196,11 @@ class Display {
         s.td.innerHtml = ""; 
         s.td.style.color = "white";
 
-        let width = 46 + level*1.8;
-        let height = 46 + level*1.8;
+        //let width = 46 + level*1.8;
+        //let height = 46 + level*1.8;
+
+        let width = this.view.blockWidthPx + level*1.8;
+        let height = this.view.blockHeightPx + level*1.8; 
         let bC;
         if(level % 3 == 0){
             bC = "#" + (734 + Math.ceil(level / 3) * 5);
@@ -179,6 +224,7 @@ class Display {
         s.td.style.textAlign = "center";
         s.td.style.backgroundColor = bC;
         s.td.style.color = "white";
+        s.td.style.opacity = "1";
 
     }
 
