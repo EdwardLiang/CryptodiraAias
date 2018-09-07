@@ -163,8 +163,11 @@ class SolidBlock extends MapBlock{
 class WallBlock extends SolidBlock{
     constructor(x, y, z){
         super(x, y, z);
-        this.icon = "-";
+        this.icon = "#";
         this.iconColor = "white";
+    }
+    getStyle(e){
+
     }
 }
 
