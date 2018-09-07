@@ -42,7 +42,7 @@ let PlayerEventListener = {
             let newZ = player.z + diff.z;
             if(!level.checkMovable(newX, newY, newZ)) {return;}
 
-            display.clear(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z);
+            display.clear(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z, player);
             //console.log(player.x);
 
             level.map[player.x][player.y][player.z].clear();
@@ -61,6 +61,7 @@ let PlayerEventListener = {
             */
             
             let solidAbove = true;
+            let prevSolidAbove = true;
             for(let i = newZ + 1; i < level.levels; i++){
                 if(!(level.map[newX][newY][i] instanceof SolidBlock)){
                     solidAbove = false; 
@@ -99,7 +100,7 @@ let PlayerEventListener = {
             player.y = newY;
             player.z = newZ;
 
-            display.clear(tX - display.view.xOffset, tY - display.view.yOffset, tZ);
+            display.clear(tX - display.view.xOffset, tY - display.view.yOffset, tZ, player);
             level.map[player.x][player.y][player.z].setIcon("@", "yellow");
 
             let offsetChange = false;
@@ -126,7 +127,7 @@ let PlayerEventListener = {
                 display.view.yOffset = 0;
             }
 
-            display.redraw();
+            display.redraw(player);
 
             if(solidAbove){
                 for(let i = newZTemp + 1; i < level.levels; i++){

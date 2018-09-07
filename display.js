@@ -90,13 +90,13 @@ class Display {
     clearBody(){
         document.body.innerHTML = "";
     }
-    redraw(){
+    redraw(player){
         for(let i = 0; i < this.squares.length; i++){
             for(let j = 0; j < this.squares[i].length; j++){
                 for(let z = 0; z < this.squares[i][j].length; z++){
                     //console.log(this.squares);
                     this.clearBlock(i, j, z);
-                    this.clear(i, j, z);
+                    this.clear(i, j, z, player);
                     this.setBlock(i, j, z, this.level.map[i + this.view.xOffset][j + this.view.yOffset][z]);
 
                     //this.setBlock(i, j, z, level.map[i][j][z]);
@@ -185,13 +185,17 @@ class Display {
     setLevelOpacity(level, op){
         for(let i = 0; i < this.width; i++){
             for(let j = 0; j < this.height; j++){
+
+                if(this.squares[i][j][level].td.style.opacity == op){
+                    return;    
+                }
                 this.squares[i][j][level].td.style.opacity = op;
                 this.draw(i, j, level);
             }
         }
     };
 
-    clear(x, y, level){
+    clear(x, y, level, player){
         let s = this.squares[x][y][level];
         s.td.innerHtml = ""; 
         s.td.style.color = "white";
@@ -224,10 +228,16 @@ class Display {
         s.td.style.textAlign = "center";
         s.td.style.backgroundColor = bC;
         s.td.style.color = "white";
-        s.td.style.opacity = "1";
+        if(s.level <= player.z){
+            s.td.style.opacity = "1";
+        }
+        else{
+            s.td.style.opacity = "0.1";
+        }
 
     }
 
+    
     drawAll(){
     }
 

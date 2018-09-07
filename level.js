@@ -98,7 +98,6 @@ class MapBlock{
         this.movable = true;
         this.icon = "";
         this.iconColor = "white";
-
     }
     checkMovable() {
         return this.movable;
