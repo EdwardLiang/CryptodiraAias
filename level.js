@@ -10,11 +10,9 @@ class Level {
         for (let i = 0; i < this.map.length; i++){
             this.map[i] = new Array(height);
 
-            //console.log(this.map[i].length);
-
             for(let j = 0; j < this.map[i].length; j++){
-
                 this.map[i][j] = new Array(levels);
+
                 for(let z = 0; z < this.map[i][j].length; z++){
                     this.map[i][j][z] = new MapBlock(i, j, z);
                 }
@@ -53,7 +51,6 @@ class Level {
 
     creaturesAct(){
        for(let i = 0; i < this.creatures.length; i++){
-
             let dir = Math.floor(Math.random() * 3);
             let cDir = CDIRS[dir];
             Game.engine.addEvent(this.creatures[i].move(cDir));
@@ -62,51 +59,8 @@ class Level {
 }
 
 
-/*
-   function Level(width, height, levels){
-   this.map = [];
-   this.width = width;
-   this.height = height;
-   this.levels = levels;
-   this.map = new Array(width);
-   for (var i = 0; i < this.map.length; i++){
-   this.map[i] = new Array(height);
-
-//console.log(this.map[i].length);
-
-for(var j = 0; j < this.map[i].length; j++){
-
-this.map[i][j] = new Array(levels);
-for(var z = 0; z < this.map[i][j].length; z++){
-this.map[i][j][z] = new MapBlock(i, j, z);
-}
-}
-}
-/*
-for (var i = 0; i < this.width; i++){
-for ( var j = 0; j < this.height; j++){
-for (var z = 0; z < this.levels; z++){ 
-var key = i + "," + j + "," + z;
-this.map[key] = new MapBlock(i, j, z); 
-}
-}
-}
-}
-
-Level.prototype.getWidth = function(){
-return this.width;
-}
-Level.prototype.getHeight = function(){
-return this.height;
-}
-Level.prototype.getLevels = function(){
-return this.levels;
-}
-*/
-
-
-
 class MapBlock{
+
     constructor(x, y, z){
         this.x = x;
         this.y = y;
@@ -118,21 +72,21 @@ class MapBlock{
         this.creatures = [];
         this.player = false;
     }
+
     checkMovable() {
         return this.movable;
     }
+
     clear() {
         this.icon = "";
         this.iconColor = "white";
         this.calculateIcon();
     }
+
     clearItems(){
         this.items = [];
     }
-    /*clearAndCalculateIcon(){
-      clear();
-      calculateIcon();
-      }*/
+
     calculateIcon(){
         if(this.player){
             this.icon = "@";
@@ -146,10 +100,6 @@ class MapBlock{
             this.icon = this.items[0].icon;
             this.iconColor = this.items[0].iconColor;
         }
-        //else{
-         //   this.icon = "";
-          //  this.iconColor = "white";
-        //}
     }
 
     setIcon(icon, color){

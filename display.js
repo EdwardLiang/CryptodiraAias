@@ -15,8 +15,6 @@ class Display {
     constructor(){
         this.view = new View();
 
-        //this.width = "1000";
-        //this.height = "500"
         this.width = this.view.width;
         this.height = this.view.height;
 
@@ -34,12 +32,6 @@ class Display {
 
     }
 
-    //this.generateTables(0);
-    //this.generateTables(1);
-    //this.generateTables(2);
-    //canvas.width = (this.width) * this.blockWidth + 3;
-    //canvas.height = (this.height) * this.blockHeight + 3;
-    //
     clearInventory(){
         this.inventory.innerHTML = "";
     }
@@ -87,11 +79,8 @@ class Display {
         let canvas = document.createElement("table"); 
         canvas.style.position = "absolute";
         canvas.style.bottom =  (7.4 - level*1) + "%";
-        //14.8
         canvas.style.left = (5.4 - level*1) + "%";
-        //10.8
         this.canvases.push(canvas);
-
 
         //let width = 46 + level*1.8;
         //let height = 46 + level*1.8;
@@ -142,26 +131,23 @@ class Display {
     clearBody(){
         document.body.innerHTML = "";
     }
+
     redraw(){
         for(let i = 0; i < this.squares.length; i++){
             for(let j = 0; j < this.squares[i].length; j++){
                 for(let z = 0; z < this.squares[i][j].length; z++){
-                    //console.log(this.squares);
                     this.clearBlock(i, j, z);
                     this.clear(i, j, z, Game.player);
                     this.level.map[i + this.view.xOffset][j + this.view.yOffset][z].clear();
                     this.setBlock(i, j, z, this.level.map[i + this.view.xOffset][j + this.view.yOffset][z]);
-
-                    //this.setBlock(i, j, z, level.map[i][j][z]);
                     this.draw(i, j, z);
                 }
             }
         }
         this.adjustLayerOpacity();
     }
+
     displayLevel(level) {
-        //this.width = level.width;
-        //this.height = level.height;
         this.levels = level.levels;
         this.level = level;
         if(level.width < this.view.width){
@@ -185,30 +171,16 @@ class Display {
         for(let i = 0; i < this.squares.length; i++){
             for(let j = 0; j < this.squares[i].length; j++){
                 for(let z = 0; z < this.squares[i][j].length; z++){
-                    //console.log(this.squares);
-                    //this.clearBlock(i, j, z);
-                    //this.clear(i, j, z);
                     level.map[i + this.view.xOffset][j + this.view.yOffset][z].calculateIcon();
-
                     this.setBlock(i, j, z, level.map[i + this.view.xOffset][j + this.view.yOffset][z]);
-
-                    //this.setBlock(i, j, z, level.map[i][j][z]);
                     this.draw(i, j, z);
                 }
             }
         }
 
         document.body.appendChild(this.inventory);
-
     }
-    /*getBlockWidth() {
-      return this.blockWidth;
-      }
-      getBlockHeight() {
-      return this.blockHeight;
-      }*/
-
-
+    
     setBlock(x, y, level, block){
         this.squares[x][y][level].icon = block.icon;
         this.squares[x][y][level].color = block.iconColor;
@@ -218,7 +190,6 @@ class Display {
         this.squares[x][y][level].icon = "";
         this.squares[x][y][level].color = "white";
     }
-
 
     get container() {
         return this.canvas;   
@@ -235,7 +206,6 @@ class Display {
         let s = this.squares[getKey(x, y, level)];
         s.td.innerHTML = icon; 
     };
-
 
     drawExp(x, y, icon, color) {
     };
@@ -256,38 +226,6 @@ class Display {
     clear(x, y, level, player){
         let s = this.squares[x][y][level];
         s.td.innerHtml = ""; 
-       //s.td.style.color = "white";
-
-        //let width = 46 + level*1.8;
-        //let height = 46 + level*1.8;
-/*
-        let width = this.view.blockWidthPx + level*1.8;
-        let height = this.view.blockHeightPx + level*1.8; 
-        let bC;
-        if(level % 3 == 0){
-            bC = "#" + (734 + Math.ceil(level / 3) * 5);
-        }
-        if(level % 3 == 1){
-            //bC = "#777";
-            bC = "#" + (760 + Math.ceil(level / 3) * 5);
-        }
-        if(level % 3 == 2){
-            //bC = "#4f5";
-            //
-            bC = "#" + (780 + Math.ceil(level / 3) * 5);
-            //bC = "#780";
-        }
-        */
-        /*s.td.style.width = width + "px";
-        s.td.style.height = height + "px";
-        s.td.style.overflow = "hidden";
-        s.td.style.content = "center";
-        s.td.style.fontSize = "25px";
-        s.td.style.font = "25px monospace";
-        s.td.style.textAlign = "center";
-        s.td.style.backgroundColor = bC;
-        s.td.style.color = "white";
-        */
         if(s.level <= player.z){
             s.td.style.opacity = "1";
         }
@@ -319,14 +257,7 @@ class Display {
                 display.setLevelOpacity(i, "0.1");
             }
         }
-
-
     }
-
-
-    drawAll(){
-    }
-
 }
 
 
@@ -351,10 +282,6 @@ class DisplayBlock{
 
 }
 
-
-
 function getKey(x, y, level){
     return x + "," + y + "," + level;
 }
-
-

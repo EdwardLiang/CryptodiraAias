@@ -60,9 +60,6 @@ let PlayerEventListener = {
         this.level.creaturesAct();
         
         this.engine.timeStep();
-
-        //Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y]);
-        //Game._drawSquare(this._x, this._y);
     }
 
 }
