@@ -42,43 +42,39 @@ class Creature{
             let newY = player.y + diff.y;
             let newZ = player.z + diff.z;
             if(!level.checkMovable(newX, newY, newZ)) {return;}
+
+            level.map[player.x][player.y][player.z].creatures =
+                level.map[player.x][player.y][player.z].creatures.filter(e => e !== this);
             
-            if(newX - display.view.xOffset < 0 || newX - display.view.xOffset >= display.width
-                    || newY - display.view.yOffset < 0 || newY - display.view.yOffset >= display.height){
-                player.x = newX;
-                player.y = newY;
-                player.z = newZ;
-
-                return;
-            }
-
-            display.clear(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z, player);
-            //console.log(player.x);
-
-            level.map[player.x][player.y][player.z].clear();
-            display.clearBlock(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z);
-            display.setBlock(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z, level.map[player.x][player.y][player.z]);
-
-            display.draw(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z);
-
-            let newZTemp = newZ;
-            let newYTemp = newY;
-            let newXTemp = newX;
-            let tX = player.x;
-            let tY = player.y;
-            let tZ = player.z;
-
+            //level.map[player.x][player.y][player.z].clear();
             player.x = newX;
             player.y = newY;
             player.z = newZ;
+            level.map[player.x][player.y][player.z].creatures.push(this);
 
-            display.clear(tX - display.view.xOffset, tY - display.view.yOffset, tZ, player);
-            level.map[player.x][player.y][player.z].setIcon(this.icon, this.iconColor);
+            //display.clear(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z, player);
+            //console.log(player.x);
 
-            display.redraw(player);
+            //level.map[player.x][player.y][player.z].clear();
+            //display.clearBlock(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z);
+            //display.setBlock(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z, level.map[player.x][player.y][player.z]);
 
-            display.setBlock(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z, level.map[player.x][player.y][player.z]);
-            display.draw(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z);
+            //display.draw(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z);
+
+            //let newZTemp = newZ;
+            //let newYTemp = newY;
+            //let newXTemp = newX;
+            //let tX = player.x;
+            //let tY = player.y;
+            //let tZ = player.z;
+
+            //display.clear(tX - display.view.xOffset, tY - display.view.yOffset, tZ, player);
+            //level.map[player.x][player.y][player.z].setIcon(this.icon, this.iconColor);
+
+            //display.redraw();
+
+            //display.setBlock(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z, level.map[player.x][player.y][player.z]);
+            //display.draw(player.x - display.view.xOffset, player.y - display.view.yOffset, player.z);
         }
 
     }

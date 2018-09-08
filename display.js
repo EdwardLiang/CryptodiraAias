@@ -142,13 +142,14 @@ class Display {
     clearBody(){
         document.body.innerHTML = "";
     }
-    redraw(player){
+    redraw(){
         for(let i = 0; i < this.squares.length; i++){
             for(let j = 0; j < this.squares[i].length; j++){
                 for(let z = 0; z < this.squares[i][j].length; z++){
                     //console.log(this.squares);
                     this.clearBlock(i, j, z);
-                    this.clear(i, j, z, player);
+                    this.clear(i, j, z, Game.player);
+                    this.level.map[i + this.view.xOffset][j + this.view.yOffset][z].clear();
                     this.setBlock(i, j, z, this.level.map[i + this.view.xOffset][j + this.view.yOffset][z]);
 
                     //this.setBlock(i, j, z, level.map[i][j][z]);
@@ -187,6 +188,7 @@ class Display {
                     //this.clearBlock(i, j, z);
                     //this.clear(i, j, z);
                     level.map[i + this.view.xOffset][j + this.view.yOffset][z].calculateIcon();
+
                     this.setBlock(i, j, z, level.map[i + this.view.xOffset][j + this.view.yOffset][z]);
 
                     //this.setBlock(i, j, z, level.map[i][j][z]);

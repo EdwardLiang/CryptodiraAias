@@ -32,6 +32,10 @@ class Level {
         }
         return false;
     }
+    addCreature(creature){
+        this.creatures.push(creature);
+        this.map[creature.x][creature.y][creature.z].creatures.push(creature);
+    }
 
     canGoUp(x, y, z){
         if (this.map[x][y][z] instanceof StaircaseUpBlock){
@@ -111,6 +115,8 @@ class MapBlock{
         this.icon = "";
         this.iconColor = "white";
         this.items = [];
+        this.creatures = [];
+        this.player = false;
     }
     checkMovable() {
         return this.movable;
@@ -128,10 +134,22 @@ class MapBlock{
       calculateIcon();
       }*/
     calculateIcon(){
-        if(this.items.length > 0){
+        if(this.player){
+            this.icon = "@";
+            this.iconColor = "#ff0";
+        }
+        else if(this.creatures.length > 0){
+            this.icon = this.creatures[0].icon;
+            this.iconColor = this.creatures[0].iconColor;
+        }
+        else if(this.items.length > 0){
             this.icon = this.items[0].icon;
             this.iconColor = this.items[0].iconColor;
         }
+        //else{
+         //   this.icon = "";
+          //  this.iconColor = "white";
+        //}
     }
 
     setIcon(icon, color){
@@ -157,9 +175,10 @@ class StaircaseUpBlock extends StaircaseBlock{
         this.icon = "<";
     }
 
-    clear(){
+    calculateIcon(){
         this.icon = "<";
         this.iconColor = "white";
+        super.calculateIcon();
     }
 }
 
@@ -169,9 +188,10 @@ class StaircaseDownBlock extends StaircaseBlock{
         this.icon = ">";
     }
 
-    clear(){
+    calculateIcon(){
         this.icon = ">";
         this.iconColor = "white";
+        super.calculateIcon();
     }
 }
 

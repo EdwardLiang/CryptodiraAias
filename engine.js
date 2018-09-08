@@ -13,6 +13,7 @@ class Engine {
             this.events[i]();
         }
         this.events = [];
+        Game.display.redraw();
     }
 }
 

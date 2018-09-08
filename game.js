@@ -82,12 +82,14 @@ var Game = {
         this.level.map[5][5][0].items.push(new Orange());
 
         //this.level.map[6][6][0].(new Orange());
-        this.level.creatures.push(new Turtle(6, 6, 0));
+        let t = new Turtle(6,6,0);
+        this.level.addCreature(t);
 
         this.display.displayLevel(this.level);
 
 
         //TODO: ALL drawing actions will fail with offset
+        //TODO: Creature collision
     
         //draw creatures
         for(let i = 0; i < this.level.creatures.length; i++){
