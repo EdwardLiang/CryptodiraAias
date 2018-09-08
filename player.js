@@ -19,14 +19,7 @@ class Player extends Creature{
             let newZ = player.z + diff.z;
             if(!level.checkMovable(newX, newY, newZ)) {return;}
 
-            let solidAbove = true;
-            let prevSolidAbove = true;
-            for(let i = newZ + 1; i < level.levels; i++){
-                if(!(level.map[newX][newY][i] instanceof SolidBlock)){
-                    solidAbove = false; 
-                }
-            }
-
+            
             let newZTemp = newZ;
             let newYTemp = newY;
             let newXTemp = newX;
@@ -64,17 +57,7 @@ class Player extends Creature{
             }
 
             //display.redraw();
-            if(solidAbove){
-                for(let i = newZTemp + 1; i < level.levels; i++){
-                    display.setLevelOpacity(i, "0.5");
-                }
-            }
-            else{
-                for(let i = newZTemp + 1; i < level.levels; i++){
-                    display.setLevelOpacity(i, "0.1");
-                }
-            }
-
+            
             if (newZTemp > tZ){
                 display.setLevelOpacity(newZ, "1");
             }

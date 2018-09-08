@@ -30,7 +30,7 @@ var Game = {
         //this.display.draw(this.player.x, this.player.y);
 
         this.player = new Player(1, 1, 0);
-        this.level = new Level(50, 30, 5);
+        this.level = new Level(50, 30, 3);
         this.level.map[4][4][0] = new SolidBlock(4,4,0);
 
         this.level.map[8][6][1] = new SolidBlock(8,6,1);
@@ -75,10 +75,10 @@ var Game = {
         this.level.map[23][13][2] = new WallBlock(10, 10, 2);
         this.level.map[20][10][2] = new WallBlock(10, 10, 2);
         this.level.map[6][6][2] = new StaircaseUpBlock(6,6,2);
-        this.level.map[3][3][3] = new StaircaseDownBlock(3,3,3);
+        //this.level.map[3][3][3] = new StaircaseDownBlock(3,3,3);
 
-        this.level.map[6][6][3] = new StaircaseUpBlock(6,6,3);
-        this.level.map[3][3][4] = new StaircaseDownBlock(3,3,4);
+        //this.level.map[6][6][3] = new StaircaseUpBlock(6,6,3);
+        //this.level.map[3][3][4] = new StaircaseDownBlock(3,3,4);
         this.level.map[5][5][0].items.push(new Orange());
 
         //this.level.map[6][6][0].(new Orange());

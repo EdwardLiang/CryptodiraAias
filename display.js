@@ -157,6 +157,7 @@ class Display {
                 }
             }
         }
+        this.adjustLayerOpacity();
     }
     displayLevel(level) {
         //this.width = level.width;
@@ -295,8 +296,34 @@ class Display {
         }
 
     }
+    adjustLayerOpacity(){
+        let newZ = Game.player.z;
+        let newX = Game.player.x;
+        let newY = Game.player.y;
+        let level = Game.level;
+        let display = Game.display;
 
-    
+        let solidAbove = true;
+        for(let i = newZ + 1; i < level.levels; i++){
+            if(!(level.map[newX][newY][i] instanceof SolidBlock)){
+                solidAbove = false; 
+            }
+        }
+        if(solidAbove){
+            for(let i = newZ + 1; i < level.levels; i++){
+                display.setLevelOpacity(i, "0.5");
+            }
+        }
+        else{
+            for(let i = newZ + 1; i < level.levels; i++){
+                display.setLevelOpacity(i, "0.1");
+            }
+        }
+
+
+    }
+
+
     drawAll(){
     }
 
