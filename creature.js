@@ -30,12 +30,6 @@ class Creature{
         Game.display.draw(this.x, this.y, icon, iconColor);
     }
 
-    act(){
-        let dir = Math.floor(Math.random() * 3);
-        let cDir = CDIRS[dir];
-        return move(cDir);
-    }
-
     move(diff){
         return () => {
             let level = Game.level;
