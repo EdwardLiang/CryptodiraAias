@@ -1,6 +1,7 @@
 class Level {
     constructor(width, height, levels){
         this.map = [];
+        this.creatures = [];
         this.width = width;
         this.height = height;
         this.levels = levels;
@@ -45,7 +46,18 @@ class Level {
         }
         return false;
     }
+
+    creaturesAct(){
+       for(let i = 0; i < this.creatures.length; i++){
+
+            let dir = Math.floor(Math.random() * 3);
+            let cDir = CDIRS[dir];
+            Game.engine.addEvent(this.creatures[i].move(cDir));
+        }
+    }
 }
+
+
 /*
    function Level(width, height, levels){
    this.map = [];
@@ -112,9 +124,9 @@ class MapBlock{
         this.items = [];
     }
     /*clearAndCalculateIcon(){
-        clear();
-        calculateIcon();
-    }*/
+      clear();
+      calculateIcon();
+      }*/
     calculateIcon(){
         if(this.items.length > 0){
             this.icon = this.items[0].icon;
@@ -186,11 +198,4 @@ class WallBlock extends SolidBlock{
     }
 }
 
-class Distance{
-    constructor(x, y, z){
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
 
-}

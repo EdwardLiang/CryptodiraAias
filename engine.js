@@ -8,6 +8,7 @@ class Engine {
     }
 
     timeStep() {
+        //console.log(this.events);
         for (let i = 0; i < this.events.length; i++){
             this.events[i]();
         }

@@ -310,7 +310,7 @@ class DisplayBlock{
         this.icon = "";
         this.color = "white";
     }
-    sty() {
+    sty(e) {
 
     }
     set style(s){

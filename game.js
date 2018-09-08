@@ -81,7 +81,23 @@ var Game = {
         this.level.map[3][3][4] = new StaircaseDownBlock(3,3,4);
         this.level.map[5][5][0].items.push(new Orange());
 
+        //this.level.map[6][6][0].(new Orange());
+        this.level.creatures.push(new Turtle(6, 6, 0));
+
         this.display.displayLevel(this.level);
+
+
+        //TODO: ALL drawing actions will fail with offset
+    
+        //draw creatures
+        for(let i = 0; i < this.level.creatures.length; i++){
+            let c = this.level.creatures[i];
+            this.level.map[c.x][c.y][c.z].setIcon(c.icon, c.iconColor);
+            this.display.setBlock(c.x, c.y, c.z, this.level.map[c.x][c.y][c.z]);
+            this.display.draw(c.x, c.y, c.z);
+        }
+
+        //draw player
         this.level.map[1][1][0].setIcon("@", "yellow");
         this.display.setBlock(this.player.x, this.player.y, this.player.z, this.level.map[this.player.x][this.player.y][this.player.z]);
         this.display.draw(this.player.x, this.player.y, this.player.z);
@@ -92,6 +108,6 @@ var Game = {
         PlayerEventListener.engine = this.engine;
         PlayerEventListener.display = this.display;
         window.addEventListener("keydown", PlayerEventListener);
-        this.display.drawExp(5, 5, "-", "white");
+        //this.display.drawExp(5, 5, "-", "white");
     }
 };
