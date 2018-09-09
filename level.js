@@ -56,6 +56,17 @@ class Level {
             Game.engine.addEvent(this.creatures[i].move(cDir));
         }
     }
+
+    clearVisible(){
+        let display = Game.display;
+        for(let i = 0; i < display.squares.length; i++){
+            for(let j = 0; j < display.squares[i].length; j++){
+                for(let z = 0; z < display.squares[i][j].length; z++){
+                    Game.level.map[i + display.view.xOffset][j + display.view.yOffset][z].clear();
+                }
+            }
+        }
+    }
 }
 
 

@@ -12,6 +12,7 @@ class Engine {
             this.events[i]();
         }
         this.events = [];
+        Game.level.clearVisible();
         Game.display.redraw();
     }
 }

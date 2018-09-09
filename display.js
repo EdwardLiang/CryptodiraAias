@@ -138,7 +138,7 @@ class Display {
                 for(let z = 0; z < this.squares[i][j].length; z++){
                     this.clearBlock(i, j, z);
                     this.clear(i, j, z, Game.player);
-                    this.level.map[i + this.view.xOffset][j + this.view.yOffset][z].clear();
+                    //this.level.map[i + this.view.xOffset][j + this.view.yOffset][z].clear();
                     this.setBlock(i, j, z, this.level.map[i + this.view.xOffset][j + this.view.yOffset][z]);
                     this.draw(i, j, z);
                 }
