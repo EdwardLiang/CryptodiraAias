@@ -34,23 +34,25 @@ class BehaviorTree {
         while(this.currNode instanceof BehaviorNodeWithChildren || this.currNode instanceof Decorator){
             if(this.currNode instanceof Decorator){
                 if(this.currNode instanceof InvertDecorator){
-                    this.lastNode = this.currNode;
                     if(lastSuccess){
                         lastSuccess = false;
                     }
                     else{
                         lastSuccess = true;
                     }
+                    this.lastNode = this.currNode;
+                    this.currNode = this.stack.pop();
                 }
 
                 if(this.currNode instanceof SucceedDecorator){
                     lastSuccess = true;
                     this.lastNode = this.currNode;
+                    this.currNode = this.stack.pop();
                 }
 
                 if(this.currNode instanceof RepeatUntilFailDecorator){
-                    this.lastNode = this.currNode;
-                    if(!lastSuccess){
+                    //this.lastNode = this.currNode;
+                    if(lastSuccess){
                         this.stack.push(this.currNode);
                         this.currNode = this.currNode.child;  
                         this.stack.push(this.currNode);
@@ -66,15 +68,7 @@ class BehaviorTree {
                 }
             }
             else if(this.currNode instanceof SequenceBehaviorNode){
-                //let nextNode = this.stack[this.stack.length - 1];
-                //console.log(this.currNode.children[this.currNode.children.length - 1]);
-                //console.log(this);
-                //console.log(this.lastNode);
-                //console.log(this.lastNode == this.currNode.children[this.currNode.children.length - 1]);
-                //console.log(this.currNode);
-                console.log(this.currNode.selectNode(this.lastNode));
                 if(lastSuccess == false || this.currNode.selectNode(this.lastNode) === null){
-                    console.log("test");
                     this.lastNode = this.currNode;
                     this.currNode = this.stack.pop();
                     if(this.currNode instanceof RandomSequenceNode){
@@ -89,21 +83,19 @@ class BehaviorTree {
                         this.stack.push(this.currNode);
                     }
                     return this.goDownTree();
-                    break;
                 }
             }
             else if(this.currNode instanceof SelectionBehaviorNode){
-                if(lastSuccess == true){
+                if(lastSuccess == true || this.currNode.selectNode(this.lastNode) === null){
                     this.lastNode = this.currNode;
                     this.currNode = this.stack.pop();
                 }
                 else{
                     //this.currNode = this.currNode.selectNode(this.lastNode);
-                    /*if(this.currNode){
+                    if(this.currNode){
                         stack.push(this.currNode);
-                    }*/
+                    }
                     return this.goDownTree();
-                    break;
                 }
             }
         }
