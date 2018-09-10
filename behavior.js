@@ -47,12 +47,14 @@ class BehaviorTree {
                         lastSuccess = true;
                     }
                     this.lastNode = this.currNode;
+                    this.lastNode.success = lastSuccess;
                     this.currNode = this.stack.pop();
                 }
 
                 if(this.currNode instanceof SucceedDecorator){
                     lastSuccess = true;
                     this.lastNode = this.currNode;
+                    this.lastNode.success = lastSuccess;
                     this.currNode = this.stack.pop();
                 }
 
