@@ -24,16 +24,14 @@ class BehaviorTree {
             this.currNode = this.stack.pop();
             //console.log(this.currNode);
         }
-        else if(this.lastNode instanceof PredicateNode){
-            this.lastNode.evalutePredicate();
-            //var lastSuccess = this.stack.pop().success;
-            var lastSuccess = this.lastNode.success;
-            this.currNode = this.stack.pop();
-            return this.next();
-        }
         while(this.currNode instanceof BehaviorNodeWithChildren || this.currNode instanceof Decorator){
             if(this.lastNode){
                 this.lastSuccess = this.lastNode.success;
+                if(this.lastNode instanceof PredicateNode){
+                    //console.log(this.stack);
+                    //console.log(this.lastNode);
+                    //console.log(this.currNode);
+                }
             }
             else{
                 this.lastSuccess = true;
@@ -70,6 +68,7 @@ class BehaviorTree {
 
                 if(this.currNode instanceof RepeatDecorator){
                     this.stack.push(this.currNode);
+                    //this.lastNode = this.currNode;
                     this.currNode = this.currNode.child;
                     this.stack.push(this.currNode);
                     return this.goDownTree();
@@ -130,6 +129,17 @@ class BehaviorTree {
             this.currNode = root;
             this.lastNode = null;
         }
+        if(this.currNode instanceof PredicateNode){
+            this.currNode.evaluatePredicate();
+            //var lastSuccess = this.stack.pop().success;
+            this.lastNode = this.stack.pop();
+            this.currNode = this.stack.pop();
+            if(this.currNode instanceof BehaviorNodeWithChildren){
+                this.lastNode = null;
+            }
+            return this.next();
+        }
+
         if(!(this.currNode instanceof ExecuteBehaviorNode)){
             //console.log(this.currNode);
             throw "Behavior selected is not executable!";
@@ -149,9 +159,10 @@ class BehaviorNode {
 }
 
 
-class BehaviorNodeWithChildren {
+class BehaviorNodeWithChildren extends BehaviorNode{
 
     constructor(){
+        super();
         this.children = [];
     }
     addChild(c){
@@ -224,11 +235,11 @@ class SucceedNode extends BehaviorNode{
 class PredicateNode extends BehaviorNode{
 
     predicate(){
-        return true;
+        return false;
     }
 
     evaluatePredicate(){
-        if(predicate()){
+        if(this.predicate()){
             this.success = true;
         }
         else{
@@ -373,6 +384,28 @@ class MoveBoxAct extends CreatureAct{
         let act3 = new MoveStraightAct(creature, new Distance(-1,0,0)); 
         let act4 = new MoveStraightAct(creature, new Distance(0,-1,0)); 
         act1.addNodesAsChildren(n);
+        act2.addNodesAsChildren(n);
+        act3.addNodesAsChildren(n);
+        act4.addNodesAsChildren(n);
+        root.addChild(n); 
+        this.behaviorTree = new BehaviorTree(root);
+    }
+}
+
+class MoveBoxActPredicate extends CreatureAct{
+    
+    constructor(creature){
+        super();
+        let root = new RepeatDecorator();
+        let n = new SequenceBehaviorNode();
+
+        let act1 = new MoveStraightAct(creature, new Distance(1,0,0)); 
+        let p = new PredicateNode();
+        let act2 = new MoveStraightAct(creature, new Distance(0,1,0)); 
+        let act3 = new MoveStraightAct(creature, new Distance(-1,0,0)); 
+        let act4 = new MoveStraightAct(creature, new Distance(0,-1,0)); 
+        act1.addNodesAsChildren(n);
+        n.addChild(p);
         act2.addNodesAsChildren(n);
         act3.addNodesAsChildren(n);
         act4.addNodesAsChildren(n);

@@ -60,8 +60,10 @@ var Game = {
         //this.level.map[6][6][0].(new Orange());
         let t = new Turtle(6,6,0);
         let f = new Cat(7,7,0);
+        let d = new Dog(8,8,0);
         this.level.addCreature(t);
         this.level.addCreature(f);
+        this.level.addCreature(d);
 
         this.display.displayLevel(this.level);
 
