@@ -1,8 +1,8 @@
 DIRS = {};
-DIRS[72] = new Distance(-1, 0, 0);
-DIRS[74] = new Distance(0, 1, 0);
-DIRS[75] = new Distance(0, -1, 0);
-DIRS[76] = new Distance(1, 0, 0);
+DIRS[72] = new Distance(-1, 0, 0); //left
+DIRS[74] = new Distance(0, 1, 0); //down
+DIRS[75] = new Distance(0, -1, 0); //up
+DIRS[76] = new Distance(1, 0, 0); //right
 DIRS[188] = new Distance(0, 0, 1);
 DIRS[190] = new Distance(0, 0, -1);
 
