@@ -15,34 +15,24 @@ class BehaviorTree {
 
     next(){
         if(this.lastNode instanceof ExecuteBehaviorNode){
-
-            //console.log(this.lastNode);
             var a = this.stack.pop();
-            //console.log(a);
-            var lastSuccess = a.success;
-            //console.log(lastSuccess);
+            this.lastSuccess = a.success;
             this.currNode = this.stack.pop();
-            //console.log(this.currNode);
         }
         while(this.currNode instanceof BehaviorNodeWithChildren || this.currNode instanceof Decorator){
             if(this.lastNode){
                 this.lastSuccess = this.lastNode.success;
-                if(this.lastNode instanceof PredicateNode){
-                    //console.log(this.stack);
-                    //console.log(this.lastNode);
-                    //console.log(this.currNode);
-                }
             }
             else{
                 this.lastSuccess = true;
             }
             if(this.currNode instanceof Decorator){
                 if(this.currNode instanceof InvertDecorator){
-                    if(lastSuccess){
-                        lastSuccess = false;
+                    if(this.lastSuccess){
+                        this.lastSuccess = false;
                     }
                     else{
-                        lastSuccess = true;
+                        this.lastSuccess = true;
                     }
                     this.lastNode = this.currNode;
                     this.lastNode.success = lastSuccess;
@@ -50,7 +40,7 @@ class BehaviorTree {
                 }
 
                 if(this.currNode instanceof SucceedDecorator){
-                    lastSuccess = true;
+                    this.lastSuccess = true;
                     this.lastNode = this.currNode;
                     this.lastNode.success = lastSuccess;
                     this.currNode = this.stack.pop();
@@ -58,7 +48,7 @@ class BehaviorTree {
 
                 if(this.currNode instanceof RepeatUntilFailDecorator){
                     //this.lastNode = this.currNode;
-                    if(lastSuccess){
+                    if(this.lastSuccess){
                         this.stack.push(this.currNode);
                         this.currNode = this.currNode.child;  
                         this.stack.push(this.currNode);
@@ -75,7 +65,7 @@ class BehaviorTree {
                 }
             }
             else if(this.currNode instanceof SequenceBehaviorNode){
-                if(lastSuccess == false || this.currNode.selectNode(this.lastNode) === null){
+                if(this.lastSuccess == false || this.currNode.selectNode(this.lastNode) === null){
                     this.lastNode = this.currNode;
                     this.currNode = this.stack.pop();
                     if(this.currNode instanceof RandomSequenceNode){
@@ -93,7 +83,7 @@ class BehaviorTree {
                 }
             }
             else if(this.currNode instanceof SelectionBehaviorNode){
-                if(lastSuccess == true || this.currNode.selectNode(this.lastNode) === null){
+                if(this.lastSuccess == true || this.currNode.selectNode(this.lastNode) === null){
                     this.lastNode = this.currNode;
                     this.currNode = this.stack.pop();
                 }
@@ -125,16 +115,19 @@ class BehaviorTree {
         }
         if(this.currNode instanceof FinishNode || this.currNode instanceof CancelNode){
             this.stack = [];
-            this.stack.push(root);
-            this.currNode = root;
+            this.stack.push(null);
+            this.stack.push(this.root);
+            this.currNode = this.root;
             this.lastNode = null;
         }
         if(this.currNode instanceof PredicateNode){
             this.currNode.evaluatePredicate();
+            let x = this.currNode;
             //var lastSuccess = this.stack.pop().success;
             this.lastNode = this.stack.pop();
             this.currNode = this.stack.pop();
-            if(this.currNode instanceof BehaviorNodeWithChildren){
+            if(this.currNode instanceof BehaviorNodeWithChildren && !x.success){
+                //lastNode has to be set for decorators but not BehaviorNodesWithChildren
                 this.lastNode = null;
             }
             return this.next();
