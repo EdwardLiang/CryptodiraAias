@@ -32,6 +32,12 @@ class BehaviorTree {
             return this.next();
         }
         while(this.currNode instanceof BehaviorNodeWithChildren || this.currNode instanceof Decorator){
+            if(this.lastNode){
+                this.lastSuccess = this.lastNode.success;
+            }
+            else{
+                this.lastSuccess = true;
+            }
             if(this.currNode instanceof Decorator){
                 if(this.currNode instanceof InvertDecorator){
                     if(lastSuccess){
@@ -338,7 +344,7 @@ class MoveStraightAct extends CreatureAct{
     
     constructor(creature, distance){
         super();
-        let root = new RepeatDecorator();
+        //let root = new RepeatDecorator();
         let n = new SequenceBehaviorNode();
         let mX = new MoveBehavior(distance, creature);
         let mX2 = new MoveBehavior(distance, creature);
@@ -348,6 +354,26 @@ class MoveStraightAct extends CreatureAct{
         n.addChild(mX2);
         n.addChild(mY);
         n.addChild(mY2);
+        //root.addChild(n); 
+        this.behaviorTree = new BehaviorTree(n);
+    }
+}
+
+class MoveBoxAct extends CreatureAct{
+    
+    constructor(creature){
+        super();
+        let root = new RepeatDecorator();
+        let n = new SequenceBehaviorNode();
+
+        let act1 = new MoveStraightAct(creature, new Distance(1,0,0)); 
+        let act2 = new MoveStraightAct(creature, new Distance(0,1,0)); 
+        let act3 = new MoveStraightAct(creature, new Distance(-1,0,0)); 
+        let act4 = new MoveStraightAct(creature, new Distance(0,-1,0)); 
+        act1.addNodesAsChildren(n);
+        act2.addNodesAsChildren(n);
+        act3.addNodesAsChildren(n);
+        act4.addNodesAsChildren(n);
         root.addChild(n); 
         this.behaviorTree = new BehaviorTree(root);
     }

@@ -70,11 +70,13 @@ class Cat extends Creature{
 
     constructor(x, y, z){
         super(x, y, z, "f", "white");
-        this.act = new MoveStraightAct(this, new Distance(1,0,0)); 
+        //this.act = new MoveStraightAct(this, new Distance(1,0,0)); 
+        this.act = new MoveBoxAct(this);
         this.behaviorTree = this.act.behaviorTree;
     }
 
     move(diff){
+        console.log(this.behaviorTree);
         return this.behaviorTree.next();
     }
 
