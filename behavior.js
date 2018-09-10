@@ -15,12 +15,19 @@ class BehaviorTree {
 
     next(){
         if(this.lastNode instanceof ExecuteBehaviorNode){
-            var lastSuccess = this.stack.pop().success;
+
+            //console.log(this.lastNode);
+            var a = this.stack.pop();
+            //console.log(a);
+            var lastSuccess = a.success;
+            //console.log(lastSuccess);
             this.currNode = this.stack.pop();
+            //console.log(this.currNode);
         }
         else if(this.lastNode instanceof PredicateNode){
             this.lastNode.evalutePredicate();
-            var lastSuccess = this.stack.pop().success;
+            //var lastSuccess = this.stack.pop().success;
+            var lastSuccess = this.lastNode.success;
             this.currNode = this.stack.pop();
             return this.next();
         }
@@ -38,6 +45,7 @@ class BehaviorTree {
 
                 if(this.currNode instanceof SucceedDecorator){
                     lastSuccess = true;
+                    this.lastNode = this.currNode;
                 }
 
                 if(this.currNode instanceof RepeatUntilFailDecorator){
@@ -58,7 +66,15 @@ class BehaviorTree {
                 }
             }
             else if(this.currNode instanceof SequenceBehaviorNode){
-                if(lastSuccess == false){
+                //let nextNode = this.stack[this.stack.length - 1];
+                //console.log(this.currNode.children[this.currNode.children.length - 1]);
+                //console.log(this);
+                //console.log(this.lastNode);
+                //console.log(this.lastNode == this.currNode.children[this.currNode.children.length - 1]);
+                //console.log(this.currNode);
+                console.log(this.currNode.selectNode(this.lastNode));
+                if(lastSuccess == false || this.currNode.selectNode(this.lastNode) === null){
+                    console.log("test");
                     this.lastNode = this.currNode;
                     this.currNode = this.stack.pop();
                     if(this.currNode instanceof RandomSequenceNode){
@@ -67,10 +83,10 @@ class BehaviorTree {
                     //this.lastNode = null;
                 }
                 else{
-                    stack.push(this.currNode);
-                    this.currNode = this.currNode.selectNode(this.lastNode);
+                    //this.stack.push(this.currNode);
+                    //this.currNode = this.currNode.selectNode(this.lastNode);
                     if(this.currNode){
-                        stack.push(this.currNode);
+                        this.stack.push(this.currNode);
                     }
                     return this.goDownTree();
                     break;
@@ -82,10 +98,10 @@ class BehaviorTree {
                     this.currNode = this.stack.pop();
                 }
                 else{
-                    this.currNode = this.currNode.selectNode(this.lastNode);
-                    if(this.currNode){
+                    //this.currNode = this.currNode.selectNode(this.lastNode);
+                    /*if(this.currNode){
                         stack.push(this.currNode);
-                    }
+                    }*/
                     return this.goDownTree();
                     break;
                 }
@@ -115,6 +131,7 @@ class BehaviorTree {
             this.lastNode = null;
         }
         if(!(this.currNode instanceof ExecuteBehaviorNode)){
+            //console.log(this.currNode);
             throw "Behavior selected is not executable!";
         }
         else{
@@ -153,7 +170,7 @@ class BehaviorNodeWithChildren {
             indx++;
             node = this.children[indx]; 
         }
-        if(indx + 1 > this.children.length){
+        if(indx + 1 >= this.children.length){
             this.success = true;
             return null;
         }
@@ -301,9 +318,12 @@ class MoveBehavior extends ExecuteBehaviorNode{
 }
 
 class CreatureAct{
+    addNodesAsChildren(node){
+        node.addChild(this.behaviorTree.root);
+    } 
 }
 
-class RandomAct extends CreatureAct{
+class RandomMoveAct extends CreatureAct{
     
     constructor(creature){
         super();
@@ -321,3 +341,23 @@ class RandomAct extends CreatureAct{
         this.behaviorTree = new BehaviorTree(root);
     }
 }
+
+class MoveStraightAct extends CreatureAct{
+    
+    constructor(creature, distance){
+        super();
+        let root = new RepeatDecorator();
+        let n = new SequenceBehaviorNode();
+        let mX = new MoveBehavior(distance, creature);
+        let mX2 = new MoveBehavior(distance, creature);
+        let mY = new MoveBehavior(distance, creature);
+        let mY2 = new MoveBehavior(distance, creature);
+        n.addChild(mX);
+        n.addChild(mX2);
+        n.addChild(mY);
+        n.addChild(mY2);
+        root.addChild(n); 
+        this.behaviorTree = new BehaviorTree(root);
+    }
+}
+

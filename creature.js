@@ -56,7 +56,21 @@ class Turtle extends Creature{
 
     constructor(x, y, z){
         super(x, y, z, "t", "green");
-        this.act = new RandomAct(this); 
+        this.act = new RandomMoveAct(this); 
+        this.behaviorTree = this.act.behaviorTree;
+    }
+
+    move(diff){
+        return this.behaviorTree.next();
+    }
+
+}
+
+class Cat extends Creature{
+
+    constructor(x, y, z){
+        super(x, y, z, "f", "white");
+        this.act = new MoveStraightAct(this, new Distance(1,0,0)); 
         this.behaviorTree = this.act.behaviorTree;
     }
 
