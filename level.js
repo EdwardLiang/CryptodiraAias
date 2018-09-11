@@ -144,27 +144,47 @@ class StaircaseBlock extends MapBlock{
 class StaircaseUpBlock extends StaircaseBlock{
     constructor(x, y, z){
         super(x, y, z);
-        this.icon = "<";
+        //this.icon = "<";
     }
 
-    calculateIcon(){
+    /*calculateIcon(){
         this.icon = "<";
         this.iconColor = "white";
         super.calculateIcon();
+    }*/
+    getStyle(e){
+        if(!this.noImg){
+            let image = document.createElement("img");
+            image.style.width = "60%";
+            image.src = "./resources/aiga-stairs.png";
+            e.appendChild(image);
+        }
     }
+
 }
 
 class StaircaseDownBlock extends StaircaseBlock{
     constructor(x, y, z){
         super(x, y, z);
-        this.icon = ">";
+        //this.icon = ">";
     }
 
-    calculateIcon(){
+    /*calculateIcon(){
         this.icon = ">";
         this.iconColor = "white";
         super.calculateIcon();
+    }*/
+    getStyle(e){
+        if(!this.noImg){
+            let image = document.createElement("img");
+            image.style.width = "60%";
+            image.src = "./resources/aiga-stairs.png";
+            image.style.transform = "scaleX(-1)";
+            e.appendChild(image);
+        }
     }
+
+
 }
 
 class WaterBlock extends MapBlock{
