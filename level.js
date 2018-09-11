@@ -86,6 +86,7 @@ class MapBlock{
         this.items = [];
         this.creatures = [];
         this.player = false;
+        this.noImg = false;
     }
 
     checkMovable() {
@@ -106,14 +107,20 @@ class MapBlock{
         if(this.player){
             this.icon = Game.player.icon;
             this.iconColor = Game.player.iconColor;
+            this.noImg = true;
         }
         else if(this.creatures.length > 0){
             this.icon = this.creatures[0].icon;
             this.iconColor = this.creatures[0].iconColor;
+            this.noImg = true;
         }
         else if(this.items.length > 0){
             this.icon = this.items[0].icon;
             this.iconColor = this.items[0].iconColor;
+            this.noImg = true;
+        }
+        else{
+            this.noImg = false;
         }
     }
 
@@ -179,6 +186,12 @@ class GrassBlock extends MapBlock{
     }
     getStyle(e){
         e.style.backgroundColor = "green";
+        /*if(!this.noImg){
+            let image = document.createElement("img");
+            image.style.height = "80%";
+            image.src = "./resources/grass.png";
+            e.appendChild(image);
+        }*/
     }
 }
 
@@ -239,6 +252,10 @@ class StoneBlock extends UnmovableBlock{
     }
     getStyle(e){
         e.style.backgroundColor = "#585858";
+        let image = document.createElement("img");
+        image.style.width = "100%";
+        image.src = "./resources/rock2.png";
+        e.appendChild(image);
     }
 }
 

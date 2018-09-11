@@ -171,7 +171,7 @@ class Display {
     setBlock(x, y, level, block){
         this.squares[x][y][level].icon = block.icon;
         this.squares[x][y][level].color = block.iconColor;
-        this.squares[x][y][level].style = block.getStyle;
+        this.squares[x][y][level].style = block.getStyle.bind(block);
     }
     clearBlock(x, y, level){
         this.squares[x][y][level].icon = "";
