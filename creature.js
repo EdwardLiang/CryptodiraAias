@@ -58,7 +58,7 @@ class Creature{
 class Turtle extends Creature{
 
     constructor(x, y, z){
-        super(x, y, z, "t", "green");
+        super(x, y, z, "&#x1F422;", "green");
         this.act = new RandomMoveAct(this); 
         this.behaviorTree = this.act.behaviorTree;
     }
@@ -72,7 +72,7 @@ class Turtle extends Creature{
 class Cat extends Creature{
 
     constructor(x, y, z){
-        super(x, y, z, "f", "white");
+        super(x, y, z, "&#x1F408;", "orange");
         //this.act = new MoveStraightAct(this, new Distance(1,0,0)); 
         this.act = new MoveBoxAct(this);
         this.behaviorTree = this.act.behaviorTree;
@@ -87,7 +87,7 @@ class Cat extends Creature{
 class Dog extends Creature{
 
     constructor(x, y, z){
-        super(x, y, z, "d", "white");
+        super(x, y, z, "&#x1F415;", "white");
         //this.act = new MoveStraightAct(this, new Distance(1,0,0)); 
         this.act = new MoveBoxActPredicate(this);
         this.behaviorTree = this.act.behaviorTree;
@@ -102,7 +102,7 @@ class Dog extends Creature{
 class Robot extends Creature{
 
     constructor(x, y, z){
-        super(x, y, z, "R", "white");
+        super(x, y, z, "&#x1F916;", "grey");
         //this.act = new MoveStraightAct(this, new Distance(1,0,0)); 
         this.act = new MoveBoxActPredicateInverse(this);
         this.behaviorTree = this.act.behaviorTree;

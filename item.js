@@ -12,6 +12,6 @@ class Item {
 }
 class Orange extends Item{
     constructor(){
-        super("%", "orange", "orange");
+        super("&#x1F34A;", "orange", "orange");
     }
 }

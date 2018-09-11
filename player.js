@@ -1,7 +1,7 @@
 class Player extends Creature{
 
     constructor(x, y, z){
-        super(x, y, z, "@", "#ff0");
+        super(x, y, z, "&#50883;", "#ff0");
     }
 
     move(diff){

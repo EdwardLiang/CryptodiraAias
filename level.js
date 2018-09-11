@@ -5,6 +5,7 @@ class Level {
         this.width = width;
         this.height = height;
         this.levels = levels;
+        this.backgroundColor = undefined;
         //this is some bad naming here.
         this.map = new Array(width);
         for (let i = 0; i < this.map.length; i++){
@@ -18,6 +19,9 @@ class Level {
                 }
             }
         }
+    }
+    setZLevelColor(level, color){
+        this.backgroundColor = color;
     }
 
     checkMovable(x, y, z){
@@ -100,8 +104,8 @@ class MapBlock{
 
     calculateIcon(){
         if(this.player){
-            this.icon = "@";
-            this.iconColor = "#ff0";
+            this.icon = Game.player.icon;
+            this.iconColor = Game.player.iconColor;
         }
         else if(this.creatures.length > 0){
             this.icon = this.creatures[0].icon;
@@ -189,8 +193,16 @@ class IceBlock extends MapBlock{
     }
 }
 
+class UnmovableBlock extends MapBlock{
+    constructor(x, y, z){
+        super(x, y, z);
+        this.movable = false;
+        this.icon = " ";
+        this.iconColor = "black";
+    }
+}
 
-class SolidBlock extends MapBlock{
+class SolidBlock extends UnmovableBlock{
     constructor(x, y, z){
         super(x, y, z);
         this.movable = false;
@@ -202,14 +214,31 @@ class SolidBlock extends MapBlock{
     }
 }
 
-class WallBlock extends SolidBlock{
+class WallBlock extends UnmovableBlock{
     constructor(x, y, z){
         super(x, y, z);
-        this.icon = "#";
-        this.iconColor = "white";
+        this.icon = "&#128857;";
+        this.iconColor = "AA3311";
     }
     getStyle(e){
 
+    }
+    calculateIcon(){
+        this.icon = "&#128857;";
+        this.iconColor = "#AA3311";
+        super.calculateIcon();
+    }
+
+}
+
+class StoneBlock extends UnmovableBlock{
+    constructor(x, y, z){
+        super(x, y, z);
+        this.icon = " ";
+        this.iconColor = "black";
+    }
+    getStyle(e){
+        e.style.backgroundColor = "#585858";
     }
 }
 

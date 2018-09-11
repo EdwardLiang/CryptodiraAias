@@ -86,22 +86,9 @@ class Display {
         //let height = 46 + level*1.8;
         let width = this.view.blockWidthPx + level*1.8;
         let height = this.view.blockHeightPx + level*1.8; 
-        let bC;
+        let bC = this.getBC(level);
         let opacity = 0.1;
-        if(level % 3 == 0){
-            //bC = "#734";
-            bC = "#" + (734 + Math.ceil(level / 3) * 5);
-        }
-        if(level % 3 == 1){
-            //bC = "#777";
-            bC = "#" + (760 + Math.ceil(level / 3) * 5);
-        }
-        if(level % 3 == 2){
-            //bC = "#4f5";
-            //bC = "#780";
-
-            bC = "#" + (780 + Math.ceil(level / 3) * 5);
-        }
+        
         if(level == 0){
             opacity = 1;
         }
@@ -223,25 +210,46 @@ class Display {
         }
     };
 
-    clear(x, y, level, player){
-        let s = this.squares[x][y][level];
-        s.td.innerHtml = ""; 
+    getBC(level){
+        //default
         let bC;
-        let opacity = 0.1;
+        /*if(level == 0){
+            bC = "#808080";
+        }*/
+        if(level.backgroundColor){
+            return level.backgroundColor;
+        }
         if(level % 3 == 0){
             //bC = "#734";
-            bC = "#" + (734 + Math.ceil(level / 3) * 5);
+            bC = "#" + (540 + Math.ceil(level / 3) * 5);
+
+            //bC = "#808080";
+
+            //bC = "#" + (0x808080 + Math.ceil(level / 3) * 5).toString(16);
         }
-        if(level % 3 == 1){
+        else if(level % 3 == 1){
             //bC = "#777";
-            bC = "#" + (760 + Math.ceil(level / 3) * 5);
+            bC = "#" + (560 + Math.ceil(level / 3) * 5);
+
+            //bC = "#" + (0x00FF00 + Math.ceil(level / 3) * 5).toString(16);
+
+            //bC = "#" + (0x00FF00).toString(16);
         }
-        if(level % 3 == 2){
+        else if(level % 3 == 2){
             //bC = "#4f5";
             //bC = "#780";
 
-            bC = "#" + (780 + Math.ceil(level / 3) * 5);
+            bC = "#" + (600 + Math.ceil(level / 3) * 5);
         }
+        return bC;
+
+    }
+
+    clear(x, y, level, player){
+        let s = this.squares[x][y][level];
+        s.td.innerHtml = ""; 
+        let bC = this.getBC(level);
+        let opacity = 0.1;
 
         s.td.style.backgroundColor = bC;
         if(s.level <= player.z){
