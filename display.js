@@ -226,6 +226,24 @@ class Display {
     clear(x, y, level, player){
         let s = this.squares[x][y][level];
         s.td.innerHtml = ""; 
+        let bC;
+        let opacity = 0.1;
+        if(level % 3 == 0){
+            //bC = "#734";
+            bC = "#" + (734 + Math.ceil(level / 3) * 5);
+        }
+        if(level % 3 == 1){
+            //bC = "#777";
+            bC = "#" + (760 + Math.ceil(level / 3) * 5);
+        }
+        if(level % 3 == 2){
+            //bC = "#4f5";
+            //bC = "#780";
+
+            bC = "#" + (780 + Math.ceil(level / 3) * 5);
+        }
+
+        s.td.style.backgroundColor = bC;
         if(s.level <= player.z){
             s.td.style.opacity = "1";
         }

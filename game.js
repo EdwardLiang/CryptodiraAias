@@ -6,7 +6,7 @@ var Game = {
         this.engine = new Engine();
     
         this.player = new Player(1, 1, 0);
-        this.level = new Level(50, 30, 3);
+        this.level = new Level(50, 30, 5);
         this.level.map[4][4][0] = new SolidBlock(4,4,0);
 
         this.level.map[8][6][1] = new SolidBlock(8,6,1);
@@ -32,6 +32,10 @@ var Game = {
 
 
         this.level.map[4][4][0] = new SolidBlock(4,4,0);
+
+        this.level.map[6][6][0] = new WaterBlock(6,6,0);
+        this.level.map[7][7][0] = new GrassBlock(7,7,0);
+        this.level.map[7][8][0] = new IceBlock(7,8,0);
 
         this.level.map[3][3][0] = new StaircaseUpBlock(3,3,0);
         this.level.map[3][3][1] = new StaircaseDownBlock(3,3,1);

@@ -156,6 +156,40 @@ class StaircaseDownBlock extends StaircaseBlock{
     }
 }
 
+class WaterBlock extends MapBlock{
+    constructor(x, y, z){
+        super(x, y, z);
+        this.icon = " ";
+        this.iconColor = "black";
+    }
+    getStyle(e){
+        e.style.backgroundColor = "blue";
+    }
+}
+
+class GrassBlock extends MapBlock{
+    constructor(x, y, z){
+        super(x, y, z);
+        this.icon = " ";
+        this.iconColor = "black";
+    }
+    getStyle(e){
+        e.style.backgroundColor = "green";
+    }
+}
+
+class IceBlock extends MapBlock{
+    constructor(x, y, z){
+        super(x, y, z);
+        this.icon = " ";
+        this.iconColor = "black";
+    }
+    getStyle(e){
+        e.style.backgroundColor = "white";
+    }
+}
+
+
 class SolidBlock extends MapBlock{
     constructor(x, y, z){
         super(x, y, z);
