@@ -47,7 +47,10 @@ class Creature{
             this.z = newZ;
             level.map[this.x][this.y][this.z].creatures.push(this);
         }
-
+    }
+    set action(a){
+        this.act = a; 
+        this.behaviorTree = this.act.behaviorTree;
     }
 }
 
@@ -87,6 +90,21 @@ class Dog extends Creature{
         super(x, y, z, "d", "white");
         //this.act = new MoveStraightAct(this, new Distance(1,0,0)); 
         this.act = new MoveBoxActPredicate(this);
+        this.behaviorTree = this.act.behaviorTree;
+    }
+
+    move(diff){
+        return this.behaviorTree.next();
+    }
+
+}
+
+class Robot extends Creature{
+
+    constructor(x, y, z){
+        super(x, y, z, "R", "white");
+        //this.act = new MoveStraightAct(this, new Distance(1,0,0)); 
+        this.act = new MoveBoxActPredicateInverse(this);
         this.behaviorTree = this.act.behaviorTree;
     }
 

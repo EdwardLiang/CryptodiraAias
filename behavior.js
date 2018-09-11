@@ -1,3 +1,4 @@
+//TODO: More thoroughly test this.
 class BehaviorTree {
 
     constructor(r){
@@ -35,14 +36,14 @@ class BehaviorTree {
                         this.lastSuccess = true;
                     }
                     this.lastNode = this.currNode;
-                    this.lastNode.success = lastSuccess;
+                    this.lastNode.success = this.lastSuccess;
                     this.currNode = this.stack.pop();
                 }
 
                 if(this.currNode instanceof SucceedDecorator){
                     this.lastSuccess = true;
                     this.lastNode = this.currNode;
-                    this.lastNode.success = lastSuccess;
+                    this.lastNode.success = this.lastSuccess;
                     this.currNode = this.stack.pop();
                 }
 
@@ -53,6 +54,12 @@ class BehaviorTree {
                         this.currNode = this.currNode.child;  
                         this.stack.push(this.currNode);
                         return this.goDownTree();
+                    }
+                    else{
+                        this.lastNode = this.currNode;
+                        this.currNode = this.stack.pop();
+                        //console.log(this.lastNode);
+                        //console.log(this.currNode);
                     }
                 }
 
@@ -114,6 +121,7 @@ class BehaviorTree {
             }
         }
         if(this.currNode instanceof FinishNode || this.currNode instanceof CancelNode){
+            //differentiate between the two? 
             this.stack = [];
             this.stack.push(null);
             this.stack.push(this.root);
@@ -328,7 +336,7 @@ class CreatureAct{
 }
 
 class RandomMoveAct extends CreatureAct{
-    
+
     constructor(creature){
         super();
         let root = new RepeatDecorator();
@@ -346,8 +354,53 @@ class RandomMoveAct extends CreatureAct{
     }
 }
 
+class RandomMoveUntilFailAct extends CreatureAct{
+
+    constructor(creature){
+        super();
+        let root = new RepeatDecorator();
+        let r2 = new RepeatUntilFailDecorator();
+        let n = new RandomSelectionNode();
+        let mX = new MoveBehavior(new Distance(1, 0, 0), creature);
+        let mX2 = new MoveBehavior(new Distance(-1, 0, 0), creature);
+        let mY = new MoveBehavior(new Distance(0, 1, 0), creature);
+        let mY2 = new MoveBehavior(new Distance(0, -1, 0), creature);
+        n.addChild(mX);
+        n.addChild(mX2);
+        n.addChild(mY);
+        n.addChild(mY2);
+        n.addChild(new PredicateNode());
+        r2.addChild(n); 
+        root.addChild(r2);
+        this.behaviorTree = new BehaviorTree(root);
+    }
+}
+
+class RandomMoveCancel extends CreatureAct{
+
+    constructor(creature){
+        super();
+        let root = new RepeatDecorator();
+        let r2 = new RepeatUntilFailDecorator();
+        let n = new RandomSelectionNode();
+        let mX = new MoveBehavior(new Distance(1, 0, 0), creature);
+        let mX2 = new MoveBehavior(new Distance(-1, 0, 0), creature);
+        let mY = new MoveBehavior(new Distance(0, 1, 0), creature);
+        let mY2 = new MoveBehavior(new Distance(0, -1, 0), creature);
+        n.addChild(mX);
+        n.addChild(mX2);
+        n.addChild(mY);
+        n.addChild(mY2);
+        n.addChild(new CancelNode());
+        r2.addChild(n); 
+        root.addChild(r2);
+        this.behaviorTree = new BehaviorTree(root);
+    }
+}
+
+
 class MoveStraightAct extends CreatureAct{
-    
+
     constructor(creature, distance){
         super();
         //let root = new RepeatDecorator();
@@ -366,7 +419,7 @@ class MoveStraightAct extends CreatureAct{
 }
 
 class MoveBoxAct extends CreatureAct{
-    
+
     constructor(creature){
         super();
         let root = new RepeatDecorator();
@@ -386,7 +439,7 @@ class MoveBoxAct extends CreatureAct{
 }
 
 class MoveBoxActPredicate extends CreatureAct{
-    
+
     constructor(creature){
         super();
         let root = new RepeatDecorator();
@@ -398,8 +451,56 @@ class MoveBoxActPredicate extends CreatureAct{
         let act3 = new MoveStraightAct(creature, new Distance(-1,0,0)); 
         let act4 = new MoveStraightAct(creature, new Distance(0,-1,0)); 
         act1.addNodesAsChildren(n);
-        n.addChild(p);
         act2.addNodesAsChildren(n);
+        n.addChild(p);
+        act3.addNodesAsChildren(n);
+        act4.addNodesAsChildren(n);
+        root.addChild(n); 
+        this.behaviorTree = new BehaviorTree(root);
+    }
+}
+
+class MoveBoxActPredicateInverse extends CreatureAct{
+
+    constructor(creature){
+        super();
+        let root = new RepeatDecorator();
+        let i = new InvertDecorator();
+        let n = new SequenceBehaviorNode();
+
+        let act1 = new MoveStraightAct(creature, new Distance(1,0,0)); 
+        let p = new PredicateNode();
+        let act2 = new MoveStraightAct(creature, new Distance(0,1,0)); 
+        let act3 = new MoveStraightAct(creature, new Distance(-1,0,0)); 
+        let act4 = new MoveStraightAct(creature, new Distance(0,-1,0)); 
+        act1.addNodesAsChildren(n);
+        act2.addNodesAsChildren(n);
+        i.addChild(p);
+        n.addChild(i);
+        act3.addNodesAsChildren(n);
+        act4.addNodesAsChildren(n);
+        root.addChild(n); 
+        this.behaviorTree = new BehaviorTree(root);
+    }
+}
+
+class MoveBoxActPredicateSucceed extends CreatureAct{
+
+    constructor(creature){
+        super();
+        let root = new RepeatDecorator();
+        let i = new SucceedDecorator();
+        let n = new SequenceBehaviorNode();
+
+        let act1 = new MoveStraightAct(creature, new Distance(1,0,0)); 
+        let p = new PredicateNode();
+        let act2 = new MoveStraightAct(creature, new Distance(0,1,0)); 
+        let act3 = new MoveStraightAct(creature, new Distance(-1,0,0)); 
+        let act4 = new MoveStraightAct(creature, new Distance(0,-1,0)); 
+        act1.addNodesAsChildren(n);
+        act2.addNodesAsChildren(n);
+        i.addChild(p);
+        n.addChild(i);
         act3.addNodesAsChildren(n);
         act4.addNodesAsChildren(n);
         root.addChild(n); 
