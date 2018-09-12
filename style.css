@@ -1,10 +1,10 @@
 @keyframes flicker{
-    from { opacity:1; }
-    to { opacity:.5; }
+    0% { opacity:1; }
+    50% { opacity:.5; }
 }
 
 .flicker{
-    animation: flicker 2s infinite;
+    animation: flicker 2s step-end infinite;
 }
 
 

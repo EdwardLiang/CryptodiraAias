@@ -268,7 +268,7 @@ class Display {
         let newY = Game.player.y;
         let level = Game.level;
         let display = Game.display;
-
+/*
         let solidAbove = true;
         for(let i = newZ + 1; i < level.levels; i++){
             if(!(level.map[newX][newY][i] instanceof SolidBlock)){
@@ -282,6 +282,19 @@ class Display {
         }
         else{
             for(let i = newZ + 1; i < level.levels; i++){
+                display.setLevelOpacity(i, "0.1");
+            }
+        }
+        */
+        let solid = true;
+        for(let i = newZ + 1; i < level.levels; i++){
+            if(!(level.map[newX][newY][i] instanceof SolidBlock)){
+                solid = false; 
+            }
+            if(solid){
+                display.setLevelOpacity(i, "0.5");
+            }
+            else{
                 display.setLevelOpacity(i, "0.1");
             }
         }
