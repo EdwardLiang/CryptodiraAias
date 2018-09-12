@@ -76,6 +76,7 @@ var Game = {
         let d = new Dog(8,8,0);
         let r = new Robot(9,9,0);
         let r2 = new Robot(10,10,0);
+        let b = new Bird(10, 11, 0, this.player);
         r2.action = new MoveBoxActPredicateSucceed(r2);
         t2.action = new RandomMoveUntilFailAct(t2); 
         t2.action = new RandomMoveCancel(t2); 
@@ -86,6 +87,7 @@ var Game = {
         this.level.addCreature(d);
         this.level.addCreature(r);
         //this.level.addCreature(r2);
+        this.level.addCreature(b);
 
         this.display.displayLevel(this.level);
 

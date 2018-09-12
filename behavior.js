@@ -329,10 +329,57 @@ class MoveBehavior extends ExecuteBehaviorNode{
     }
 }
 
+class DirectDirectionMoveBehavior extends ExecuteBehaviorNode{
+
+    constructor(creature, target){
+        super();
+        this.creature = creature;
+        this.target = target;
+    }
+
+    execute(){
+        return () => {
+            this.success = true;
+            let level = Game.level;
+            let display = Game.display;
+
+            this.diff = directPath(this.creature, this.target);
+            let diff = this.diff;
+            let newX = this.creature.x + diff.x;
+            let newY = this.creature.y + diff.y;
+            let newZ = this.creature.z + diff.z;
+
+            if(!level.checkMovable(newX, newY, newZ)) {return;}
+
+            level.map[this.creature.x][this.creature.y][this.creature.z].creatures =
+                level.map[this.creature.x][this.creature.y][this.creature.z].creatures.filter(e => e !== this.creature);
+
+            this.creature.x = newX;
+            this.creature.y = newY;
+            this.creature.z = newZ;
+            level.map[this.creature.x][this.creature.y][this.creature.z].creatures.push(this.creature);
+        }
+    }
+}
+
+
 class CreatureAct{
     addNodesAsChildren(node){
         node.addChild(this.behaviorTree.root);
     } 
+}
+
+class DirectMoveAct extends CreatureAct{
+
+    constructor(creature, target){
+        super();
+        let root = new RepeatDecorator();
+        let n = new RandomSelectionNode();
+        let mY2 = new DirectDirectionMoveBehavior(creature, target);
+        n.addChild(mY2);
+        root.addChild(n); 
+        this.behaviorTree = new BehaviorTree(root);
+    }
 }
 
 class RandomMoveAct extends CreatureAct{
@@ -353,6 +400,8 @@ class RandomMoveAct extends CreatureAct{
         this.behaviorTree = new BehaviorTree(root);
     }
 }
+
+
 
 class RandomMoveUntilFailAct extends CreatureAct{
 

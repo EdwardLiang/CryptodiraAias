@@ -69,6 +69,21 @@ class Turtle extends Creature{
 
 }
 
+class Bird extends Creature{
+
+    constructor(x, y, z, target){
+        super(x, y, z, "&#x1F426;", "blue");
+        this.act = new DirectMoveAct(this, target); 
+        this.behaviorTree = this.act.behaviorTree;
+    }
+
+    move(diff){
+        return this.behaviorTree.next();
+    }
+
+}
+
+
 class Cat extends Creature{
 
     constructor(x, y, z){

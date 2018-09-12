@@ -103,9 +103,9 @@ class Display {
                 td.style.height = height + "px";
                 td.style.overflow = "hidden";
                 td.style.content = "center";
-                td.style.fontSize = "25px";
+                td.style.fontSize = "32px";
                 td.align = "center";
-                td.style.font = "25px monospace";
+                td.style.font = "32px monospace";
                 td.style.textAlign = "center";
                 td.style.backgroundColor = bC;
                 td.style.color = "white";
