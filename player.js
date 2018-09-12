@@ -9,7 +9,7 @@ class Player extends Creature{
         let image = document.createElement("img");
         image.style.height = "80%";
         e.style.top = "10%";
-        image.src = "./resources/person.png";
+        image.src = "./resources/person3.png";
         //centerImage(image);
         e.appendChild(image);
     }
