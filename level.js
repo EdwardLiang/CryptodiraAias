@@ -163,7 +163,7 @@ class MapBlock{
     }
 
     getStyle(e){
-        if(this.creature == Game.player){
+        if(this.creatures[0] === Game.player){
             //e.classList.add("flicker");
             e.style.opacity = "0.7";
             //void e.offsetWidth;
