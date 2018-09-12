@@ -22,13 +22,13 @@ class Player extends Creature{
             let tY = player.y;
             let tZ = player.z;
 
-            level.map[player.x][player.y][player.z].player = false;;
+            level.map[player.x][player.y][player.z].creature = null;
 
             player.x = newX;
             player.y = newY;
             player.z = newZ;
 
-            level.map[player.x][player.y][player.z].player = true;
+            level.map[player.x][player.y][player.z].creature = player;
 
             //viewwindow setting
             display.view.xOffset = player.x - Math.floor(display.width / 2);

@@ -39,13 +39,14 @@ class Creature{
             let newZ = this.z + diff.z;
             if(!level.checkMovable(newX, newY, newZ)) {return;}
 
-            level.map[this.x][this.y][this.z].creatures =
-                level.map[this.x][this.y][this.z].creatures.filter(e => e !== this);
+            //level.map[this.x][this.y][this.z].creatures =
+             //   level.map[this.x][this.y][this.z].creatures.filter(e => e !== this);
+            level.map[this.x][this.y][this.z].creature = null;
             
             this.x = newX;
             this.y = newY;
             this.z = newZ;
-            level.map[this.x][this.y][this.z].creatures.push(this);
+            level.map[this.x][this.y][this.z].creature = this;
         }
     }
     set action(a){

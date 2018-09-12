@@ -35,8 +35,15 @@ class Level {
         return false;
     }
     addCreature(creature){
-        this.creatures.push(creature);
-        this.map[creature.x][creature.y][creature.z].creatures.push(creature);
+        if(!this.map[creature.x][creature.y][creature.z].creature){
+            if(!(creature === Game.player)){
+                this.creatures.push(creature);
+            }
+            this.map[creature.x][creature.y][creature.z].creature = creature;
+        }
+        else{
+            console.log("Warning! Creature overwritten!");
+        }
     }
 
     canGoUp(x, y, z){
@@ -84,7 +91,8 @@ class MapBlock{
         this.icon = "";
         this.iconColor = "white";
         this.items = [];
-        this.creatures = [];
+        this.resident = null;
+        //this.creatures = [];
         this.player = false;
         this.noImg = false;
     }
@@ -104,6 +112,7 @@ class MapBlock{
     }
 
     calculateIcon(){
+/*
         if(this.player){
             this.icon = Game.player.icon;
             this.iconColor = Game.player.iconColor;
@@ -112,6 +121,12 @@ class MapBlock{
         else if(this.creatures.length > 0){
             this.icon = this.creatures[0].icon;
             this.iconColor = this.creatures[0].iconColor;
+            this.noImg = true;
+        }
+        */
+        if(this.creature){
+            this.icon = this.creature.icon;
+            this.iconColor = this.creature.iconColor;
             this.noImg = true;
         }
         else if(this.items.length > 0){
@@ -123,6 +138,19 @@ class MapBlock{
             this.noImg = false;
         }
     }
+    set creature(c){
+        if(c != null){
+            this.resident = c;
+            this.movable = false;
+        }
+        else{
+            this.resident = null;
+            this.movable = true;
+        }
+    } 
+    get creature(){
+        return this.resident;
+    }
 
     setIcon(icon, color){
         this.icon = icon;
@@ -130,7 +158,7 @@ class MapBlock{
     }
 
     getStyle(e){
-        if(this.player){
+        if(this.creature == Game.player){
             //e.classList.add("flicker");
             e.style.opacity = "0.7";
             //void e.offsetWidth;

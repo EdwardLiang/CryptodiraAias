@@ -318,13 +318,12 @@ class MoveBehavior extends ExecuteBehaviorNode{
 
             if(!level.checkMovable(newX, newY, newZ)) {return;}
 
-            level.map[this.creature.x][this.creature.y][this.creature.z].creatures =
-                level.map[this.creature.x][this.creature.y][this.creature.z].creatures.filter(e => e !== this.creature);
+            level.map[this.creature.x][this.creature.y][this.creature.z].creature = null;
 
             this.creature.x = newX;
             this.creature.y = newY;
             this.creature.z = newZ;
-            level.map[this.creature.x][this.creature.y][this.creature.z].creatures.push(this.creature);
+            level.map[this.creature.x][this.creature.y][this.creature.z].creature = this.creature;
         }
     }
 }
@@ -351,13 +350,12 @@ class DirectDirectionMoveBehavior extends ExecuteBehaviorNode{
 
             if(!level.checkMovable(newX, newY, newZ)) {return;}
 
-            level.map[this.creature.x][this.creature.y][this.creature.z].creatures =
-                level.map[this.creature.x][this.creature.y][this.creature.z].creatures.filter(e => e !== this.creature);
+            level.map[this.creature.x][this.creature.y][this.creature.z].creature = null;
 
             this.creature.x = newX;
             this.creature.y = newY;
             this.creature.z = newZ;
-            level.map[this.creature.x][this.creature.y][this.creature.z].creatures.push(this.creature);
+            level.map[this.creature.x][this.creature.y][this.creature.z].creature = this.creature;
         }
     }
 }
