@@ -62,7 +62,7 @@ class Level {
 
     creaturesAct(){
        for(let i = 0; i < this.creatures.length; i++){
-            let dir = Math.floor(Math.random() * 4);
+            let dir = Math.floor(Math.random() * 8);
             let cDir = CDIRS[dir];
             Game.engine.addEvent(this.creatures[i].move(cDir));
         }

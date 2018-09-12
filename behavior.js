@@ -388,10 +388,19 @@ class RandomMoveAct extends CreatureAct{
         let mX2 = new MoveBehavior(new Distance(-1, 0, 0), creature);
         let mY = new MoveBehavior(new Distance(0, 1, 0), creature);
         let mY2 = new MoveBehavior(new Distance(0, -1, 0), creature);
+
+        let mX3 = new MoveBehavior(new Distance(1, 1, 0), creature);
+        let mX4 = new MoveBehavior(new Distance(-1, -1, 0), creature);
+        let mY3 = new MoveBehavior(new Distance(1, -1, 0), creature);
+        let mY4 = new MoveBehavior(new Distance(-1, 1, 0), creature);
         n.addChild(mX);
         n.addChild(mX2);
+        n.addChild(mX3);
+        n.addChild(mX4);
         n.addChild(mY);
         n.addChild(mY2);
+        n.addChild(mY3);
+        n.addChild(mY4);
         root.addChild(n); 
         this.behaviorTree = new BehaviorTree(root);
     }
