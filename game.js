@@ -6,7 +6,8 @@ var Game = {
         this.engine = new Engine();
     
         this.player = new Player(1, 1, 0);
-        this.level = new Level(50, 30, 4);
+        this.level = new Level(50, 30, 5);
+        //reality/physical/knowledge/thought&feeling/virtue
         this.level.map[4][4][0] = new SolidBlock(4,4,0);
 
         this.level.map[8][6][1] = new SolidBlock(8,6,1);
@@ -104,6 +105,7 @@ var Game = {
         this.level.map[1][1][0].setIcon("&#50883;", "yellow");
         this.display.setBlock(this.player.x, this.player.y, this.player.z, this.level.map[this.player.x][this.player.y][this.player.z]);
         this.display.draw(this.player.x, this.player.y, this.player.z);
+        this.level.map[this.player.x][this.player.y][this.player.z].player = true;
         //this.display.drawIcon(1, 1, 0, "@"); 
 
         PlayerEventListener.player = this.player;
@@ -111,6 +113,9 @@ var Game = {
         PlayerEventListener.engine = this.engine;
         PlayerEventListener.display = this.display;
         window.addEventListener("keydown", PlayerEventListener);
+
+        this.level.clearVisible();
+        this.display.redraw();
         //this.display.drawExp(5, 5, "-", "white");
     }
 };

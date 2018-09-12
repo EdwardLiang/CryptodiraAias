@@ -130,7 +130,15 @@ class MapBlock{
     }
 
     getStyle(e){
+        if(this.player){
+            //e.classList.add("flicker");
+            e.style.opacity = "0.7";
+            //void e.offsetWidth;
+            //e.style.animation = "flicker 1s infinite";
+            //e.style.animationPlayState = "running";
+        }
     }
+
 }
 
 
@@ -148,19 +156,25 @@ class StaircaseUpBlock extends StaircaseBlock{
     }
 
     /*calculateIcon(){
-        this.icon = "<";
-        this.iconColor = "white";
-        super.calculateIcon();
-    }*/
+      this.icon = "<";
+      this.iconColor = "white";
+      super.calculateIcon();
+      }*/
     getStyle(e){
+        super.getStyle(e);
         if(!this.noImg){
             let image = document.createElement("img");
             image.style.width = "60%";
             image.src = "./resources/aiga-stairs.png";
+
+            //centerImage(image);
             e.appendChild(image);
         }
     }
 
+}
+
+function centerImage(image){
 }
 
 class StaircaseDownBlock extends StaircaseBlock{
@@ -170,16 +184,19 @@ class StaircaseDownBlock extends StaircaseBlock{
     }
 
     /*calculateIcon(){
-        this.icon = ">";
-        this.iconColor = "white";
-        super.calculateIcon();
-    }*/
+      this.icon = ">";
+      this.iconColor = "white";
+      super.calculateIcon();
+      }*/
     getStyle(e){
+        super.getStyle(e);
         if(!this.noImg){
             let image = document.createElement("img");
             image.style.width = "60%";
             image.src = "./resources/aiga-stairs.png";
             image.style.transform = "scaleX(-1)";
+            //centerImage(image);
+
             e.appendChild(image);
         }
     }
@@ -194,6 +211,7 @@ class WaterBlock extends MapBlock{
         this.iconColor = "black";
     }
     getStyle(e){
+        super.getStyle(e);
         e.style.backgroundColor = "blue";
     }
 }
@@ -205,13 +223,14 @@ class GrassBlock extends MapBlock{
         this.iconColor = "black";
     }
     getStyle(e){
+        super.getStyle(e);
         e.style.backgroundColor = "green";
         /*if(!this.noImg){
-            let image = document.createElement("img");
-            image.style.height = "80%";
-            image.src = "./resources/grass.png";
-            e.appendChild(image);
-        }*/
+          let image = document.createElement("img");
+          image.style.height = "80%";
+          image.src = "./resources/grass.png";
+          e.appendChild(image);
+          }*/
     }
 }
 
@@ -222,6 +241,7 @@ class IceBlock extends MapBlock{
         this.iconColor = "black";
     }
     getStyle(e){
+        super.getStyle(e);
         e.style.backgroundColor = "white";
     }
 }
@@ -271,10 +291,12 @@ class StoneBlock extends UnmovableBlock{
         this.iconColor = "black";
     }
     getStyle(e){
+        super.getStyle();
         e.style.backgroundColor = "#585858";
         let image = document.createElement("img");
         image.style.width = "100%";
         image.src = "./resources/rock2.png";
+        //centerImage(image);
         e.appendChild(image);
     }
 }

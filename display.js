@@ -1,7 +1,7 @@
 class View {
     constructor(){
         this.width = 32;
-        this.height = 16;
+        this.height = 15;
         this.widthPx = window.innerWidth;
         this.heightPx = window.innerHeight;
         this.blockWidthPx = Math.floor(this.widthPx / 40);
@@ -104,6 +104,7 @@ class Display {
                 td.style.overflow = "hidden";
                 td.style.content = "center";
                 td.style.fontSize = "25px";
+                td.align = "center";
                 td.style.font = "25px monospace";
                 td.style.textAlign = "center";
                 td.style.backgroundColor = bC;
@@ -251,6 +252,7 @@ class Display {
         let bC = this.getBC(level);
         let opacity = 0.1;
 
+        s.td.className = "";
         s.td.style.backgroundColor = bC;
         if(s.level <= player.z){
             s.td.style.opacity = "1";
