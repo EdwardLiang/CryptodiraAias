@@ -112,12 +112,14 @@ class MapBlock{
     }
 
     calculateIcon(){
-        if(this.creatures[0] === Game.player){
+        /*if(this.creatures[0] === Game.player){
             this.icon = "";
             this.iconColor = "";
             this.noImg = true;
         }
-        else if(this.creatures.length > 0){
+        */
+        /*else */
+        if(this.creatures.length > 0){
             this.icon = this.creatures[0].icon;
             this.iconColor = this.creatures[0].iconColor;
             this.noImg = true;

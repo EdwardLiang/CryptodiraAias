@@ -9,7 +9,9 @@ class Creature{
         this.iconColor = iconColor;
     }
     
-    getStyle(e){}
+    getStyle(e){
+        e.style.transform = "scaleX(-1)";
+    }
 
     addItems(array){
         for(let i = 0; i < array.length; i++){

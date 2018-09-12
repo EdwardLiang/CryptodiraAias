@@ -1,9 +1,11 @@
 class Player extends Creature{
 
     constructor(x, y, z){
-        super(x, y, z, "&#50883;", "#ff0");
+        //super(x, y, z, "&#50883;", "#ff0");
+        //super(x, y, z, "&#1F6B6;", "#ff0");
+        super(x, y, z, "🏃", "#ff0");
     }
-
+/*
     getStyle(e){
         super.getStyle(e);
         let image = document.createElement("img");
@@ -13,6 +15,7 @@ class Player extends Creature{
         //centerImage(image);
         e.appendChild(image);
     }
+    */
 
     move(diff){
         return () => {

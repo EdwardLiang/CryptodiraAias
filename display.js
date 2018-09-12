@@ -133,6 +133,7 @@ class Display {
             }
         }
         this.adjustLayerOpacity();
+        twemoji.parse(document.body);
     }
 
     displayLevel(level) {
@@ -254,6 +255,7 @@ class Display {
 
         s.td.className = "";
         s.td.style.backgroundColor = bC;
+        s.td.style.transform = "";
         if(s.level <= player.z){
             s.td.style.opacity = "1";
         }
