@@ -1,6 +1,6 @@
 class View {
     constructor(){
-        this.width = 32;
+        this.width = 31;
         this.height = 15;
         this.widthPx = window.innerWidth;
         this.heightPx = window.innerHeight;

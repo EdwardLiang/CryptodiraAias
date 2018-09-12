@@ -112,23 +112,11 @@ class MapBlock{
     }
 
     calculateIcon(){
-/*
-        if(this.player){
-            this.icon = Game.player.icon;
-            this.iconColor = Game.player.iconColor;
-            this.noImg = true;
-        }
-        */
         if(this.creatures.length > 0){
             this.icon = this.creatures[0].icon;
             this.iconColor = this.creatures[0].iconColor;
             this.noImg = true;
         }
-        /*if(this.creature){
-            this.icon = this.creature.icon;
-            this.iconColor = this.creature.iconColor;
-            this.noImg = true;
-        }*/
         else if(this.items.length > 0){
             this.icon = this.items[0].icon;
             this.iconColor = this.items[0].iconColor;
@@ -329,7 +317,6 @@ class StoneBlock extends UnmovableBlock{
         let image = document.createElement("img");
         image.style.width = "100%";
         image.src = "./resources/rock2.png";
-        //centerImage(image);
         e.appendChild(image);
     }
 }

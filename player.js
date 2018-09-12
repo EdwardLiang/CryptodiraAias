@@ -23,8 +23,6 @@ class Player extends Creature{
             let tY = player.y;
             let tZ = player.z;
 
-            //level.map[player.x][player.y][player.z].creature = null;
-
             level.map[player.x][player.y][player.z].removeCreature(this);
 
             player.x = newX;

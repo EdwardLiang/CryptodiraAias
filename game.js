@@ -91,42 +91,14 @@ var Game = {
         this.level.addCreature(this.player);
 
         this.display.displayLevel(this.level);
-
-
-        //TODO: ALL drawing actions will fail with offset
-        //TODO: Creature collision
-    
-        //draw creatures
-        /*for(let i = 0; i < this.level.creatures.length; i++){
-            let c = this.level.creatures[i];
-            this.level.map[c.x][c.y][c.z].setIcon(c.icon, c.iconColor);
-            this.display.setBlock(c.x, c.y, c.z, this.level.map[c.x][c.y][c.z]);
-            this.display.draw(c.x, c.y, c.z);
-        }*/
-
-        //draw player
-        //this.level.map[1][1][0].setIcon("&#50883;", "yellow");
-        //this.display.setBlock(this.player.x, this.player.y, this.player.z, this.level.map[this.player.x][this.player.y][this.player.z]);
-        //this.display.draw(this.player.x, this.player.y, this.player.z);
-
-                //this.level.map[this.player.x][this.player.y][this.player.z].player = true;
-        //this.display.drawIcon(1, 1, 0, "@"); 
-
         PlayerEventListener.player = this.player;
         PlayerEventListener.level = this.level;
         PlayerEventListener.engine = this.engine;
         PlayerEventListener.display = this.display;
 
-        //let i = this.player.x
-
-        //this.level.map[this.player.x][this.player.y][this.player.z].calculateIcon();
-        //this.setBlock(i, j, z, this.level.map[this.player.x][this.player.y][this.player.z]);
-        //this.draw(i, j, z);
-
         window.addEventListener("keydown", PlayerEventListener);
 
         this.level.clearVisible();
         this.display.redraw();
-        //this.display.drawExp(5, 5, "-", "white");
     }
 };
