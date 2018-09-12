@@ -112,7 +112,12 @@ class MapBlock{
     }
 
     calculateIcon(){
-        if(this.creatures.length > 0){
+        if(this.creatures[0] === Game.player){
+            this.icon = "";
+            this.iconColor = "";
+            this.noImg = true;
+        }
+        else if(this.creatures.length > 0){
             this.icon = this.creatures[0].icon;
             this.iconColor = this.creatures[0].iconColor;
             this.noImg = true;
@@ -151,6 +156,9 @@ class MapBlock{
     }
 
     getStyle(e){
+        if(this.creatures.length > 0){
+            this.creatures[0].getStyle(e);
+        }
         if(this.creatures[0] === Game.player){
             //e.classList.add("flicker");
             e.style.opacity = "0.7";

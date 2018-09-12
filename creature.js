@@ -8,6 +8,8 @@ class Creature{
         this.icon = icon;
         this.iconColor = iconColor;
     }
+    
+    getStyle(e){}
 
     addItems(array){
         for(let i = 0; i < array.length; i++){

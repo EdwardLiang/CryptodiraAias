@@ -78,7 +78,7 @@ class Display {
     generateTables(level){
         let canvas = document.createElement("table"); 
         canvas.style.position = "absolute";
-        canvas.style.bottom =  (7.4 - level*1) + "%";
+        canvas.style.bottom =  (9.4 - level*1) + "%";
         canvas.style.left = (5.4 - level*1) + "%";
         this.canvases.push(canvas);
 

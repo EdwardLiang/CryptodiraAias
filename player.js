@@ -4,6 +4,16 @@ class Player extends Creature{
         super(x, y, z, "&#50883;", "#ff0");
     }
 
+    getStyle(e){
+        super.getStyle(e);
+        let image = document.createElement("img");
+        image.style.height = "80%";
+        e.style.top = "10%";
+        image.src = "./resources/person.png";
+        //centerImage(image);
+        e.appendChild(image);
+    }
+
     move(diff){
         return () => {
             let player = this;
@@ -15,7 +25,7 @@ class Player extends Creature{
 
             if(newZ != player.z) { }
             else if(!level.checkMovable(newX, newY, newZ)) {return;}
-            
+
             let newZTemp = newZ;
             let newYTemp = newY;
             let newXTemp = newX;
