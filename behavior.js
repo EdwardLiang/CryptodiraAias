@@ -318,8 +318,7 @@ class MoveBehavior extends ExecuteBehaviorNode{
 
             if(!level.checkMovable(newX, newY, newZ)) {return;}
 
-            level.map[this.creature.x][this.creature.y][this.creature.z].creature = null;
-
+            level.map[this.creature.x][this.creature.y][this.creature.z].removeCreature(this.creature);
             this.creature.x = newX;
             this.creature.y = newY;
             this.creature.z = newZ;
@@ -350,8 +349,7 @@ class DirectDirectionMoveBehavior extends ExecuteBehaviorNode{
 
             if(!level.checkMovable(newX, newY, newZ)) {return;}
 
-            level.map[this.creature.x][this.creature.y][this.creature.z].creature = null;
-
+            level.map[this.creature.x][this.creature.y][this.creature.z].removeCreature(this.creature);
             this.creature.x = newX;
             this.creature.y = newY;
             this.creature.z = newZ;

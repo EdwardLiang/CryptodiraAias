@@ -12,8 +12,9 @@ class Player extends Creature{
             let newX = player.x + diff.x;
             let newY = player.y + diff.y;
             let newZ = player.z + diff.z;
-            if(!level.checkMovable(newX, newY, newZ)) {return;}
 
+            if(newZ != player.z) { }
+            else if(!level.checkMovable(newX, newY, newZ)) {return;}
             
             let newZTemp = newZ;
             let newYTemp = newY;
@@ -22,7 +23,9 @@ class Player extends Creature{
             let tY = player.y;
             let tZ = player.z;
 
-            level.map[player.x][player.y][player.z].creature = null;
+            //level.map[player.x][player.y][player.z].creature = null;
+
+            level.map[player.x][player.y][player.z].removeCreature(this);
 
             player.x = newX;
             player.y = newY;

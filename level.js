@@ -91,8 +91,8 @@ class MapBlock{
         this.icon = "";
         this.iconColor = "white";
         this.items = [];
-        this.resident = null;
-        //this.creatures = [];
+        //this.resident = null;
+        this.creatures = [];
         this.player = false;
         this.noImg = false;
     }
@@ -118,17 +118,17 @@ class MapBlock{
             this.iconColor = Game.player.iconColor;
             this.noImg = true;
         }
-        else if(this.creatures.length > 0){
+        */
+        if(this.creatures.length > 0){
             this.icon = this.creatures[0].icon;
             this.iconColor = this.creatures[0].iconColor;
             this.noImg = true;
         }
-        */
-        if(this.creature){
+        /*if(this.creature){
             this.icon = this.creature.icon;
             this.iconColor = this.creature.iconColor;
             this.noImg = true;
-        }
+        }*/
         else if(this.items.length > 0){
             this.icon = this.items[0].icon;
             this.iconColor = this.items[0].iconColor;
@@ -140,14 +140,19 @@ class MapBlock{
     }
     set creature(c){
         if(c != null){
-            this.resident = c;
+            this.creatures.unshift(c);
             this.movable = false;
         }
-        else{
-            this.resident = null;
+        else if(this.creatures.length == 0){
             this.movable = true;
         }
     } 
+    removeCreature(c){
+        this.creatures = this.creatures.filter(e => e !== c);
+        if(this.creatures.length == 0){
+            this.movable = true;
+        }
+    }
     get creature(){
         return this.resident;
     }

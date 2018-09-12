@@ -41,7 +41,9 @@ class Creature{
 
             //level.map[this.x][this.y][this.z].creatures =
              //   level.map[this.x][this.y][this.z].creatures.filter(e => e !== this);
-            level.map[this.x][this.y][this.z].creature = null;
+            //level.map[this.x][this.y][this.z].creature = null;
+
+            level.map[this.creature.x][this.creature.y][this.creature.z].removeCreature(this.creature);
             
             this.x = newX;
             this.y = newY;
