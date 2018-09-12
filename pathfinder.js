@@ -21,6 +21,9 @@ function directPath(c1, c2){
     else{
         y = 0;
     }
+    if(c1.z != c2.z){
+        return new Distance(0, 0, 0);
+    }
 
     return new Distance(x, y, 0); 
 }

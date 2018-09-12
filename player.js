@@ -26,6 +26,13 @@ class Player extends Creature{
             let newY = player.y + diff.y;
             let newZ = player.z + diff.z;
 
+            if(diff.x > 0){
+                this.scale = -1;
+            }
+            else if(diff.x < 0){
+                this.scale = 1;
+            }
+
             if(newZ != player.z) { }
             else if(!level.checkMovable(newX, newY, newZ)) {return;}
 

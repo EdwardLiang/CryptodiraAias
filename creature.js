@@ -7,10 +7,11 @@ class Creature{
         this.items = {};
         this.icon = icon;
         this.iconColor = iconColor;
+        this.scale = -1;
     }
     
     getStyle(e){
-        e.style.transform = "scaleX(-1)";
+        e.style.transform = "scaleX(" + this.scale + ")";
     }
 
     addItems(array){
@@ -41,6 +42,12 @@ class Creature{
             let newX = this.x + diff.x;
             let newY = this.y + diff.y;
             let newZ = this.z + diff.z;
+            if(this.diff.x > 0){
+                this.scale = -1;
+            }
+            else if(this.diff.x < 0){
+                this.scale = 1;
+            }
             if(!level.checkMovable(newX, newY, newZ)) {return;}
 
             level.map[this.creature.x][this.creature.y][this.creature.z].removeCreature(this.creature);
