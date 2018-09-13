@@ -34,6 +34,17 @@ class Level {
         }
         return false;
     }
+    checkAttackable(x, y, z){
+        if( x > this.map.length - 1 || x < 0 || y > this.map[0].length - 1 || y < 0 ||
+                z > this.map[0][0].length || z < 0){
+            return false;
+        }
+        if (this.map[x][y][z].checkAttackable()){
+            return this.map[x][y][z].checkAttackable();
+        }
+        return false;
+    }
+
     addCreature(creature){
         if(!this.map[creature.x][creature.y][creature.z].creature){
             if(!(creature === Game.player)){
@@ -99,6 +110,13 @@ class MapBlock{
 
     checkMovable() {
         return this.movable;
+    }
+
+    checkAttackable(){
+        //temp. Probably defer to creature again to check later.
+        if(this.creatures.length > 0){
+            return this.creatures[0];
+        }
     }
 
     clear() {

@@ -33,7 +33,20 @@ class Player extends Creature{
                 this.scale = 1;
             }
 
+            let mon = level.checkAttackable(newX, newY, newZ);
             if(newZ != player.z) { }
+            else if(mon){
+                let messages = [];
+                mon.decreaseHp(1);
+                messages.push("You hit the " + mon.name); 
+                if(mon.hp <= 0){
+                    messages.push("The " + mon.name + " is defeated!");
+                    mon.defeated = true;
+                    Game.level.creatures = Game.level.creatures.filter(e => e !== mon);
+                    Game.level.map[mon.x][mon.y][mon.z].removeCreature(mon);
+                }
+                return messages;
+            }
             else if(!level.checkMovable(newX, newY, newZ)) {return;}
 
             let newZTemp = newZ;

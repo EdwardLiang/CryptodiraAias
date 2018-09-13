@@ -33,22 +33,34 @@ class Display {
 
         let messages = document.createElement("table");
         messages.style.position = "absolute";
-        messages.style.top = "7.4%";
-        messages.style.left = "4.4%";
+        messages.style.top = "5.4%";
+        messages.style.left = "5.4%";
         messages.style.backgroundColor = "black";
         messages.style.opacity = "0";
         this.messages = messages;
         this.messagesVisible = false;
 
+        this.bWidth = this.view.blockWidthPx;
+        this.bHeight = this.view.blockHeightPx; 
+/*
         let tr = document.createElement("tr");
         let td1 = document.createElement("td");
 
-        this.bWidth = this.view.blockWidthPx;
-        this.bHeight = this.view.blockHeightPx; 
 
         td1.style.fontSize = Math.floor(this.height * 0.8) + "px";
         td1.style.font = Math.floor(this.height * 0.8) + "px monospace";
         td1.style.color = "white";
+        tr.append(td1);
+        messages.append(tr);*/
+    }
+
+    clearMessages(){
+        this.messages.innerHTML = "";
+    }
+    hideMessages(){
+        this.clearMessages();
+        this.messages.style.opacity = "0";
+        this.messagesVisible = false;
     }
 
     clearInventory(){
@@ -58,6 +70,23 @@ class Display {
         this.clearInventory();
         this.inventory.style.opacity = "0";
         this.inventoryVisible = false;
+    }
+    showMessage(message){
+        let tr = document.createElement("tr");
+        let td1 = document.createElement("td");
+
+        this.bWidth = this.view.blockWidthPx;
+        this.bHeight = this.view.blockHeightPx; 
+
+        td1.style.fontSize = Math.floor(this.bHeight * 0.6) + "px";
+        td1.style.font = Math.floor(this.bHeight * 0.6) + "px monospace";
+        td1.style.color = "white";
+        td1.innerHTML = message;
+        tr.append(td1);
+        this.messages.append(tr);
+
+        this.messages.style.opacity = "0.5";
+        this.messagesVisible = true;
     }
     showInventory(items){
         let th = document.createElement("caption");
@@ -189,6 +218,7 @@ class Display {
         }
 
         document.body.appendChild(this.inventory);
+        document.body.appendChild(this.messages);
     }
     
     setBlock(x, y, level, block){

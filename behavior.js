@@ -2,15 +2,15 @@
 class BehaviorTree {
 
     constructor(r){
-	//this.root = r || new RandomSelectionNode();
+        //this.root = r || new RandomSelectionNode();
         let r2 = new RepeatDecorator();
         let n = new RandomSelectionNode();
         r2.addChild(n); 
-	this.root = r || r2;
-	this.stack = []; 
-	this.stack.push(null);
-	this.currNode = this.root;
-	this.lastNode = null;
+        this.root = r || r2;
+        this.stack = []; 
+        this.stack.push(null);
+        this.currNode = this.root;
+        this.lastNode = null;
         this.lastSuccess = true;
     }
 
@@ -147,7 +147,7 @@ class BehaviorTree {
         }
         else{
             this.lastNode = this.currNode;
-            return this.currNode.execute();
+            return this.currNode;
         }
     }
 }
@@ -307,29 +307,33 @@ class MoveBehavior extends ExecuteBehaviorNode{
     }
 
     execute(){
-        return () => {
-            this.success = true;
-            let level = Game.level;
-            let display = Game.display;
-            let diff = this.diff;
-            let newX = this.creature.x + diff.x;
-            let newY = this.creature.y + diff.y;
-            let newZ = this.creature.z + diff.z;
 
-            if(this.diff.x > 0){
-                this.creature.scale = -1;
-            }
-            else if(this.diff.x < 0){
-                this.creature.scale = 1;
-            }
-            if(!level.checkMovable(newX, newY, newZ)) {return;}
-
-            level.map[this.creature.x][this.creature.y][this.creature.z].removeCreature(this.creature);
-            this.creature.x = newX;
-            this.creature.y = newY;
-            this.creature.z = newZ;
-            level.map[this.creature.x][this.creature.y][this.creature.z].creature = this.creature;
+        if(this.creature.defeated){
+            return;
         }
+        //return () => {
+        this.success = true;
+        let level = Game.level;
+        let display = Game.display;
+        let diff = this.diff;
+        let newX = this.creature.x + diff.x;
+        let newY = this.creature.y + diff.y;
+        let newZ = this.creature.z + diff.z;
+
+        if(this.diff.x > 0){
+            this.creature.scale = -1;
+        }
+        else if(this.diff.x < 0){
+            this.creature.scale = 1;
+        }
+        if(!level.checkMovable(newX, newY, newZ)) {return;}
+
+        level.map[this.creature.x][this.creature.y][this.creature.z].removeCreature(this.creature);
+        this.creature.x = newX;
+        this.creature.y = newY;
+        this.creature.z = newZ;
+        level.map[this.creature.x][this.creature.y][this.creature.z].creature = this.creature;
+        //}
     }
 }
 
@@ -342,32 +346,37 @@ class DirectDirectionMoveBehavior extends ExecuteBehaviorNode{
     }
 
     execute(){
-        return () => {
-            this.success = true;
-            let level = Game.level;
-            let display = Game.display;
-
-            this.diff = directPath(this.creature, this.target);
-            let diff = this.diff;
-            let newX = this.creature.x + diff.x;
-            let newY = this.creature.y + diff.y;
-            let newZ = this.creature.z + diff.z;
-
-            if(this.diff.x > 0){
-                this.creature.scale = -1;
-            }
-            else if(this.diff.x < 0){
-                this.creature.scale = 1;
-            }
-
-            if(!level.checkMovable(newX, newY, newZ)) {return;}
-
-            level.map[this.creature.x][this.creature.y][this.creature.z].removeCreature(this.creature);
-            this.creature.x = newX;
-            this.creature.y = newY;
-            this.creature.z = newZ;
-            level.map[this.creature.x][this.creature.y][this.creature.z].creature = this.creature;
+        //return () => {
+        //
+        if(this.creature.defeated){
+            return;
         }
+        this.success = true;
+        let level = Game.level;
+        let display = Game.display;
+
+        this.diff = directPath(this.creature, this.target);
+        let diff = this.diff;
+        let newX = this.creature.x + diff.x;
+        let newY = this.creature.y + diff.y;
+        let newZ = this.creature.z + diff.z;
+
+        if(this.diff.x > 0){
+            this.creature.scale = -1;
+        }
+        else if(this.diff.x < 0){
+            this.creature.scale = 1;
+        }
+
+        if(!level.checkMovable(newX, newY, newZ)) {return;}
+
+        level.map[this.creature.x][this.creature.y][this.creature.z].removeCreature(this.creature);
+        this.creature.x = newX;
+        this.creature.y = newY;
+        this.creature.z = newZ;
+        level.map[this.creature.x][this.creature.y][this.creature.z].creature = this.creature;
+        return ["Bird is seeking you"];
+        //}
     }
 }
 

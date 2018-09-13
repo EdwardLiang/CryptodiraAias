@@ -34,6 +34,18 @@ let PlayerEventListener = {
         
         let code = e.keyCode;
 
+        if(code == 32 && Game.engine.messageQ.length > 0){
+
+            Game.display.clearMessages();
+            if(Game.engine.messageQ.length > 1){
+                var message = Game.engine.messageQ.shift() + " --more--";
+            }
+            else{
+                var message = Game.engine.messageQ.shift();
+            }
+            Game.display.showMessage(message);
+        }
+
         if(code == 73){
             if(this.display.inventoryVisible){
                 this.display.hideInventory();

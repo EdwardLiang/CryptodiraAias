@@ -8,6 +8,9 @@ class Creature{
         this.icon = icon;
         this.iconColor = iconColor;
         this.scale = -1;
+        this.hp = 5;
+        this.name = "creature";
+        this.defeated = false;
     }
     
     getStyle(e){
@@ -35,8 +38,15 @@ class Creature{
         Game.display.draw(this.x, this.y, icon, iconColor);
     }
 
+    decreaseHp(amount){
+        this.hp -= amount;
+        if(this.hp <= 0){
+            this.defeated = true;
+        }
+    }
+
     move(diff){
-        return () => {
+        /*return () => {
             let level = Game.level;
             let display = Game.display;
             let newX = this.x + diff.x;
@@ -56,6 +66,16 @@ class Creature{
             this.y = newY;
             this.z = newZ;
             level.map[this.x][this.y][this.z].creature = this;
+        }*/
+
+        /*if(mon.hp <= 0){
+            messages.push("The " + this.name + " is defeated!");
+            Game.level.creatures = Game.level.creatures.filter(e => e !== mon);
+            Game.level.map[mon.x][mon.y][mon.z].removeCreature(this);
+            mon.defeated = true;
+        }*/
+        if(this.defeated){
+            return null;
         }
     }
     set action(a){
@@ -64,17 +84,23 @@ class Creature{
     }
 }
 
-
 class Turtle extends Creature{
 
     constructor(x, y, z){
         super(x, y, z, "&#x1F422;", "green");
         this.act = new RandomMoveAct(this); 
         this.behaviorTree = this.act.behaviorTree;
+        this.name = "Turtle";
     }
 
     move(diff){
-        return this.behaviorTree.next();
+        //if(this.defeated){
+        //}
+        //
+        super.move(diff);
+
+        let a = this.behaviorTree.next();
+        return a.execute.bind(a);
     }
 
 }
@@ -85,10 +111,13 @@ class Bird extends Creature{
         super(x, y, z, "&#x1F426;", "blue");
         this.act = new DirectMoveAct(this, target); 
         this.behaviorTree = this.act.behaviorTree;
+        this.name = "Bird";
     }
 
     move(diff){
-        return this.behaviorTree.next();
+        super.move(diff);
+        let a = this.behaviorTree.next();
+        return a.execute.bind(a);
     }
 
 }
@@ -101,10 +130,14 @@ class Cat extends Creature{
         //this.act = new MoveStraightAct(this, new Distance(1,0,0)); 
         this.act = new MoveBoxAct(this);
         this.behaviorTree = this.act.behaviorTree;
+        this.name = "Cat";
     }
 
     move(diff){
-        return this.behaviorTree.next();
+
+        super.move(diff);
+        let a = this.behaviorTree.next();
+        return a.execute.bind(a);
     }
 
 }
@@ -116,10 +149,13 @@ class Dog extends Creature{
         //this.act = new MoveStraightAct(this, new Distance(1,0,0)); 
         this.act = new MoveBoxActPredicate(this);
         this.behaviorTree = this.act.behaviorTree;
+        this.name = "Dog";
     }
 
     move(diff){
-        return this.behaviorTree.next();
+        super.move(diff);
+        let a = this.behaviorTree.next();
+        return a.execute.bind(a);
     }
 
 }
@@ -131,10 +167,13 @@ class Robot extends Creature{
         //this.act = new MoveStraightAct(this, new Distance(1,0,0)); 
         this.act = new MoveBoxActPredicateInverse(this);
         this.behaviorTree = this.act.behaviorTree;
+        this.name = "Robot";
     }
 
     move(diff){
-        return this.behaviorTree.next();
+        super.move(diff);
+        let a = this.behaviorTree.next();
+        return a.execute.bind(a);
     }
 
 }
