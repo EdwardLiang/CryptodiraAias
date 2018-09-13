@@ -78,8 +78,10 @@ let PlayerEventListener = {
         }
         if(code == 188 && !e.shiftKey){
             this.engine.addEvent(pickUp.bind(this));
-            this.level.creaturesAct();
-            this.engine.timeStep();
+            if(!Game.realTime){
+                this.level.creaturesAct();
+                this.engine.timeStep();
+            }
             return;
         }
         if(code == 188 && e.shiftKey){
@@ -94,9 +96,10 @@ let PlayerEventListener = {
         }
 
         this.engine.addEvent(PlayerEventListener.player.move(diff));
-        this.level.creaturesAct();
-
-        this.engine.timeStep();
+        if(!Game.realTime){
+            this.level.creaturesAct();
+            this.engine.timeStep();
+        }
     }
 
 }

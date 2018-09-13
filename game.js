@@ -1,5 +1,8 @@
 var Game = {
     display: null,
+    realTime: false,
+    timer: 0,
+    messageStayDelay: 4,
 
     init(){
         this.display = new Display();
@@ -103,5 +106,26 @@ var Game = {
 
         this.level.clearVisible();
         this.display.redraw();
+
+        if(this.realTime){
+            let loop = function(){
+                if(Game.timer >= Game.messageStayDelay){
+                    Game.display.clearMessages();
+                    Game.engine.messageQ = [];
+                    Game.timer = 0;
+                }
+                else{
+                    Game.timer++;
+                }
+                Game.level.creaturesAct();
+                Game.engine.timeStep();
+                Game.level.clearVisible();
+                Game.display.redraw();
+
+                setTimeout(loop, 100);
+            }
+            loop();
+        }
     }
+
 };

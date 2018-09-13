@@ -65,7 +65,6 @@ class Creature{
         let itemKeys = Object.keys(this.items);
         for(let i = 0; i < itemKeys.length; i++){
             Game.level.map[this.x][this.y][this.z].items.unshift(this.items[itemKeys[i]]);
-            console.log(this.items);
         }
         this.items = {};
         //Game.level.map[this.x][this.y][this.z].
