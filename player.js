@@ -3,7 +3,7 @@ class Player extends Creature{
     constructor(x, y, z){
         //super(x, y, z, "&#50883;", "#ff0");
         //super(x, y, z, "&#1F6B6;", "#ff0");
-        super(x, y, z, "🏃", "#ff0");
+        super(x, y, z, "&#x1F3C3", "#ff0");
     }
 /*
     getStyle(e){
@@ -42,8 +42,7 @@ class Player extends Creature{
                 if(mon.hp <= 0){
                     messages.push("The " + mon.name + " is defeated!");
                     mon.defeated = true;
-                    Game.level.creatures = Game.level.creatures.filter(e => e !== mon);
-                    Game.level.map[mon.x][mon.y][mon.z].removeCreature(mon);
+                    mon.die();
                 }
                 return messages;
             }

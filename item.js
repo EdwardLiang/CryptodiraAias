@@ -1,4 +1,3 @@
-availableSymbols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
 class Item {
     constructor(icon, iconColor, name){
@@ -10,8 +9,15 @@ class Item {
         //unimplemented
     }
 }
+
 class Orange extends Item{
     constructor(){
         super("&#x1F34A;", "orange", "orange");
+    }
+}
+
+class Peanut extends Item{
+    constructor(){
+        super("&#x1F95C;", "peanut", "peanut");
     }
 }

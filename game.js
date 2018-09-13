@@ -9,6 +9,8 @@ var Game = {
         this.level = new Level(50, 30, 5);
         //reality/physical/knowledge/thought&feeling/virtue
         this.level.map[4][4][0] = new SolidBlock(4,4,0);
+        this.level.map[4][5][0] = new EvergreenBlock(4,5,0);
+        this.level.map[4][6][0] = new DeciduousBlock(4,6,0);
 
         this.level.map[8][6][1] = new SolidBlock(8,6,1);
         this.level.map[8][7][1] = new SolidBlock(8,7,1);
@@ -77,6 +79,7 @@ var Game = {
         let r = new Robot(9,9,0);
         let r2 = new Robot(10,10,0);
         let b = new Bird(13, 13, 0, this.player);
+        b.addItem(new Peanut());
         r2.action = new MoveBoxActPredicateSucceed(r2);
         t2.action = new RandomMoveUntilFailAct(t2); 
         t2.action = new RandomMoveCancel(t2); 

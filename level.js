@@ -343,6 +343,42 @@ class WallBlock extends UnmovableBlock{
 
 }
 
+class EvergreenBlock extends MapBlock{
+    constructor(x, y, z){
+        super(x, y, z);
+        this.icon = "&#x1F332;";
+        this.iconColor = "green";
+    }
+    calculateIcon(){
+        this.icon = "&#x1F332;";
+        this.iconColor = "green";
+        super.calculateIcon();
+    }
+    getStyle(e){
+        super.getStyle(e);
+        e.style.backgroundColor = "green";
+    }
+}
+
+class DeciduousBlock extends MapBlock{
+    constructor(x, y, z){
+        super(x, y, z);
+        this.icon = "&#x1F333;";
+        this.iconColor = "green";
+    }
+    calculateIcon(){
+        this.icon = "&#x1F333;";
+        this.iconColor = "green";
+        super.calculateIcon();
+    }
+    getStyle(e){
+        super.getStyle(e);
+        e.style.backgroundColor = "green";
+    }
+}
+
+
+
 class StoneBlock extends UnmovableBlock{
     constructor(x, y, z){
         super(x, y, z);

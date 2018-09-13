@@ -11,6 +11,7 @@ class Creature{
         this.hp = 5;
         this.name = "creature";
         this.defeated = false;
+        this.availableSymbols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
     }
     
     getStyle(e){
@@ -18,16 +19,29 @@ class Creature{
     }
 
     addItems(array){
+        let availableSymbols = this.availableSymbols;
         for(let i = 0; i < array.length; i++){
             if(availableSymbols.length > 0){
                 var letter = availableSymbols[0];
                 availableSymbols.shift();
             }
             else{
+                console.log("Inventory is full! Write code for this!");
                 break;
             }
             this.items[letter] = array[i];
         }
+    }
+    addItem(a){
+        let availableSymbols = this.availableSymbols;
+        if(availableSymbols.length > 0){
+            var letter = availableSymbols[0];
+            availableSymbols.shift();
+        }
+        else{
+            console.log("Inventory is full! Write code for this!");
+        }
+        this.items[letter] = a;
     }
 
     get key(){
@@ -45,35 +59,47 @@ class Creature{
         }
     }
 
+    die(){
+        Game.level.creatures = Game.level.creatures.filter(e => e !== this);
+        Game.level.map[this.x][this.y][this.z].removeCreature(this);
+        let itemKeys = Object.keys(this.items);
+        for(let i = 0; i < itemKeys.length; i++){
+            Game.level.map[this.x][this.y][this.z].items.unshift(this.items[itemKeys[i]]);
+            console.log(this.items);
+        }
+        this.items = {};
+        //Game.level.map[this.x][this.y][this.z].
+    }
+
     move(diff){
         /*return () => {
-            let level = Game.level;
-            let display = Game.display;
-            let newX = this.x + diff.x;
-            let newY = this.y + diff.y;
-            let newZ = this.z + diff.z;
-            if(this.diff.x > 0){
-                this.scale = -1;
-            }
-            else if(this.diff.x < 0){
-                this.scale = 1;
-            }
-            if(!level.checkMovable(newX, newY, newZ)) {return;}
+          let level = Game.level;
+          let display = Game.display;
+          let newX = this.x + diff.x;
+          let newY = this.y + diff.y;
+          let newZ = this.z + diff.z;
+          if(this.diff.x > 0){
+          this.scale = -1;
+          }
+          else if(this.diff.x < 0){
+          this.scale = 1;
+          }
+          if(!level.checkMovable(newX, newY, newZ)) {return;}
 
-            level.map[this.creature.x][this.creature.y][this.creature.z].removeCreature(this.creature);
-            
-            this.x = newX;
-            this.y = newY;
-            this.z = newZ;
-            level.map[this.x][this.y][this.z].creature = this;
-        }*/
+          level.map[this.creature.x][this.creature.y][this.creature.z].removeCreature(this.creature);
+
+          this.x = newX;
+          this.y = newY;
+          this.z = newZ;
+          level.map[this.x][this.y][this.z].creature = this;
+          }*/
 
         /*if(mon.hp <= 0){
-            messages.push("The " + this.name + " is defeated!");
-            Game.level.creatures = Game.level.creatures.filter(e => e !== mon);
-            Game.level.map[mon.x][mon.y][mon.z].removeCreature(this);
-            mon.defeated = true;
-        }*/
+          messages.push("The " + this.name + " is defeated!");
+          Game.level.creatures = Game.level.creatures.filter(e => e !== mon);
+          Game.level.map[mon.x][mon.y][mon.z].removeCreature(this);
+          mon.defeated = true;
+          }*/
         if(this.defeated){
             return null;
         }
@@ -98,7 +124,6 @@ class Turtle extends Creature{
         //}
         //
         super.move(diff);
-
         let a = this.behaviorTree.next();
         return a.execute.bind(a);
     }
