@@ -102,12 +102,12 @@ class Display {
             let td1 = document.createElement("td");
             let td2 = document.createElement("td");
             let td3 = document.createElement("td");
-            td1.style.fontSize = Math.floor(this.bHeight * 0.8) + "px";
-            td2.style.fontSize = Math.floor(this.bHeight * 0.8) + "px";
-            td3.style.fontSize = Math.floor(this.bHeight * 0.8) + "px";
-            td1.style.font = Math.floor(this.bHeight * 0.8) + "px monospace";
-            td2.style.font = Math.floor(this.bHeight * 0.8) + "px monospace";
-            td3.style.font = Math.floor(this.bHeight * 0.8) + "px monospace";
+            td1.style.fontSize = Math.floor(this.bHeight * 0.6) + "px";
+            td2.style.fontSize = Math.floor(this.bHeight * 0.6) + "px";
+            td3.style.fontSize = Math.floor(this.bHeight * 0.6) + "px";
+            td1.style.font = Math.floor(this.bHeight * 0.6) + "px monospace";
+            td2.style.font = Math.floor(this.bHeight * 0.6) + "px monospace";
+            td3.style.font = Math.floor(this.bHeight * 0.6) + "px monospace";
 
             td1.style.color = "white";
             td2.style.color = "white";

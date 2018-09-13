@@ -63,6 +63,14 @@ class Player extends Creature{
             player.z = newZ;
 
             level.map[player.x][player.y][player.z].creature = player;
+            let items = level.map[player.x][player.y][player.z].items;
+            let itemsSArray = [];
+            if(items.length > 0){
+                for(let i = 0; i < items.length; i++){
+                    itemsSArray.push(items[i].name);
+                }
+                return ["You see here: " + itemsSArray.join(", ")];
+            }
 
             //viewwindow setting
             display.view.xOffset = player.x - Math.floor(display.width / 2);
