@@ -24,14 +24,25 @@ let PlayerEventListener = {
             let level = PlayerEventListener.level;
             let display = PlayerEventListener.display;
             player.addItems(level.map[player.x][player.y][player.z].items);
-            level.map[player.x][player.y][player.z].clearItems();
-            if(display.inventoryVisible){
-                display.hideInventory();
-                display.showInventory(player.items);
+            items = level.map[player.x][player.y][player.z].items;
+            let itemsSArray = [];
+            if(items.length > 0){
+                for(let i = 0; i < items.length; i++){
+                    itemsSArray.push(items[i].name);
+                }
+                level.map[player.x][player.y][player.z].clearItems();
+                if(display.inventoryVisible){
+                    display.hideInventory();
+                    display.showInventory(player.items);
+                }
+                return ["You pick up: " + itemsSArray.join(", ")];
+            }
+            else{
+                return ["There's nothing to pick up here"];
             }
 
         };
-        
+
         let code = e.keyCode;
 
         if(code == 32 && Game.engine.messageQ.length > 0){
@@ -67,6 +78,7 @@ let PlayerEventListener = {
         }
         if(code == 188 && !e.shiftKey){
             this.engine.addEvent(pickUp.bind(this));
+            this.level.creaturesAct();
             this.engine.timeStep();
             return;
         }
@@ -83,7 +95,7 @@ let PlayerEventListener = {
 
         this.engine.addEvent(PlayerEventListener.player.move(diff));
         this.level.creaturesAct();
-        
+
         this.engine.timeStep();
     }
 

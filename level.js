@@ -262,7 +262,17 @@ class WaterBlock extends MapBlock{
     getStyle(e){
         super.getStyle(e);
         e.style.backgroundColor = "blue";
+         if(!this.noImg){
+            let image = document.createElement("img");
+            image.style.height = "80%";
+            image.src = "./resources/water-black.png";
+
+            //centerImage(image);
+            e.appendChild(image);
+        }
+
     }
+       
 }
 
 class GrassBlock extends MapBlock{
@@ -274,12 +284,12 @@ class GrassBlock extends MapBlock{
     getStyle(e){
         super.getStyle(e);
         e.style.backgroundColor = "green";
-        /*if(!this.noImg){
+        if(!this.noImg){
           let image = document.createElement("img");
-          image.style.height = "80%";
+          image.style.width = "80%";
           image.src = "./resources/grass.png";
           e.appendChild(image);
-          }*/
+      }
     }
 }
 
