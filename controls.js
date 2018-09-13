@@ -22,8 +22,14 @@ let PlayerEventListener = {
         let pickUp = function(){
             let player = PlayerEventListener.player;
             let level = PlayerEventListener.level;
+            let display = PlayerEventListener.display;
             player.addItems(level.map[player.x][player.y][player.z].items);
             level.map[player.x][player.y][player.z].clearItems();
+            if(display.inventoryVisible){
+                display.hideInventory();
+                display.showInventory(player.items);
+            }
+
         };
         
         let code = e.keyCode;
@@ -45,7 +51,7 @@ let PlayerEventListener = {
             return;
         }
         if(code == 188 && !e.shiftKey){
-            this.engine.addEvent(pickUp);
+            this.engine.addEvent(pickUp.bind(this));
             this.engine.timeStep();
             return;
         }

@@ -6,6 +6,7 @@ class View {
         this.heightPx = window.innerHeight;
         this.blockWidthPx = Math.floor(this.widthPx / 40);
         this.blockHeightPx = Math.floor(this.heightPx / 20);
+        //this.minPx = Math.min(this.blockWidthPx, this.blockHeightPx);
         this.xOffset = 0;
         this.yOffset = 0;
     }
@@ -23,13 +24,31 @@ class Display {
 
         let canvas = document.createElement("table");
         canvas.style.position = "absolute";
-        canvas.style.top = "7.4%";
-        canvas.style.left = "5.4%";
+        canvas.style.top = "10.4%";
+        canvas.style.left = "6.4%";
         canvas.style.backgroundColor = "black";
         canvas.style.opacity = "0";
         this.inventory = canvas;
         this.inventoryVisible = false;
 
+        let messages = document.createElement("table");
+        messages.style.position = "absolute";
+        messages.style.top = "7.4%";
+        messages.style.left = "4.4%";
+        messages.style.backgroundColor = "black";
+        messages.style.opacity = "0";
+        this.messages = messages;
+        this.messagesVisible = false;
+
+        let tr = document.createElement("tr");
+        let td1 = document.createElement("td");
+
+        this.bWidth = this.view.blockWidthPx;
+        this.bHeight = this.view.blockHeightPx; 
+
+        td1.style.fontSize = Math.floor(this.height * 0.8) + "px";
+        td1.style.font = Math.floor(this.height * 0.8) + "px monospace";
+        td1.style.color = "white";
     }
 
     clearInventory(){
@@ -43,8 +62,8 @@ class Display {
     showInventory(items){
         let th = document.createElement("caption");
 
-        th.style.fontSize = "25px";
-        th.style.font = "25px monospace";
+        th.style.fontSize = Math.floor(this.bHeight * 0.6) + "px";
+        th.style.font = Math.floor(this.bHeight * 0.6) + "px monospace";
         th.style.color = "white";
         th.innerHTML = "Inventory";
         this.inventory.append(th);
@@ -54,12 +73,12 @@ class Display {
             let td1 = document.createElement("td");
             let td2 = document.createElement("td");
             let td3 = document.createElement("td");
-            td1.style.fontSize = "25px";
-            td2.style.fontSize = "25px";
-            td3.style.fontSize = "25px";
-            td1.style.font = "25px monospace";
-            td2.style.font = "25px monospace";
-            td3.style.font = "25px monospace";
+            td1.style.fontSize = Math.floor(this.bHeight * 0.8) + "px";
+            td2.style.fontSize = Math.floor(this.bHeight * 0.8) + "px";
+            td3.style.fontSize = Math.floor(this.bHeight * 0.8) + "px";
+            td1.style.font = Math.floor(this.bHeight * 0.8) + "px monospace";
+            td2.style.font = Math.floor(this.bHeight * 0.8) + "px monospace";
+            td3.style.font = Math.floor(this.bHeight * 0.8) + "px monospace";
 
             td1.style.color = "white";
             td2.style.color = "white";
@@ -103,9 +122,11 @@ class Display {
                 td.style.height = height + "px";
                 td.style.overflow = "hidden";
                 td.style.content = "center";
-                td.style.fontSize = "32px";
+                //td.style.fontSize = "32px";
+                td.style.fontSize = Math.min(Math.floor(width * 0.8), Math.floor(height *0.8)) + "px";
                 td.align = "center";
-                td.style.font = "32px monospace";
+                //td.style.font = "32px monospace";
+                td.style.font = Math.min(Math.floor(width * 0.8), Math.floor(height *0.8))  + "px monospace";
                 td.style.textAlign = "center";
                 td.style.backgroundColor = bC;
                 td.style.color = "white";
