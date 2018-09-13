@@ -45,6 +45,9 @@ let PlayerEventListener = {
             }
             Game.display.showMessage(message);
         }
+        else if(Game.engine.messageQ.length > 0){
+            return;
+        }
 
         if(code == 73){
             if(this.display.inventoryVisible){
