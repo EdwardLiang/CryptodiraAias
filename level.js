@@ -119,6 +119,7 @@ class MapBlock{
         this.z = z;
         this.movable = true;
         this.icon = "";
+        this.originalIcon = "";
         this.iconColor = "white";
         this.items = [];
         //this.resident = null;
@@ -166,7 +167,7 @@ class MapBlock{
             this.noImg = true;
         }
         else{
-            this.icon = "";
+            this.icon = this.originalIcon;
             this.noImg = false;
         }
     }
@@ -362,6 +363,7 @@ class EvergreenBlock extends MapBlock{
     constructor(x, y, z){
         super(x, y, z);
         this.icon = "&#x1F332;";
+        this.originalIcon = "&#x1F332;";
         this.iconColor = "green";
     }
     calculateIcon(){
@@ -379,6 +381,7 @@ class DeciduousBlock extends MapBlock{
     constructor(x, y, z){
         super(x, y, z);
         this.icon = "&#x1F333;";
+        this.originalIcon = "&#x1F333;";
         this.iconColor = "green";
     }
     calculateIcon(){
