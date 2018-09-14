@@ -21,6 +21,15 @@ class Creature{
         e.style.transform = "scaleX(" + this.scale + ")";
     }
 
+    getItem(index){
+        if(index in this.items){
+            return this.items[index];
+        }
+        else{
+            return null;
+        }
+    }
+
     addItems(array){
         let availableSymbols = this.availableSymbols;
         for(let i = 0; i < array.length; i++){
@@ -35,6 +44,17 @@ class Creature{
             this.items[letter] = array[i];
         }
     }
+
+    dropItem(index){
+        let item = this.getItem(index);
+        if(index in this.items){
+            Game.level.map[this.x][this.y][this.z].items.unshift(this.items[index]);
+            delete this.items[index];
+            this.availableSymbols.unshift(index);
+        }
+        return item;
+    }
+
     addItem(a){
         let availableSymbols = this.availableSymbols;
         if(availableSymbols.length > 0){

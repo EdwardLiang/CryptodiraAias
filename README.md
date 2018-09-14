@@ -1,4 +1,4 @@
-Rho Aias:
+Cryptodira Aias:
 A layered roguelike game in javascript that represents different layers
 of life.
 

@@ -482,7 +482,7 @@ class DirectDirectionMoveBehavior extends ExecuteBehaviorNode{
                 }
             }
         }        
-        return;
+        return ["The bird is seeking you"];
         //}
     }
 }

@@ -10,12 +10,63 @@ DIRS[85] = new Distance(1, -1, 0); //right up
 DIRS[188] = new Distance(0, 0, 1);
 DIRS[190] = new Distance(0, 0, -1);
 
+function itemSelector(e){
+    if(!PlayerEventListener.dropping){
+        Game.display.clearMessages();
+        Game.display.showMessage("What do you wish to drop? Type index or * to open inventory.");
+        PlayerEventListener.dropping = true;
+        return;
+    }
+
+    let code = e.keyCode;
+    if(code == 16){
+        //shift
+        return;
+    }
+    if(code == 56 && e.shiftKey){ 
+        if(Game.display.inventoryVisible){
+            Game.display.hideInventory();
+            Game.display.showInventory(Game.player.items);
+        }
+        else{
+            Game.display.showInventory(Game.player.items);
+        }
+    }
+    else{
+        let index = String.fromCharCode(code);
+        if(!e.shiftKey){
+            index = index.toLowerCase();
+        }
+        let item = Game.player.dropItem(index);
+        Game.display.clearMessages();
+        if(item != null){
+            Game.display.showMessage("You dropped the: " + item.name);
+        }
+        else{
+            Game.display.showMessage("You don't have that item.");
+        }
+        PlayerEventListener.dropping = false;
+        if(Game.display.inventoryVisible){
+            Game.display.hideInventory();
+        }
+    }
+}
+
+function refreshInventory(){
+    if(Game.display.inventoryVisible){
+        Game.display.hideInventory();
+        Game.display.showInventory(player.items);
+    }
+}
+
+
 let PlayerEventListener = {
 
     player: null,
     level: null,
     engine: null,
     display: null,
+    dropping: false,
 
     handleEvent(e){
 
@@ -31,10 +82,8 @@ let PlayerEventListener = {
                     itemsSArray.push(items[i].name);
                 }
                 level.map[player.x][player.y][player.z].clearItems();
-                if(display.inventoryVisible){
-                    display.hideInventory();
-                    display.showInventory(player.items);
-                }
+
+                refreshInventory();
                 return ["You pick up: " + itemsSArray.join(", ")];
             }
             else{
@@ -44,6 +93,7 @@ let PlayerEventListener = {
         };
 
         let code = e.keyCode;
+
 
         if(code == 32 && Game.engine.messageQ.length > 0){
 
@@ -60,7 +110,16 @@ let PlayerEventListener = {
             return;
         }
 
-        if(code == 73){
+        if(code == 68 && !e.shiftKey){
+            itemSelector(e);
+            return;
+        }
+        else if(this.dropping){
+            itemSelector(e);
+            return;
+        }
+
+        if(code == 73 && !e.shiftKey){
             if(this.display.inventoryVisible){
                 this.display.hideInventory();
             }
