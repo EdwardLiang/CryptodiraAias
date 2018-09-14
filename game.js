@@ -97,7 +97,8 @@ var Game = {
         let r = new Robot(9,9,0);
         let r2 = new Robot(10,10,0);
         let b = new Bird(13, 13, 0, this.player);
-        let dol = new Dolphin(4, 14, 0)
+        let dol = new Dolphin(4, 14, 0);
+        let tow = new Tower(14, 4, 0);
         b.addItem(new Peanut());
         e.addItem(new Peanut());
         r.addItem(new Battery());
@@ -115,6 +116,7 @@ var Game = {
         this.level.addCreature(e);
         this.level.addCreature(this.player);
         this.level.addCreature(dol);
+        this.level.addCreature(tow);
 
         this.display.displayLevel(this.level);
         PlayerEventListener.player = this.player;

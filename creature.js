@@ -133,6 +133,21 @@ class Turtle extends Creature{
 
 }
 
+class Tower extends Creature{
+
+    constructor(x,y,z){
+        super(x, y, z, "", "grey");
+        this.name = "Tower";
+    }
+    getStyle(e){
+        super.getStyle(e);
+        let image = document.createElement("img");
+        image.src = "./resources/tower.png";
+        image.style.height = "80%";
+        e.appendChild(image);
+    }
+}
+
 class Elephant extends Creature{
 
     constructor(x, y, z){
