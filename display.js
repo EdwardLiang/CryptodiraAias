@@ -34,10 +34,10 @@ class Display {
         this.div = document.createElement("div");
         //this.div.style.width = "1855px";
         //this.div.style.height = "965px";
-        let scale = Math.min(window.innerWidth / 1855, window.innerHeight / 965);
-        this.div.style.width = Math.floor(1855*scale) - 80 + "px";
+        let scale = Math.min((window.innerWidth - 50) / 1855, (window.innerHeight- 50) / 965);
+        this.div.style.width = Math.floor(1855*scale) + "px";
         this.expWidth = 1855*scale;
-        this.div.style.height = Math.floor(965*scale) - 20 + "px";
+        this.div.style.height = Math.floor(965*scale) + "px";
         this.expHeight = 965*scale;
         this.div.style.position = "absolute";
         document.body.appendChild(this.div);
