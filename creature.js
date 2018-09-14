@@ -16,7 +16,7 @@ class Creature{
         this.defeated = false;
         this.availableSymbols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
     }
-    
+
     getTopLeftStyle(e){
         e.style.transform = "scaleX(" + this.scale + ")";
     }
@@ -96,6 +96,24 @@ class Creature{
     getStyle(e){
 
     }
+}
+
+class WaterCreature extends Creature{}
+
+class Dolphin extends WaterCreature{
+    constructor(x, y, z){
+        super(x, y, z, "&#x1F42C;", "blue");
+        this.act = new RandomMoveAct(this); 
+        this.behaviorTree = this.act.behaviorTree;
+        this.name = "Dolphin";
+    }
+
+    move(diff){
+        super.move(diff);
+        let a = this.behaviorTree.next();
+        return a.execute.bind(a);
+    }
+
 }
 
 class Turtle extends Creature{

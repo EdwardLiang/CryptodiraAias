@@ -21,3 +21,9 @@ class Peanut extends Item{
         super("&#x1F95C;", "peanut", "peanut");
     }
 }
+
+class Battery extends Item{
+    constructor(){
+        super("&#x1F50B;", "battery", "battery");
+    }
+}

@@ -7,8 +7,6 @@ class View {
         this.heightPx = window.innerHeight;
         this.widthPx = 1855;
         this.heightPx = 965;
-        console.log(window.innerWidth);
-        console.log(window.innerHeight);
         this.blockWidthPx = Math.floor(this.widthPx / 40);
         //this.blockHeightPx = Math.floor(this.heightPx / 20);
         this.blockHeightPx = Math.floor((48 / 46) * this.blockWidthPx);

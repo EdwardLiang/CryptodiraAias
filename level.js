@@ -24,10 +24,14 @@ class Level {
         this.backgroundColor = color;
     }
 
+    //also checks for water types to only go onto other water blocks.
     checkMovable(x, y, z, c){
         //c for creature to check internal segments
         if( x > this.map.length - 1 || x < 0 || y > this.map[0].length - 1 || y < 0 ||
                 z > this.map[0][0].length || z < 0){
+            return false;
+        }
+        if(!this.checkWater(x, y, z) && c instanceof WaterCreature){
             return false;
         }
         if (this.map[x][y][z].checkMovable(c)){
@@ -42,6 +46,12 @@ class Level {
         }
         if (this.map[x][y][z].checkAttackable()){
             return this.map[x][y][z].checkAttackable();
+        }
+        return false;
+    }
+    checkWater(x, y, z){
+        if(this.map[x][y][z] instanceof WaterBlock){
+            return true;
         }
         return false;
     }
@@ -395,7 +405,19 @@ class DeciduousBlock extends MapBlock{
     }
 }
 
-
+class FountainBlock extends MapBlock{
+    constructor(x, y, z){
+        super(x, y, z);
+        this.icon = "&#x26F2;";
+        this.originalIcon = "&#x26F2;";
+        this.iconColor = "blue";
+    }
+    calculateIcon(){
+        this.icon = "&#x26F2;";
+        this.iconColor = "blue";
+        super.calculateIcon();
+    }
+}
 
 class StoneBlock extends UnmovableBlock{
     constructor(x, y, z){

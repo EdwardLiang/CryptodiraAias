@@ -44,6 +44,7 @@ var Game = {
         this.level.map[7][7][0] = new GrassBlock(7,7,0);
         this.level.map[7][8][0] = new IceBlock(7,8,0);
         this.level.map[8][7][0] = new StoneBlock(8,7,0);
+        this.level.map[9][7][0] = new FountainBlock(9,7,0);
 
         this.level.map[2][2][1] = new StoneBlock(2,2,1);
         this.level.map[2][2][2] = new StoneBlock(2,2,2);
@@ -74,6 +75,18 @@ var Game = {
         this.level.map[3][5][4] = new GrassBlock(3,5,4);
         this.level.map[5][5][0].items.push(new Orange());
 
+
+
+        this.level.map[3][13][0] = new WaterBlock(3,13,0);
+        this.level.map[3][14][0] = new WaterBlock(3,14,0);
+        this.level.map[3][15][0] = new WaterBlock(3,15,0);
+        this.level.map[4][13][0] = new WaterBlock(4,13,0);
+        this.level.map[4][14][0] = new WaterBlock(4,14,0);
+        this.level.map[4][15][0] = new WaterBlock(4,15,0);
+        this.level.map[5][13][0] = new WaterBlock(5,13,0);
+        this.level.map[5][14][0] = new WaterBlock(5,14,0);
+        this.level.map[5][15][0] = new WaterBlock(5,15,0);
+
         //this.level.map[6][6][0].(new Orange());
         let t = new Turtle(6,6,0);
         let t2 = new Turtle(10,6,0);
@@ -84,8 +97,10 @@ var Game = {
         let r = new Robot(9,9,0);
         let r2 = new Robot(10,10,0);
         let b = new Bird(13, 13, 0, this.player);
+        let dol = new Dolphin(4, 14, 0)
         b.addItem(new Peanut());
         e.addItem(new Peanut());
+        r.addItem(new Battery());
         r2.action = new MoveBoxActPredicateSucceed(r2);
         t2.action = new RandomMoveUntilFailAct(t2); 
         t2.action = new RandomMoveCancel(t2); 
@@ -99,6 +114,7 @@ var Game = {
         this.level.addCreature(b);
         this.level.addCreature(e);
         this.level.addCreature(this.player);
+        this.level.addCreature(dol);
 
         this.display.displayLevel(this.level);
         PlayerEventListener.player = this.player;
