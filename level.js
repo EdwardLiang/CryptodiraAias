@@ -24,12 +24,13 @@ class Level {
         this.backgroundColor = color;
     }
 
-    checkMovable(x, y, z){
+    checkMovable(x, y, z, c){
+        //c for creature to check internal segments
         if( x > this.map.length - 1 || x < 0 || y > this.map[0].length - 1 || y < 0 ||
                 z > this.map[0][0].length || z < 0){
             return false;
         }
-        if (this.map[x][y][z].checkMovable()){
+        if (this.map[x][y][z].checkMovable(c)){
             return true;
         }
         return false;
@@ -50,7 +51,25 @@ class Level {
             if(!(creature === Game.player)){
                 this.creatures.push(creature);
             }
-            this.map[creature.x][creature.y][creature.z].creature = creature;
+            for(let x = 0; x < creature.width; x++){
+                for(let y = 0; y < creature.height; y++){
+                    for(let z = 0; z < creature.zLevels; z++){
+                        this.map[creature.x + x][creature.y + y][creature.z + z].creature =
+                            creature;
+                        if(x == 0 && y == 0 && creature.scale == 1){
+                            this.map[creature.x + x][creature.y + y][creature.z + z].creatureSegment = false;
+                        }
+                        else if(x == creature.width - 1 && y == 0 && creature.scale == -1){
+                            this.map[creature.x + x][creature.y + y][creature.z + z].creatureSegment = false;
+                        }
+
+                        else{
+                            this.map[creature.x + x][creature.y + y][creature.z + z].creatureSegment = true;
+                        }
+                    }
+                }
+            }
+
         }
         else{
             console.log("Warning! Creature overwritten!");
@@ -72,7 +91,7 @@ class Level {
     }
 
     creaturesAct(){
-       for(let i = 0; i < this.creatures.length; i++){
+        for(let i = 0; i < this.creatures.length; i++){
             let dir = Math.floor(Math.random() * 8);
             let cDir = CDIRS[dir];
             Game.engine.addEvent(this.creatures[i].move(cDir));
@@ -106,10 +125,16 @@ class MapBlock{
         this.creatures = [];
         this.player = false;
         this.noImg = false;
+        this.creatureSegment = false;
     }
 
-    checkMovable() {
-        return this.movable;
+    checkMovable(c) {
+        if(this.creatures[0] === c){
+            return true; 
+        }
+        else{
+            return this.movable;
+        }
     }
 
     checkAttackable(){
@@ -130,14 +155,7 @@ class MapBlock{
     }
 
     calculateIcon(){
-        /*if(this.creatures[0] === Game.player){
-            this.icon = "";
-            this.iconColor = "";
-            this.noImg = true;
-        }
-        */
-        /*else */
-        if(this.creatures.length > 0){
+        if(this.creatures.length > 0 && !this.creatureSegment){
             this.icon = this.creatures[0].icon;
             this.iconColor = this.creatures[0].iconColor;
             this.noImg = true;
@@ -148,6 +166,7 @@ class MapBlock{
             this.noImg = true;
         }
         else{
+            this.icon = "";
             this.noImg = false;
         }
     }
@@ -177,14 +196,13 @@ class MapBlock{
 
     getStyle(e){
         if(this.creatures.length > 0){
+            if(!this.creatureSegment){
+                this.creatures[0].getTopLeftStyle(e);
+            }
             this.creatures[0].getStyle(e);
         }
         if(this.creatures[0] === Game.player){
-            //e.classList.add("flicker");
             e.style.opacity = "0.7";
-            //void e.offsetWidth;
-            //e.style.animation = "flicker 1s infinite";
-            //e.style.animationPlayState = "running";
         }
     }
 
@@ -223,9 +241,6 @@ class StaircaseUpBlock extends StaircaseBlock{
 
 }
 
-function centerImage(image){
-}
-
 class StaircaseDownBlock extends StaircaseBlock{
     constructor(x, y, z){
         super(x, y, z);
@@ -262,9 +277,9 @@ class WaterBlock extends MapBlock{
     getStyle(e){
         super.getStyle(e);
         e.style.backgroundColor = "blue";
-         if(!this.noImg){
+        if(!this.noImg){
             let image = document.createElement("img");
-            image.style.height = "80%";
+            image.style.width = "80%";
             image.src = "./resources/water-black.png";
 
             //centerImage(image);
@@ -272,7 +287,7 @@ class WaterBlock extends MapBlock{
         }
 
     }
-       
+
 }
 
 class GrassBlock extends MapBlock{
@@ -285,11 +300,11 @@ class GrassBlock extends MapBlock{
         super.getStyle(e);
         e.style.backgroundColor = "green";
         if(!this.noImg){
-          let image = document.createElement("img");
-          image.style.width = "80%";
-          image.src = "./resources/grass.png";
-          e.appendChild(image);
-      }
+            let image = document.createElement("img");
+            image.style.width = "80%";
+            image.src = "./resources/grass.png";
+            e.appendChild(image);
+        }
     }
 }
 

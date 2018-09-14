@@ -46,7 +46,7 @@ class Player extends Creature{
                 }
                 return messages;
             }
-            else if(!level.checkMovable(newX, newY, newZ)) {return;}
+            else if(!level.checkMovable(newX, newY, newZ, player)) {return;}
 
             let newZTemp = newZ;
             let newYTemp = newY;

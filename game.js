@@ -2,7 +2,8 @@ var Game = {
     display: null,
     realTime: false,
     timer: 0,
-    messageStayDelay: 4,
+    messageStayDelay: 10,
+    simpleLayers: false,
 
     init(){
         this.display = new Display();
@@ -76,6 +77,7 @@ var Game = {
         //this.level.map[6][6][0].(new Orange());
         let t = new Turtle(6,6,0);
         let t2 = new Turtle(10,6,0);
+        let e = new Elephant(28, 12, 1);
         let t3 = new Turtle(15,6,0);
         let f = new Cat(7,7,0);
         let d = new Dog(8,8,0);
@@ -86,14 +88,15 @@ var Game = {
         r2.action = new MoveBoxActPredicateSucceed(r2);
         t2.action = new RandomMoveUntilFailAct(t2); 
         t2.action = new RandomMoveCancel(t2); 
-        this.level.addCreature(t);
+        //this.level.addCreature(t);
         //this.level.addCreature(t2);
         //this.level.addCreature(t3);
-        this.level.addCreature(f);
-        this.level.addCreature(d);
-        this.level.addCreature(r);
+        //this.level.addCreature(f);
+        //this.level.addCreature(d);
+        //this.level.addCreature(r);
         //this.level.addCreature(r2);
         this.level.addCreature(b);
+        this.level.addCreature(e);
         this.level.addCreature(this.player);
 
         this.display.displayLevel(this.level);

@@ -4,6 +4,9 @@ class Creature{
         this.x = x;
         this.y = y;
         this.z = z;
+        this.width = 1;
+        this.height = 1;
+        this.zLevels = 1;
         this.items = {};
         this.icon = icon;
         this.iconColor = iconColor;
@@ -14,7 +17,7 @@ class Creature{
         this.availableSymbols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
     }
     
-    getStyle(e){
+    getTopLeftStyle(e){
         e.style.transform = "scaleX(" + this.scale + ")";
     }
 
@@ -61,7 +64,18 @@ class Creature{
 
     die(){
         Game.level.creatures = Game.level.creatures.filter(e => e !== this);
-        Game.level.map[this.x][this.y][this.z].removeCreature(this);
+        //Game.level.map[this.x][this.y][this.z].removeCreature(this);
+
+        for(let x = 0; x < this.width; x++){
+            for(let y = 0; y < this.height; y++){
+                for(let z = 0; z < this.zLevels; z++){
+                    Game.level.map[this.x + x][this.y + y][this.z + z]
+                        .removeCreature(this);
+                    Game.level.map[this.x + x][this.y + y][this.z + z].creatureSegment = false;
+                }
+            }
+        }
+
         let itemKeys = Object.keys(this.items);
         for(let i = 0; i < itemKeys.length; i++){
             Game.level.map[this.x][this.y][this.z].items.unshift(this.items[itemKeys[i]]);
@@ -71,34 +85,6 @@ class Creature{
     }
 
     move(diff){
-        /*return () => {
-          let level = Game.level;
-          let display = Game.display;
-          let newX = this.x + diff.x;
-          let newY = this.y + diff.y;
-          let newZ = this.z + diff.z;
-          if(this.diff.x > 0){
-          this.scale = -1;
-          }
-          else if(this.diff.x < 0){
-          this.scale = 1;
-          }
-          if(!level.checkMovable(newX, newY, newZ)) {return;}
-
-          level.map[this.creature.x][this.creature.y][this.creature.z].removeCreature(this.creature);
-
-          this.x = newX;
-          this.y = newY;
-          this.z = newZ;
-          level.map[this.x][this.y][this.z].creature = this;
-          }*/
-
-        /*if(mon.hp <= 0){
-          messages.push("The " + this.name + " is defeated!");
-          Game.level.creatures = Game.level.creatures.filter(e => e !== mon);
-          Game.level.map[mon.x][mon.y][mon.z].removeCreature(this);
-          mon.defeated = true;
-          }*/
         if(this.defeated){
             return null;
         }
@@ -106,6 +92,9 @@ class Creature{
     set action(a){
         this.act = a; 
         this.behaviorTree = this.act.behaviorTree;
+    }
+    getStyle(e){
+
     }
 }
 
@@ -119,15 +108,66 @@ class Turtle extends Creature{
     }
 
     move(diff){
-        //if(this.defeated){
-        //}
-        //
         super.move(diff);
         let a = this.behaviorTree.next();
         return a.execute.bind(a);
     }
 
 }
+
+class Elephant extends Creature{
+
+    constructor(x, y, z){
+        super(x, y, z, "&#x1F418;", "grey");
+        this.icon = "";
+        this.act = new RandomMoveAct(this); 
+        this.behaviorTree = this.act.behaviorTree;
+        this.name = "Elephant";
+        this.width = 2;
+        this.height = 2;
+        this.zLevels = 3;
+    }
+
+    move(diff){
+        super.move(diff);
+        let a = this.behaviorTree.next();
+        return a.execute.bind(a);
+    }
+
+    getStyle(e){
+        super.getStyle(e);
+        if(Game.player.z >= this.z){
+            e.style.opacity = "0.6";
+        }
+    }
+
+    getTopLeftStyle(e){
+        super.getTopLeftStyle(e);
+        let div = document.createElement("div");
+        div.innerHTML = "&#x1F418;";
+        //let height = Game.display.view.blockHeightPx;
+        //let width = Game.display.view.blockWidthPx;
+
+        let height = Game.display.expWidth * 0.025;
+        let width = Game.display.expWidth * 0.025;
+        //let size = Math.min(Math.floor(width * 0.8), Math.floor(height * 0.8)) * 2;
+        let size = Game.display.expWidth * 0.8 * 0.025 * 2;
+        div.style.height = height;
+        div.style.maxWidth = width;
+        div.style.fontSize = size;
+        if(this.scale == -1){
+            div.style.left = size / 2;
+        }
+        div.setAttribute("style","display:block;max-width:" + width + "px;height:" + height 
+                + "px;font-size:" + size + "px");
+
+        //centerImage(image);
+        e.appendChild(div);
+
+    }
+
+}
+
 
 class Bird extends Creature{
 

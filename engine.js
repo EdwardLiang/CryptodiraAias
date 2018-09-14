@@ -30,20 +30,7 @@ class Engine {
         if(!Game.realTime){
             Game.display.clearMessages();
         }
-        /*
-        else if(Game.realTime && this.timer == this.messageStayDelay){
-            this.messageQ = [];
-            Game.display.clearMessages();
-            this.timer = 0;
-        }
-        else if(Game.realTime && this.timer < this.messageStayDelay){
-            this.timer++;
-        }
-        else{
-            throw "Timer for real time messages has gone horribly wrong";
-        }
-        */
-
+       
         if(!Game.realTime){
             if(this.messageQ.length > 0){
                 if(this.messageQ.length > 1){

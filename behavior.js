@@ -17,6 +17,52 @@ class BehaviorTree {
         this.dummyRealTimeNode = new ExecuteBehaviorNode();
     }
 
+    handleInvertDecorator(){
+        if(this.lastSuccess){
+            this.lastSuccess = false;
+        }
+        else{
+            this.lastSuccess = true;
+        }
+        this.lastNode = this.currNode;
+        this.lastNode.success = this.lastSuccess;
+        this.currNode = this.stack.pop();
+    }
+
+    handleSucceedDecorator(){
+        this.lastSuccess = true;
+        this.lastNode = this.currNode;
+        this.lastNode.success = this.lastSuccess;
+        this.currNode = this.stack.pop();
+    }
+
+    handleRepeatUntilFailDecorator(){
+        //this.lastNode = this.currNode;
+        if(this.lastSuccess){
+            this.stack.push(this.currNode);
+            this.currNode = this.currNode.child;  
+            this.stack.push(this.currNode);
+            return this.goDownTree();
+        }
+        else{
+            this.lastNode = this.currNode;
+            this.currNode = this.stack.pop();
+            //console.log(this.lastNode);
+            //console.log(this.currNode);
+        }
+
+    }
+    handleRepeatDecorator(){
+        this.stack.push(this.currNode);
+        //this.lastNode = this.currNode;
+        this.currNode = this.currNode.child;
+        this.stack.push(this.currNode);
+        return this.goDownTree();
+    }
+    handleSequenceBehaviorNode(){
+
+    }
+
     next(){
         if(Game.realTime && this.countForDelay != this.realTimeDelay){
             this.countForDelay++;
@@ -39,46 +85,19 @@ class BehaviorTree {
             }
             if(this.currNode instanceof Decorator){
                 if(this.currNode instanceof InvertDecorator){
-                    if(this.lastSuccess){
-                        this.lastSuccess = false;
-                    }
-                    else{
-                        this.lastSuccess = true;
-                    }
-                    this.lastNode = this.currNode;
-                    this.lastNode.success = this.lastSuccess;
-                    this.currNode = this.stack.pop();
+                    this.handleInvertDecorator();
                 }
 
                 if(this.currNode instanceof SucceedDecorator){
-                    this.lastSuccess = true;
-                    this.lastNode = this.currNode;
-                    this.lastNode.success = this.lastSuccess;
-                    this.currNode = this.stack.pop();
+                    this.handleSucceedDecorator();
                 }
 
                 if(this.currNode instanceof RepeatUntilFailDecorator){
-                    //this.lastNode = this.currNode;
-                    if(this.lastSuccess){
-                        this.stack.push(this.currNode);
-                        this.currNode = this.currNode.child;  
-                        this.stack.push(this.currNode);
-                        return this.goDownTree();
-                    }
-                    else{
-                        this.lastNode = this.currNode;
-                        this.currNode = this.stack.pop();
-                        //console.log(this.lastNode);
-                        //console.log(this.currNode);
-                    }
+                    this.handleRepeatUntilFailDecorator();
                 }
 
                 if(this.currNode instanceof RepeatDecorator){
-                    this.stack.push(this.currNode);
-                    //this.lastNode = this.currNode;
-                    this.currNode = this.currNode.child;
-                    this.stack.push(this.currNode);
-                    return this.goDownTree();
+                    return this.handleRepeatDecorator();
                 }
             }
             else if(this.currNode instanceof SequenceBehaviorNode){
@@ -107,7 +126,7 @@ class BehaviorTree {
                 else{
                     //this.currNode = this.currNode.selectNode(this.lastNode);
                     if(this.currNode){
-                        stack.push(this.currNode);
+                        this.stack.push(this.currNode);
                     }
                     return this.goDownTree();
                 }
@@ -330,19 +349,63 @@ class MoveBehavior extends ExecuteBehaviorNode{
         let newY = this.creature.y + diff.y;
         let newZ = this.creature.z + diff.z;
 
+        for(let x = 0; x < this.creature.width; x++){
+            for(let y = 0; y < this.creature.height; y++){
+                for(let z = 0; z < this.creature.zLevels; z++){
+                    if(!level.checkMovable(newX + x, newY + y, newZ + z, this.creature)) {return;}
+                }
+            }
+        }
+
         if(this.diff.x > 0){
             this.creature.scale = -1;
         }
         else if(this.diff.x < 0){
             this.creature.scale = 1;
         }
-        if(!level.checkMovable(newX, newY, newZ)) {return;}
 
-        level.map[this.creature.x][this.creature.y][this.creature.z].removeCreature(this.creature);
+
+        for(let x = 0; x < this.creature.width; x++){
+            for(let y = 0; y < this.creature.height; y++){
+                for(let z = 0; z < this.creature.zLevels; z++){
+                    level.map[this.creature.x + x][this.creature.y + y][this.creature.z + z]
+                        .removeCreature(this.creature);
+                        level.map[this.creature.x + x][this.creature.y + y][this.creature.z + z].creatureSegment = false;
+                }
+            }
+        }
+
+        //level.map[this.creature.x][this.creature.y][this.creature.z].removeCreature(this.creature);
         this.creature.x = newX;
         this.creature.y = newY;
         this.creature.z = newZ;
-        level.map[this.creature.x][this.creature.y][this.creature.z].creature = this.creature;
+        for(let x = 0; x < this.creature.width; x++){
+            for(let y = 0; y < this.creature.height; y++){
+                for(let z = 0; z < this.creature.zLevels; z++){
+                    level.map[this.creature.x + x][this.creature.y + y][this.creature.z + z].creature =
+                        this.creature;
+                    if(x == 0 && y == 0 && this.creature.scale == 1){
+                        level.map[this.creature.x + x][this.creature.y + y][this.creature.z + z].creatureSegment = false;
+                    }
+                    else if(x == this.creature.width - 1 && y == 0 && this.creature.scale == -1){
+                        level.map[this.creature.x + x][this.creature.y + y][this.creature.z + z].creatureSegment = false;
+                    }
+                    else{
+                        level.map[this.creature.x + x][this.creature.y + y][this.creature.z + z].creatureSegment = true;
+                    }
+                }
+            }
+        }
+        /*for(let x = 0; x < this.creature.width; x++){
+            for(let y = 0; y < this.creature.height; y++){
+                for(let z = 0; z < this.creature.zLevels; z++){
+                       console.log(level.map[this.creature.x + x][this.creature.y + y][this.creature.z + z].creatureSegment);
+                }
+            }
+        }*/
+
+
+        //level.map[this.creature.x][this.creature.y][this.creature.z].creature = this.creature;
         //}
     }
 }
@@ -371,6 +434,15 @@ class DirectDirectionMoveBehavior extends ExecuteBehaviorNode{
         let newY = this.creature.y + diff.y;
         let newZ = this.creature.z + diff.z;
 
+        
+        for(let x = 0; x < this.creature.width; x++){
+            for(let y = 0; y < this.creature.height; y++){
+                for(let z = 0; z < this.creature.zLevels; z++){
+                    if(!level.checkMovable(newX + x, newY + y, newZ + z, this.creature)) {return;}
+                }
+            }
+        }
+
         if(this.diff.x > 0){
             this.creature.scale = -1;
         }
@@ -378,13 +450,38 @@ class DirectDirectionMoveBehavior extends ExecuteBehaviorNode{
             this.creature.scale = 1;
         }
 
-        if(!level.checkMovable(newX, newY, newZ)) {return;}
 
-        level.map[this.creature.x][this.creature.y][this.creature.z].removeCreature(this.creature);
+        for(let x = 0; x < this.creature.width; x++){
+            for(let y = 0; y < this.creature.height; y++){
+                for(let z = 0; z < this.creature.zLevels; z++){
+                    level.map[this.creature.x + x][this.creature.y + y][this.creature.z + z]
+                        .removeCreature(this.creature);
+                    level.map[this.creature.x + x][this.creature.y + y][this.creature.z + z].creatureSegment = false;
+                }
+            }
+        }
+
+        //level.map[this.creature.x][this.creature.y][this.creature.z].removeCreature(this.creature);
         this.creature.x = newX;
         this.creature.y = newY;
         this.creature.z = newZ;
-        level.map[this.creature.x][this.creature.y][this.creature.z].creature = this.creature;
+        for(let x = 0; x < this.creature.width; x++){
+            for(let y = 0; y < this.creature.height; y++){
+                for(let z = 0; z < this.creature.zLevels; z++){
+                    level.map[this.creature.x + x][this.creature.y + y][this.creature.z + z].creature =
+                        this.creature;
+                    if(x == 0 && y == 0 && this.creature.scale == 1){
+                        level.map[this.creature.x + x][this.creature.y + y][this.creature.z + z].creatureSegment = false;
+                    }
+                    else if(x == this.creature.width - 1 && y == 0 && this.creature.scale == -1){
+                        level.map[this.creature.x + x][this.creature.y + y][this.creature.z + z].creatureSegment = false;
+                    }
+                    else{
+                        level.map[this.creature.x + x][this.creature.y + y][this.creature.z + z].creatureSegment = true;
+                    }
+                }
+            }
+        }        
         return ["Bird is seeking you"];
         //}
     }

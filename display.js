@@ -1,11 +1,20 @@
 class View {
     constructor(){
-        this.width = 31;
+        this.width = 30;
+        //this.width = 30;
         this.height = 15;
         this.widthPx = window.innerWidth;
         this.heightPx = window.innerHeight;
+        this.widthPx = 1855;
+        this.heightPx = 965;
+        console.log(window.innerWidth);
+        console.log(window.innerHeight);
         this.blockWidthPx = Math.floor(this.widthPx / 40);
-        this.blockHeightPx = Math.floor(this.heightPx / 20);
+        //this.blockHeightPx = Math.floor(this.heightPx / 20);
+        this.blockHeightPx = Math.floor((48 / 46) * this.blockWidthPx);
+        //this.height = Math.floor(this.heightPx / this.blockHeightPx) - 5;
+
+        //this.width = Math.floor(this.widthPx / this.blockWidthPx) - 8;
         //this.minPx = Math.min(this.blockWidthPx, this.blockHeightPx);
         this.xOffset = 0;
         this.yOffset = 0;
@@ -21,6 +30,17 @@ class Display {
 
         this.canvases = [];
         this.squares = [];
+
+        this.div = document.createElement("div");
+        //this.div.style.width = "1855px";
+        //this.div.style.height = "965px";
+        let scale = Math.min(window.innerWidth / 1855, window.innerHeight / 965);
+        this.div.style.width = Math.floor(1855*scale) - 80 + "px";
+        this.expWidth = 1855*scale;
+        this.div.style.height = Math.floor(965*scale) - 20 + "px";
+        this.expHeight = 965*scale;
+        this.div.style.position = "absolute";
+        document.body.appendChild(this.div);
 
         let canvas = document.createElement("table");
         canvas.style.position = "absolute";
@@ -126,36 +146,61 @@ class Display {
     generateTables(level){
         let canvas = document.createElement("table"); 
         canvas.style.position = "absolute";
-        canvas.style.bottom =  (9.4 - level*1) + "%";
-        canvas.style.left = (5.4 - level*1) + "%";
+        canvas.style.bottom =  ((9.4) - level*1) + "%";
+        canvas.style.left = ((5.4) - level*.65) + "%";
+        
         this.canvases.push(canvas);
 
-        //let width = 46 + level*1.8;
-        //let height = 46 + level*1.8;
-        let width = this.view.blockWidthPx + level*1.8;
-        let height = this.view.blockHeightPx + level*1.8; 
+        let width = 46 + level*.8;
+        let height = 46 + level*1.3;
+        //let width = Math.ceil(this.view.blockWidthPx + (level/(Game.level.levels))*(this.view.blockWidthPx / this.view.width));
+        //let height = Math.ceil(this.view.blockHeightPx + (level/(Game.level.levels))*(this.view.blockHeightPx / this.view.height)); 
+
+        //width = Math.max(width, this.view.blockWidthPx + level);
+        //height = Math.max(height, this.view.blockHeightPx + level);
+        //canvas.style.bottom = 3 * this.view.blockHeightPx - level*(this.view.blockHeightPx / 4) + "px";
+        //canvas.style.left = 2 * this.view.blockWidthPx - level*(this.view.blockWidthPx / 4) + "px";
+        //
+        let coeffH = 0.025 + level*0.0007;
+        let coeffW = 0.025 + level*0.0004;
+
+        if(Game.simpleLayers){
+            let width = this.view.blockWidthPx;
+            let height = this.view.blockHeightPx;
+            canvas.style.bottom = 3 * this.view.blockHeightPx + "px";
+            canvas.style.left = 2 * this.view.blockWidthPx + "px";
+        }
+
         let bC = this.getBC(level);
         let opacity = 0.1;
         
         if(level == 0){
             opacity = 1;
         }
+        let tb = document.createElement("tbody");
+        tb.style.display = "block";
+        canvas.appendChild(tb);
         for(let i = 0; i < this.height; i++){
             let tr = document.createElement("tr");
-            canvas.appendChild(tr);
+            tb.appendChild(tr);
             for (let j = 0; j < this.width; j++){
                 let td = document.createElement("td");
                 this.squares[j][i][level] = new DisplayBlock(j, i, level); 
                 this.squares[j][i][level].td = td;
-                td.style.width = width + "px";
-                td.style.height = height + "px";
-                td.style.overflow = "hidden";
+                //td.style.width = width + "px";
+                //td.style.height = height + "px";
+                td.style.width = this.expWidth * coeffW + "px";
+                td.style.height = this.expWidth * coeffH + "px";
+                td.style.overflow = "visible";
                 td.style.content = "center";
+                //td.style.display = "block";
                 //td.style.fontSize = "32px";
-                td.style.fontSize = Math.min(Math.floor(width * 0.8), Math.floor(height *0.8)) + "px";
+                //td.style.fontSize = Math.min(Math.floor(width * 0.8), Math.floor(height *0.8)) + "px";
+                td.style.fontSize = this.expWidth * coeffW * 0.70;
                 td.align = "center";
                 //td.style.font = "32px monospace";
-                td.style.font = Math.min(Math.floor(width * 0.8), Math.floor(height *0.8))  + "px monospace";
+                //td.style.font = Math.min(Math.floor(width * 0.8), Math.floor(height *0.8))  + "px monospace";
+                td.style.font = this.expWidth * 0.7 * coeffW + "px monospace";
                 td.style.textAlign = "center";
                 td.style.backgroundColor = bC;
                 td.style.color = "white";
@@ -163,7 +208,7 @@ class Display {
                 tr.append(td);
             }
         }
-        document.body.appendChild(canvas);
+        this.div.appendChild(canvas);
     }
 
     clearBody(){
@@ -217,8 +262,8 @@ class Display {
             }
         }
 
-        document.body.appendChild(this.inventory);
-        document.body.appendChild(this.messages);
+        this.div.appendChild(this.inventory);
+        this.div.appendChild(this.messages);
     }
     
     setBlock(x, y, level, block){
@@ -253,7 +298,6 @@ class Display {
     setLevelOpacity(level, op){
         for(let i = 0; i < this.width; i++){
             for(let j = 0; j < this.height; j++){
-
                 if(this.squares[i][j][level].td.style.opacity == op){
                     return;    
                 }
