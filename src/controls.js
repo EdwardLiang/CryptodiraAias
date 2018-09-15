@@ -12,7 +12,6 @@ DIRS[190] = new Distance(0, 0, -1);
 
 
 function itemSelector(e){
-    //currently dropping takes zero time.
     if(!PlayerEventListener.dropping){
         Game.display.clearMessages();
         Game.display.showMessage("What do you wish to drop? Type index or * to open inventory.");
@@ -132,6 +131,7 @@ let PlayerEventListener = {
         }
 
         if(code == 73 && !e.shiftKey){
+            //show items(i)
             if(this.display.inventoryVisible){
                 this.display.hideInventory();
             }
@@ -141,11 +141,17 @@ let PlayerEventListener = {
         }
 
         if(code == 188 && !e.shiftKey){
+            //pickup (,)
             this.engine.addEvent(pickUp.bind(this));
             if(!Game.realTime){
                 this.level.creaturesAct();
                 this.engine.timeStep();
             }
+            return;
+        }
+        if(code == 190 && !e.shiftKey){
+            this.level.creaturesAct();
+            this.engine.timeStep();
             return;
         }
 
