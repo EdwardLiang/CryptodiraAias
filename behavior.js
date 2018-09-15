@@ -56,7 +56,7 @@ class BehaviorTree {
             }
             else if(this.lastNodeNullPredicateFailed){
                 this.lastSuccess = false;
-                this.lastNodeNullPredicateFailed = true;
+                this.lastNodeNullPredicateFailed = false;
             }
             else{
                 this.lastSuccess = true;
