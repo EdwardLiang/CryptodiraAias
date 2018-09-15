@@ -10,6 +10,7 @@ DIRS[85] = new Distance(1, -1, 0); //right up
 DIRS[188] = new Distance(0, 0, 1);
 DIRS[190] = new Distance(0, 0, -1);
 
+
 function itemSelector(e){
     //currently dropping takes zero time.
     if(!PlayerEventListener.dropping){
@@ -38,12 +39,15 @@ function itemSelector(e){
         if(!e.shiftKey){
             index = index.toLowerCase();
         }
+
         let item = Game.player.dropItem(index);
-        Game.display.clearMessages();
         if(item != null){
-            Game.display.showMessage("You dropped the: " + item.name);
+            Game.engine.addEvent(dropItem(item)); 
+            Game.level.creaturesAct();
+            Game.engine.timeStep();
         }
         else{
+            Game.display.clearMessages();
             Game.display.showMessage("You don't have that item.");
         }
         PlayerEventListener.dropping = false;
@@ -53,10 +57,17 @@ function itemSelector(e){
     }
 }
 
+function dropItem(item){
+    return () => {
+        return ["You dropped the: " + item.name];
+    }
+
+}
+
 function refreshInventory(){
     if(Game.display.inventoryVisible){
         Game.display.hideInventory();
-        Game.display.showInventory(player.items);
+        Game.display.showInventory(Game.player.items);
     }
 }
 
@@ -68,6 +79,7 @@ let PlayerEventListener = {
     engine: null,
     display: null,
     dropping: false,
+    droppedTurnUsed: false,
 
     handleEvent(e){
 
@@ -76,7 +88,7 @@ let PlayerEventListener = {
             let level = PlayerEventListener.level;
             let display = PlayerEventListener.display;
             player.addItems(level.map[player.x][player.y][player.z].items);
-            items = level.map[player.x][player.y][player.z].items;
+            let items = level.map[player.x][player.y][player.z].items;
             let itemsSArray = [];
             if(items.length > 0){
                 for(let i = 0; i < items.length; i++){
@@ -129,19 +141,20 @@ let PlayerEventListener = {
             }
         }
 
-        if(!(code in DIRS)){return;}
-
-        let diff = DIRS[code];
-
-        if(code == 190 && !e.shiftKey){
-            return;
-        }
         if(code == 188 && !e.shiftKey){
             this.engine.addEvent(pickUp.bind(this));
             if(!Game.realTime){
                 this.level.creaturesAct();
                 this.engine.timeStep();
             }
+            return;
+        }
+
+        if(!(code in DIRS)){return;}
+
+        let diff = DIRS[code];
+
+        if(code == 190 && !e.shiftKey){
             return;
         }
         if(code == 188 && e.shiftKey){
