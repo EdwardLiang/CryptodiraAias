@@ -79,7 +79,6 @@ let PlayerEventListener = {
     engine: null,
     display: null,
     dropping: false,
-    droppedTurnUsed: false,
 
     handleEvent(e){
 

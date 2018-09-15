@@ -102,9 +102,9 @@ var Game = {
         b.addItem(new Peanut());
         e.addItem(new Peanut());
         r.addItem(new Battery());
-        r2.action = new MoveBoxActPredicateSucceed(r2);
-        t2.action = new RandomMoveUntilFailAct(t2); 
-        t3.action = new RandomMoveCancel(t3); 
+        r2.actionBuilder = new MoveBoxPredicateSucceedBuilder(r2);
+        t2.actionBuilder = new RandomMoveUntilFailBuilder(t2); 
+        t3.actionBuilder = new RandomMoveCancelBuilder(t3); 
         this.level.addCreature(t);
         this.level.addCreature(t2);
         this.level.addCreature(t3);

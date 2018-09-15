@@ -15,6 +15,8 @@ class Creature{
         this.name = "creature";
         this.defeated = false;
         this.availableSymbols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+        this.behaviorTreeBuilder = new RandomMoveBuilder(this); 
+        this.behaviorTree = this.behaviorTreeBuilder.behaviorTree;
     }
 
     getTopLeftStyle(e){
@@ -109,9 +111,10 @@ class Creature{
             return null;
         }
     }
-    set action(a){
-        this.act = a; 
-        this.behaviorTree = this.act.behaviorTree;
+    set actionBuilder(a){
+        //set behaviorTreeBuilder
+        this.behaviorTreeBuilder = a; 
+        this.behaviorTree = this.behaviorTreeBuilder.behaviorTree;
     }
     getStyle(e){
 
@@ -123,8 +126,6 @@ class WaterCreature extends Creature{}
 class Dolphin extends WaterCreature{
     constructor(x, y, z){
         super(x, y, z, "&#x1F42C;", "blue");
-        this.act = new RandomMoveAct(this); 
-        this.behaviorTree = this.act.behaviorTree;
         this.name = "Dolphin";
     }
 
@@ -140,8 +141,6 @@ class Turtle extends Creature{
 
     constructor(x, y, z){
         super(x, y, z, "&#x1F422;", "green");
-        this.act = new RandomMoveAct(this); 
-        this.behaviorTree = this.act.behaviorTree;
         this.name = "Turtle";
     }
 
@@ -173,8 +172,6 @@ class Elephant extends Creature{
     constructor(x, y, z){
         super(x, y, z, "&#x1F418;", "grey");
         this.icon = "";
-        this.act = new RandomMoveAct(this); 
-        this.behaviorTree = this.act.behaviorTree;
         this.name = "Elephant";
         this.width = 2;
         this.height = 2;
@@ -226,8 +223,8 @@ class Bird extends Creature{
 
     constructor(x, y, z, target){
         super(x, y, z, "&#x1F426;", "blue");
-        this.act = new DirectMoveAct(this, target); 
-        this.behaviorTree = this.act.behaviorTree;
+        this.behaviorTreeBuilder = new DirectMoveBuilder(this, target); 
+        this.behaviorTree = this.behaviorTreeBuilder.behaviorTree;
         this.name = "Bird";
     }
 
@@ -245,8 +242,8 @@ class Cat extends Creature{
     constructor(x, y, z){
         super(x, y, z, "&#x1F408;", "orange");
         //this.act = new MoveStraightAct(this, new Distance(1,0,0)); 
-        this.act = new MoveBoxAct(this);
-        this.behaviorTree = this.act.behaviorTree;
+        this.behaviorTreeBuilder = new MoveBoxBuilder(this);
+        this.behaviorTree = this.behaviorTreeBuilder.behaviorTree;
         this.name = "Cat";
     }
 
@@ -264,8 +261,8 @@ class Dog extends Creature{
     constructor(x, y, z){
         super(x, y, z, "&#x1F415;", "white");
         //this.act = new MoveStraightAct(this, new Distance(1,0,0)); 
-        this.act = new MoveBoxActPredicate(this);
-        this.behaviorTree = this.act.behaviorTree;
+        this.behaviorTreeBuilder = new MoveBoxPredicateBuilder(this);
+        this.behaviorTree = this.behaviorTreeBuilder.behaviorTree;
         this.name = "Dog";
     }
 
@@ -282,8 +279,8 @@ class Robot extends Creature{
     constructor(x, y, z){
         super(x, y, z, "&#x1F916;", "grey");
         //this.act = new MoveStraightAct(this, new Distance(1,0,0)); 
-        this.act = new MoveBoxActPredicateInverse(this);
-        this.behaviorTree = this.act.behaviorTree;
+        this.behaviorTreeBuilder = new MoveBoxPredicateInverseBuilder(this);
+        this.behaviorTree = this.behaviorTreeBuilder.behaviorTree;
         this.name = "Robot";
     }
 
