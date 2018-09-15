@@ -4,3 +4,4 @@ of life.
 
 Acknowledgments:
 Many icons from twemoji at: https://github.com/twitter/twemoji 
+Some icons from Glitch Game: https://www.glitchthegame.com/public-domain-game-art/ 

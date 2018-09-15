@@ -11,6 +11,7 @@ DIRS[188] = new Distance(0, 0, 1);
 DIRS[190] = new Distance(0, 0, -1);
 
 function itemSelector(e){
+    //currently dropping takes zero time.
     if(!PlayerEventListener.dropping){
         Game.display.clearMessages();
         Game.display.showMessage("What do you wish to drop? Type index or * to open inventory.");

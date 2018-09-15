@@ -104,14 +104,14 @@ var Game = {
         r.addItem(new Battery());
         r2.action = new MoveBoxActPredicateSucceed(r2);
         t2.action = new RandomMoveUntilFailAct(t2); 
-        t2.action = new RandomMoveCancel(t2); 
+        t3.action = new RandomMoveCancel(t3); 
         this.level.addCreature(t);
-        //this.level.addCreature(t2);
-        //this.level.addCreature(t3);
+        this.level.addCreature(t2);
+        this.level.addCreature(t3);
         this.level.addCreature(f);
         this.level.addCreature(d);
         this.level.addCreature(r);
-        //this.level.addCreature(r2);
+        this.level.addCreature(r2);
         this.level.addCreature(b);
         this.level.addCreature(e);
         this.level.addCreature(this.player);

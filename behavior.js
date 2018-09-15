@@ -15,6 +15,7 @@ class BehaviorTree {
         this.realTimeDelay = 4;
         this.countForDelay = 0;
         this.dummyRealTimeNode = new ExecuteBehaviorNode();
+        this.lastNodeNullPredicateFailed = false;
     }
 
     handleInvertDecorator(){
@@ -36,33 +37,6 @@ class BehaviorTree {
         this.currNode = this.stack.pop();
     }
 
-    handleRepeatUntilFailDecorator(){
-        //this.lastNode = this.currNode;
-        if(this.lastSuccess){
-            this.stack.push(this.currNode);
-            this.currNode = this.currNode.child;  
-            this.stack.push(this.currNode);
-            return this.goDownTree();
-        }
-        else{
-            this.lastNode = this.currNode;
-            this.currNode = this.stack.pop();
-            //console.log(this.lastNode);
-            //console.log(this.currNode);
-        }
-
-    }
-    handleRepeatDecorator(){
-        this.stack.push(this.currNode);
-        //this.lastNode = this.currNode;
-        this.currNode = this.currNode.child;
-        this.stack.push(this.currNode);
-        return this.goDownTree();
-    }
-    handleSequenceBehaviorNode(){
-
-    }
-
     next(){
         if(Game.realTime && this.countForDelay != this.realTimeDelay){
             this.countForDelay++;
@@ -80,6 +54,10 @@ class BehaviorTree {
             if(this.lastNode){
                 this.lastSuccess = this.lastNode.success;
             }
+            else if(this.lastNodeNullPredicateFailed){
+                this.lastSuccess = false;
+                this.lastNodeNullPredicateFailed = true;
+            }
             else{
                 this.lastSuccess = true;
             }
@@ -93,15 +71,36 @@ class BehaviorTree {
                 }
 
                 if(this.currNode instanceof RepeatUntilFailDecorator){
-                    this.handleRepeatUntilFailDecorator();
+                    if(this.lastSuccess){
+                        this.stack.push(this.currNode);
+                        this.currNode = this.currNode.child;  
+                        this.stack.push(this.currNode);
+                        return this.goDownTree();
+                    }
+                    else{
+                        //console.log("test");
+                        this.lastNode = this.currNode;
+                        this.currNode = this.stack.pop();
+                        //console.log(this.lastNode);
+                        //console.log(this.currNode);
+                    }
+
                 }
 
                 if(this.currNode instanceof RepeatDecorator){
-                    return this.handleRepeatDecorator();
+                    //return this.handleRepeatDecorator();
+
+                    this.stack.push(this.currNode);
+                    //this.lastNode = this.currNode;
+                    this.currNode = this.currNode.child;
+                    this.stack.push(this.currNode);
+                    return this.goDownTree();
+
                 }
             }
             else if(this.currNode instanceof SequenceBehaviorNode){
                 if(this.lastSuccess == false || this.currNode.selectNode(this.lastNode) === null){
+                    //go up the tree if finished
                     this.lastNode = this.currNode;
                     this.currNode = this.stack.pop();
                     if(this.currNode instanceof RandomSequenceNode){
@@ -120,6 +119,11 @@ class BehaviorTree {
             }
             else if(this.currNode instanceof SelectionBehaviorNode){
                 if(this.lastSuccess == true || this.currNode.selectNode(this.lastNode) === null){
+                    //go up the tree if finished
+                    this.currNode.success = true;
+                    if(this.currNode.selectNode(this.lastNode) === null){
+                        this.currNode.success = false;
+                    }
                     this.lastNode = this.currNode;
                     this.currNode = this.stack.pop();
                 }
@@ -136,7 +140,9 @@ class BehaviorTree {
     }
 
     goDownTree(){
+        //console.log("going down tree");
         while(this.currNode instanceof BehaviorNodeWithChildren || this.currNode instanceof Decorator){
+            //console.log(this.currNode);
             if(this.currNode instanceof BehaviorNodeWithChildren){
                 if(this.currNode instanceof RandomSequenceNode || this.currNode instanceof RandomSelectionNode){
                     this.currNode.randomize();
@@ -156,8 +162,10 @@ class BehaviorTree {
             this.stack.push(this.root);
             this.currNode = this.root;
             this.lastNode = null;
+            return (new ExecuteBehaviorNode());
         }
         if(this.currNode instanceof PredicateNode){
+            //runs next command immediately.
             this.currNode.evaluatePredicate();
             let x = this.currNode;
             //var lastSuccess = this.stack.pop().success;
@@ -166,12 +174,15 @@ class BehaviorTree {
             if(this.currNode instanceof BehaviorNodeWithChildren && !x.success){
                 //lastNode has to be set for decorators but not BehaviorNodesWithChildren
                 this.lastNode = null;
+                this.lastNodeNullPredicateFailed = true;
+                //because null is also used in construction/reset, we need to differentiate
+                //between this null and the other null.
             }
             return this.next();
         }
 
         if(!(this.currNode instanceof ExecuteBehaviorNode)){
-            //console.log(this.currNode);
+            console.log(this.currNode);
             throw "Behavior selected is not executable!";
         }
         else{
@@ -228,7 +239,9 @@ class ExecuteBehaviorNode extends BehaviorNode{
     }
 }
 
-class SequenceBehaviorNode extends BehaviorNodeWithChildren{}    
+class SequenceBehaviorNode extends BehaviorNodeWithChildren{
+
+}    
 
 class SelectionBehaviorNode extends BehaviorNodeWithChildren{}
 
@@ -295,7 +308,12 @@ class SucceedDecorator extends Decorator{}
 
 class RepeatDecorator extends Decorator{}
 
-class RepeatUntilFailDecorator extends Decorator{}
+class RepeatUntilFailDecorator extends Decorator{
+    constructor(){
+        super();
+        this.success = true;
+    }
+}
 
 //class SetVariableBehavior extends BehaviorNode{}
 
@@ -370,7 +388,7 @@ class MoveBehavior extends ExecuteBehaviorNode{
                 for(let z = 0; z < this.creature.zLevels; z++){
                     level.map[this.creature.x + x][this.creature.y + y][this.creature.z + z]
                         .removeCreature(this.creature);
-                        level.map[this.creature.x + x][this.creature.y + y][this.creature.z + z].creatureSegment = false;
+                    level.map[this.creature.x + x][this.creature.y + y][this.creature.z + z].creatureSegment = false;
                 }
             }
         }
@@ -397,12 +415,12 @@ class MoveBehavior extends ExecuteBehaviorNode{
             }
         }
         /*for(let x = 0; x < this.creature.width; x++){
-            for(let y = 0; y < this.creature.height; y++){
-                for(let z = 0; z < this.creature.zLevels; z++){
-                       console.log(level.map[this.creature.x + x][this.creature.y + y][this.creature.z + z].creatureSegment);
-                }
-            }
-        }*/
+          for(let y = 0; y < this.creature.height; y++){
+          for(let z = 0; z < this.creature.zLevels; z++){
+          console.log(level.map[this.creature.x + x][this.creature.y + y][this.creature.z + z].creatureSegment);
+          }
+          }
+          }*/
 
 
         //level.map[this.creature.x][this.creature.y][this.creature.z].creature = this.creature;
@@ -434,7 +452,7 @@ class DirectDirectionMoveBehavior extends ExecuteBehaviorNode{
         let newY = this.creature.y + diff.y;
         let newZ = this.creature.z + diff.z;
 
-        
+
         for(let x = 0; x < this.creature.width; x++){
             for(let y = 0; y < this.creature.height; y++){
                 for(let z = 0; z < this.creature.zLevels; z++){
