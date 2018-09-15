@@ -96,8 +96,8 @@ class Display {
         this.bWidth = this.view.blockWidthPx;
         this.bHeight = this.view.blockHeightPx; 
 
-        td1.style.fontSize = Math.floor(this.bHeight * 0.6) + "px";
-        td1.style.font = Math.floor(this.bHeight * 0.6) + "px monospace";
+        td1.style.fontSize = this.expWidth * this.coeffW * 0.70 + "px";
+        td1.style.font = this.expWidth * this.coeffW * 0.70  + "px monospace";
         td1.style.color = "white";
         td1.innerHTML = message;
         tr.append(td1);
@@ -109,8 +109,8 @@ class Display {
     showInventory(items){
         let th = document.createElement("caption");
 
-        th.style.fontSize = Math.floor(this.bHeight * 0.6) + "px";
-        th.style.font = Math.floor(this.bHeight * 0.6) + "px monospace";
+        th.style.fontSize = this.expWidth * this.coeffW * 0.70  + "px";
+        th.style.font = this.expWidth * this.coeffW * 0.70  + "px monospace";
         th.style.color = "white";
         th.innerHTML = "Inventory";
         this.inventory.append(th);
@@ -120,12 +120,12 @@ class Display {
             let td1 = document.createElement("td");
             let td2 = document.createElement("td");
             let td3 = document.createElement("td");
-            td1.style.fontSize = Math.floor(this.bHeight * 0.6) + "px";
-            td2.style.fontSize = Math.floor(this.bHeight * 0.6) + "px";
-            td3.style.fontSize = Math.floor(this.bHeight * 0.6) + "px";
-            td1.style.font = Math.floor(this.bHeight * 0.6) + "px monospace";
-            td2.style.font = Math.floor(this.bHeight * 0.6) + "px monospace";
-            td3.style.font = Math.floor(this.bHeight * 0.6) + "px monospace";
+            td1.style.fontSize = this.expWidth * this.coeffW * 0.70 + "px";
+            td2.style.fontSize = this.expWidth * this.coeffW * 0.70 + "px";
+            td3.style.fontSize = this.expWidth * this.coeffW * 0.70 + "px";
+            td1.style.font = this.expWidth * this.coeffW * 0.70 + "px monospace";
+            td2.style.font = this.expWidth * this.coeffW * 0.70 + "px monospace";
+            td3.style.font = this.expWidth * this.coeffW * 0.70 + "px monospace";
 
             td1.style.color = "white";
             td2.style.color = "white";
@@ -159,8 +159,8 @@ class Display {
         //canvas.style.bottom = 3 * this.view.blockHeightPx - level*(this.view.blockHeightPx / 4) + "px";
         //canvas.style.left = 2 * this.view.blockWidthPx - level*(this.view.blockWidthPx / 4) + "px";
         //
-        let coeffH = 0.025 + level*0.0007;
-        let coeffW = 0.025 + level*0.0004;
+        this.coeffH = 0.025 + level*0.0007;
+        this.coeffW = 0.025 + level*0.0004;
 
         if(Game.simpleLayers){
             let width = this.view.blockWidthPx;
@@ -187,18 +187,18 @@ class Display {
                 this.squares[j][i][level].td = td;
                 //td.style.width = width + "px";
                 //td.style.height = height + "px";
-                td.style.width = this.expWidth * coeffW + "px";
-                td.style.height = this.expWidth * coeffH + "px";
+                td.style.width = this.expWidth * this.coeffW + "px";
+                td.style.height = this.expWidth * this.coeffH + "px";
                 td.style.overflow = "visible";
                 td.style.content = "center";
                 //td.style.display = "block";
                 //td.style.fontSize = "32px";
                 //td.style.fontSize = Math.min(Math.floor(width * 0.8), Math.floor(height *0.8)) + "px";
-                td.style.fontSize = this.expWidth * coeffW * 0.70;
+                td.style.fontSize = this.expWidth * this.coeffW * 0.70;
                 td.align = "center";
                 //td.style.font = "32px monospace";
                 //td.style.font = Math.min(Math.floor(width * 0.8), Math.floor(height *0.8))  + "px monospace";
-                td.style.font = this.expWidth * 0.7 * coeffW + "px monospace";
+                td.style.font = this.expWidth * 0.7 * this.coeffW + "px monospace";
                 td.style.textAlign = "center";
                 td.style.backgroundColor = bC;
                 td.style.color = "white";
