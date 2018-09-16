@@ -106,6 +106,42 @@ class Creature{
         //Game.level.map[this.x][this.y][this.z].
     }
 
+    removeFromBlock(){
+        for(let x = 0; x < this.width; x++){
+            for(let y = 0; y < this.height; y++){
+                for(let z = 0; z < this.zLevels; z++){
+                    Game.level.map[this.x + x][this.y + y][this.z + z]
+                        .removeCreature(this);
+                    Game.level.map[this.x + x][this.y + y][this.z + z].creatureSegment = false;
+                }
+            }
+        }
+    }
+
+    moveToBlock(newX, newY, newZ){
+        this.x = newX;
+        this.y = newY;
+        this.z = newZ;
+        for(let x = 0; x < this.width; x++){
+            for(let y = 0; y < this.height; y++){
+                for(let z = 0; z < this.zLevels; z++){
+                    Game.level.map[this.x + x][this.y + y][this.z + z].creature =
+                        this;
+                    if(x == 0 && y == 0 && this.scale == 1){
+                        Game.level.map[this.x + x][this.y + y][this.z + z].creatureSegment = false;
+                    }
+                    else if(x == this.width - 1 && y == 0 && this.scale == -1){
+                        Game.level.map[this.x + x][this.y + y][this.z + z].creatureSegment = false;
+                    }
+                    else{
+                        Game.level.map[this.x + x][this.y + y][this.z + z].creatureSegment = true;
+                    }
+                }
+            }
+        }
+
+    }
+
     move(diff){
         if(this.defeated){
             return null;

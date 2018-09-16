@@ -7,13 +7,7 @@ class View {
         this.heightPx = window.innerHeight;
         this.widthPx = 1855;
         this.heightPx = 965;
-        this.blockWidthPx = Math.floor(this.widthPx / 40);
-        //this.blockHeightPx = Math.floor(this.heightPx / 20);
-        this.blockHeightPx = Math.floor((48 / 46) * this.blockWidthPx);
-        //this.height = Math.floor(this.heightPx / this.blockHeightPx) - 5;
 
-        //this.width = Math.floor(this.widthPx / this.blockWidthPx) - 8;
-        //this.minPx = Math.min(this.blockWidthPx, this.blockHeightPx);
         this.xOffset = 0;
         this.yOffset = 0;
     }
@@ -30,13 +24,11 @@ class Display {
         this.squares = [];
 
         this.div = document.createElement("div");
-        //this.div.style.width = "1855px";
-        //this.div.style.height = "965px";
         let scale = Math.min((window.innerWidth - 50) / 1855, (window.innerHeight- 50) / 965);
-        this.div.style.width = Math.floor(1855*scale) + "px";
         this.expWidth = 1855*scale;
-        this.div.style.height = Math.floor(965*scale) + "px";
         this.expHeight = 965*scale;
+        this.div.style.width = Math.floor(1855*scale) + "px";
+        this.div.style.height = Math.floor(965*scale) + "px";
         this.div.style.position = "absolute";
         document.body.appendChild(this.div);
 
@@ -149,16 +141,6 @@ class Display {
         
         this.canvases.push(canvas);
 
-        let width = 46 + level*.8;
-        let height = 46 + level*1.3;
-        //let width = Math.ceil(this.view.blockWidthPx + (level/(Game.level.levels))*(this.view.blockWidthPx / this.view.width));
-        //let height = Math.ceil(this.view.blockHeightPx + (level/(Game.level.levels))*(this.view.blockHeightPx / this.view.height)); 
-
-        //width = Math.max(width, this.view.blockWidthPx + level);
-        //height = Math.max(height, this.view.blockHeightPx + level);
-        //canvas.style.bottom = 3 * this.view.blockHeightPx - level*(this.view.blockHeightPx / 4) + "px";
-        //canvas.style.left = 2 * this.view.blockWidthPx - level*(this.view.blockWidthPx / 4) + "px";
-        //
         this.coeffH = 0.025 + level*0.0007;
         this.coeffW = 0.025 + level*0.0004;
 
@@ -185,19 +167,12 @@ class Display {
                 let td = document.createElement("td");
                 this.squares[j][i][level] = new DisplayBlock(j, i, level); 
                 this.squares[j][i][level].td = td;
-                //td.style.width = width + "px";
-                //td.style.height = height + "px";
                 td.style.width = this.expWidth * this.coeffW + "px";
                 td.style.height = this.expWidth * this.coeffH + "px";
                 td.style.overflow = "visible";
                 td.style.content = "center";
-                //td.style.display = "block";
-                //td.style.fontSize = "32px";
-                //td.style.fontSize = Math.min(Math.floor(width * 0.8), Math.floor(height *0.8)) + "px";
                 td.style.fontSize = this.expWidth * this.coeffW * 0.70;
                 td.align = "center";
-                //td.style.font = "32px monospace";
-                //td.style.font = Math.min(Math.floor(width * 0.8), Math.floor(height *0.8))  + "px monospace";
                 td.style.font = this.expWidth * 0.7 * this.coeffW + "px monospace";
                 td.style.textAlign = "center";
                 td.style.backgroundColor = bC;
