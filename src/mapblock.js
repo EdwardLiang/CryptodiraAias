@@ -1,9 +1,8 @@
 class MapBlock{
 
-    constructor(x, y, z){
+    constructor(x, y){
         this.x = x;
         this.y = y;
-        this.z = z;
         this.movable = true;
         this.icon = "";
         this.originalIcon = "";
@@ -74,7 +73,7 @@ class MapBlock{
         }
     }
     get creature(){
-        return this.resident;
+        return this.creatures[0];
     }
 
     setIcon(icon, color){
@@ -97,14 +96,14 @@ class MapBlock{
 }
 
 class StaircaseBlock extends MapBlock{
-    constructor(x, y, z){
-        super(x, y, z);
+    constructor(x, y){
+        super(x, y);
     }
 }
 
 class StaircaseUpBlock extends StaircaseBlock{
-    constructor(x, y, z){
-        super(x, y, z);
+    constructor(x, y){
+        super(x, y);
         //this.icon = "<";
     }
 
@@ -128,8 +127,8 @@ class StaircaseUpBlock extends StaircaseBlock{
 }
 
 class StaircaseDownBlock extends StaircaseBlock{
-    constructor(x, y, z){
-        super(x, y, z);
+    constructor(x, y){
+        super(x, y);
         //this.icon = ">";
     }
 
@@ -155,8 +154,8 @@ class StaircaseDownBlock extends StaircaseBlock{
 }
 
 class WaterBlock extends MapBlock{
-    constructor(x, y, z){
-        super(x, y, z);
+    constructor(x, y){
+        super(x, y);
         this.icon = " ";
         this.iconColor = "black";
     }
@@ -177,8 +176,8 @@ class WaterBlock extends MapBlock{
 }
 
 class GrassBlock extends MapBlock{
-    constructor(x, y, z){
-        super(x, y, z);
+    constructor(x, y){
+        super(x, y);
         this.icon = " ";
         this.iconColor = "black";
     }
@@ -195,8 +194,8 @@ class GrassBlock extends MapBlock{
 }
 
 class IceBlock extends MapBlock{
-    constructor(x, y, z){
-        super(x, y, z);
+    constructor(x, y){
+        super(x, y);
         this.icon = " ";
         this.iconColor = "black";
     }
@@ -207,8 +206,8 @@ class IceBlock extends MapBlock{
 }
 
 class UnmovableBlock extends MapBlock{
-    constructor(x, y, z){
-        super(x, y, z);
+    constructor(x, y){
+        super(x, y);
         this.movable = false;
         this.icon = " ";
         this.iconColor = "black";
@@ -216,8 +215,8 @@ class UnmovableBlock extends MapBlock{
 }
 
 class SolidBlock extends UnmovableBlock{
-    constructor(x, y, z){
-        super(x, y, z);
+    constructor(x, y){
+        super(x, y);
         this.movable = false;
         this.icon = " ";
         this.iconColor = "black";
@@ -228,8 +227,8 @@ class SolidBlock extends UnmovableBlock{
 }
 
 class WallBlock extends UnmovableBlock{
-    constructor(x, y, z){
-        super(x, y, z);
+    constructor(x, y){
+        super(x, y);
         this.icon = "&#128857;";
         this.iconColor = "AA3311";
     }
@@ -245,8 +244,8 @@ class WallBlock extends UnmovableBlock{
 }
 
 class EvergreenBlock extends MapBlock{
-    constructor(x, y, z){
-        super(x, y, z);
+    constructor(x, y){
+        super(x, y);
         this.icon = "&#x1F332;";
         this.originalIcon = "&#x1F332;";
         this.iconColor = "green";
@@ -263,8 +262,8 @@ class EvergreenBlock extends MapBlock{
 }
 
 class DeciduousBlock extends MapBlock{
-    constructor(x, y, z){
-        super(x, y, z);
+    constructor(x, y){
+        super(x, y);
         this.icon = "&#x1F333;";
         this.originalIcon = "&#x1F333;";
         this.iconColor = "green";
@@ -281,8 +280,8 @@ class DeciduousBlock extends MapBlock{
 }
 
 class FountainBlock extends MapBlock{
-    constructor(x, y, z){
-        super(x, y, z);
+    constructor(x, y){
+        super(x, y);
         this.icon = "&#x26F2;";
         this.originalIcon = "&#x26F2;";
         this.iconColor = "blue";
@@ -295,8 +294,8 @@ class FountainBlock extends MapBlock{
 }
 
 class StoneBlock extends UnmovableBlock{
-    constructor(x, y, z){
-        super(x, y, z);
+    constructor(x, y){
+        super(x, y);
         this.icon = " ";
         this.iconColor = "black";
     }

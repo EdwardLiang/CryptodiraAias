@@ -7,11 +7,18 @@ class View {
         this.heightPx = window.innerHeight;
         this.widthPx = 1855;
         this.heightPx = 965;
+        this.offsets = [];
+    }
+}
 
+class Offset {
+
+    constructor(){
         this.xOffset = 0;
         this.yOffset = 0;
     }
 }
+
 class Display {
 
     constructor(){
@@ -144,13 +151,6 @@ class Display {
         this.coeffH = 0.025 + level*0.0007;
         this.coeffW = 0.025 + level*0.0004;
 
-        if(Game.simpleLayers){
-            let width = this.view.blockWidthPx;
-            let height = this.view.blockHeightPx;
-            canvas.style.bottom = 3 * this.view.blockHeightPx + "px";
-            canvas.style.left = 2 * this.view.blockWidthPx + "px";
-        }
-
         let bC = this.getBC(level);
         let opacity = 0.1;
         
@@ -195,7 +195,11 @@ class Display {
                     this.clearBlock(i, j, z);
                     this.clear(i, j, z, Game.player);
                     //this.level.map[i + this.view.xOffset][j + this.view.yOffset][z].clear();
-                    this.setBlock(i, j, z, this.level.map[i + this.view.xOffset][j + this.view.yOffset][z]);
+                    //this.setBlock(i, j, z, this.level.map[i + this.view.offsets[z].xOffset][j + this.view.offsets[z].yOffset][z]);
+
+                    //this.setBlock(i, j, z, Game.map.getBlock(i + this.view.offsets[z].xOffset, j + this.view.offsets[z].yOffset, z);
+
+                    this.setBlock(i, j, z, this.getCorrespondingMapBlock(i, j, z));
                     this.draw(i, j, z);
                 }
             }
@@ -204,14 +208,17 @@ class Display {
         twemoji.parse(document.body);
     }
 
-    displayLevel(level) {
-        this.levels = level.levels;
-        this.level = level;
-        if(level.width < this.view.width){
-            this.width = level.width;
+    displayMap(map) {
+        this.levels = map.levels;
+        this.level = map;
+
+        let minWidth = map.levels.reduce((min, p) => p.width < min ? p.width : min, map.levels[0].width); 
+        let minHeight = map.levels.reduce((min, p) => p.height < min ? p.height : min, map.levels[0].height); 
+        if(minWidth < this.view.width){
+            this.width = minWidth;
         }
-        if(level.height < this.view.height){
-            this.height = level.height;
+        if(minHeight < this.view.height){
+            this.height = minHeight;
         }
 
         this.squares = new Array(this.width);
@@ -222,14 +229,18 @@ class Display {
             }
         }
 
-        for (let i = 0; i < this.levels; i++){
+        for (let i = 0; i < this.levels.length; i++){
+            this.view.offsets[i] = new Offset();
             this.generateTables(i);
         }
         for(let i = 0; i < this.squares.length; i++){
             for(let j = 0; j < this.squares[i].length; j++){
                 for(let z = 0; z < this.squares[i][j].length; z++){
-                    level.map[i + this.view.xOffset][j + this.view.yOffset][z].calculateIcon();
-                    this.setBlock(i, j, z, level.map[i + this.view.xOffset][j + this.view.yOffset][z]);
+                    //let block = map.getBlock(i + this.view.offsets[z].xOffset, j + this.view.offsets[z].yOffset, z);
+                    let block = this.getCorrespondingMapBlock(i, j, z);
+
+                    block.calculateIcon();
+                    this.setBlock(i, j, z, block);
                     this.draw(i, j, z);
                 }
             }
@@ -238,7 +249,11 @@ class Display {
         this.div.appendChild(this.inventory);
         this.div.appendChild(this.messages);
     }
-    
+
+    getCorrespondingMapBlock(x, y, z){
+        return Game.map.getBlock(x + this.view.offsets[z].xOffset, y + this.view.offsets[z].yOffset, z);
+    }
+
     setBlock(x, y, level, block){
         this.squares[x][y][level].icon = block.icon;
         this.squares[x][y][level].color = block.iconColor;
@@ -284,8 +299,8 @@ class Display {
         //default
         let bC;
         /*if(level == 0){
-            bC = "#808080";
-        }*/
+          bC = "#808080";
+          }*/
         if(level.backgroundColor){
             return level.backgroundColor;
         }
@@ -336,29 +351,29 @@ class Display {
         let newZ = Game.player.z;
         let newX = Game.player.x;
         let newY = Game.player.y;
-        let level = Game.level;
+        let map = Game.map;
         let display = Game.display;
-/*
-        let solidAbove = true;
-        for(let i = newZ + 1; i < level.levels; i++){
-            if(!(level.map[newX][newY][i] instanceof SolidBlock)){
-                solidAbove = false; 
-            }
-        }
-        if(solidAbove){
-            for(let i = newZ + 1; i < level.levels; i++){
-                display.setLevelOpacity(i, "0.5");
-            }
-        }
-        else{
-            for(let i = newZ + 1; i < level.levels; i++){
-                display.setLevelOpacity(i, "0.1");
-            }
-        }
-        */
+        /*
+           let solidAbove = true;
+           for(let i = newZ + 1; i < level.levels; i++){
+           if(!(level.map[newX][newY][i] instanceof SolidBlock)){
+           solidAbove = false; 
+           }
+           }
+           if(solidAbove){
+           for(let i = newZ + 1; i < level.levels; i++){
+           display.setLevelOpacity(i, "0.5");
+           }
+           }
+           else{
+           for(let i = newZ + 1; i < level.levels; i++){
+           display.setLevelOpacity(i, "0.1");
+           }
+           }
+           */
         let solid = true;
-        for(let i = newZ + 1; i < level.levels; i++){
-            if(!(level.map[newX][newY][i] instanceof SolidBlock)){
+        for(let i = newZ + 1; i < map.levels.length; i++){
+            if(!(map.getBlock(newX,newY,i) instanceof SolidBlock)){
                 solid = false; 
             }
             if(solid){

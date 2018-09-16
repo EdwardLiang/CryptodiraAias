@@ -24,7 +24,7 @@ class Engine {
         }
         this.nSteps++;
         this.events = [];
-        Game.level.clearVisible();
+        Game.map.clearVisible();
         Game.display.redraw();
 
         if(!Game.realTime){

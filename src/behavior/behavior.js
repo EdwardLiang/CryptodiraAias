@@ -12,7 +12,7 @@ class MoveBehavior extends ExecuteBehaviorNode{
             return;
         }
         this.success = true;
-        let level = Game.level;
+        let map = Game.map;
         let display = Game.display;
         let diff = this.diff;
         let newX = this.creature.x + diff.x;
@@ -21,9 +21,9 @@ class MoveBehavior extends ExecuteBehaviorNode{
 
         for(let x = 0; x < this.creature.width; x++){
             for(let y = 0; y < this.creature.height; y++){
-                for(let z = 0; z < this.creature.zLevels; z++){
-                    if(!level.checkMovable(newX + x, newY + y, newZ + z, this.creature)) {return;}
-                }
+                //for(let z = 0; z < this.creature.zLevels; z++){
+                if(!map.checkMovable(newX + x, newY + y, newZ, this.creature)) {return;}
+                //}
             }
         }
 
@@ -52,7 +52,7 @@ class DirectDirectionMoveBehavior extends ExecuteBehaviorNode{
             return;
         }
         this.success = true;
-        let level = Game.level;
+        let map = Game.map;
         let display = Game.display;
 
         this.diff = directPath(this.creature, this.target);
@@ -64,9 +64,9 @@ class DirectDirectionMoveBehavior extends ExecuteBehaviorNode{
 
         for(let x = 0; x < this.creature.width; x++){
             for(let y = 0; y < this.creature.height; y++){
-                for(let z = 0; z < this.creature.zLevels; z++){
-                    if(!level.checkMovable(newX + x, newY + y, newZ + z, this.creature)) {return;}
-                }
+                //for(let z = 0; z < this.creature.zLevels; z++){
+                if(!map.checkMovable(newX + x, newY + y, newZ, this.creature)) {return;}
+                //}
             }
         }
 
