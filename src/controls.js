@@ -166,11 +166,10 @@ let PlayerEventListener = {
             if(!this.map.canGoUp(this.player.x, this.player.y, this.player.z)){
                 return;
             }
-            if(this.map.getBlock(this.player.x, this.player.y, this.player.z) instanceof BookBlock){
-                let l = new Level(50, 30);
-                l.setBlock(1, 1, new EvergreenBlock(1, 1));
-                l.setBlock(2, 1, new StaircaseDownBlock(7, 3));
-                this.map.setLevel(l, 1);
+            let block = this.map.getBlock(this.player.x, this.player.y, this.player.z);
+            if(block instanceof BookBlock){
+                this.map.setLevel(block.lvl, 1);
+                diff = new Distance(0, 0, 1);
             }
         }
         if(code == 190 && e.shiftKey){

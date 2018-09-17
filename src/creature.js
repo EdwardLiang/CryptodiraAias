@@ -227,9 +227,9 @@ class Elephant extends Creature{
 
     getStyle(e){
         super.getStyle(e);
-        if(Game.player.z >= this.z){
-            e.style.opacity = "0.6";
-        }
+        //if(Game.player.z >= this.z){
+         //   e.style.opacity = "0.6";
+        //}
     }
 
     getTopLeftStyle(e){

@@ -304,6 +304,9 @@ class Display {
         if(level.backgroundColor){
             return level.backgroundColor;
         }
+        //if(level == 4){
+         //   return "#D4AF37";
+        //} 
         if(level % 3 == 0){
             //bC = "#734";
             bC = "#" + (540 + Math.ceil(level / 3) * 5);
