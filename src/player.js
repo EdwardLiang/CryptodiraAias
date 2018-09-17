@@ -77,7 +77,7 @@ class Player extends Creature{
             display.view.offsets[player.z].xOffset = player.x - Math.floor(display.width / 2);
             var restWidth = (display.width) - (player.x - display.view.offsets[player.z].xOffset); 
             if(player.x + restWidth >= map.levels[player.z].width){
-                display.view.offsets[player.z].xOffset = level.width - display.width;
+                display.view.offsets[player.z].xOffset = map.levels[player.z].width - display.width;
             }
             if(display.view.offsets[player.z].xOffset < 0){
                 display.view.offsets[player.z].xOffset = 0;

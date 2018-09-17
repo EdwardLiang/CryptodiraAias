@@ -90,7 +90,7 @@ class Creature{
     }
 
     die(){
-        Game.map.creatures = Game.map.creatures.filter(e => e !== this);
+        Game.map.levels[this.z].creatures = Game.map.levels[this.z].creatures.filter(e => e !== this);
         //Game.level.map[this.x][this.y][this.z].removeCreature(this);
 
         /*for(let x = 0; x < this.width; x++){

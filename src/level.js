@@ -3,6 +3,7 @@ class Level{
     constructor(width, height){
         this.width = width;
         this.height = height;
+        this.creatures = [];
 
         this.blocks = new Array(width);
         for (let i = 0; i < this.blocks.length; i++){
@@ -11,6 +12,10 @@ class Level{
                 this.blocks[i][j] = new MapBlock(i, j);
             }
         }
+    }
+
+    setBlock(x, y, block){
+        this.blocks[x][y] = block;
     }
 
     getCreature(x, y){

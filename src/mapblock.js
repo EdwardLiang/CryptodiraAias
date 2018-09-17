@@ -126,6 +126,19 @@ class StaircaseUpBlock extends StaircaseBlock{
 
 }
 
+class BookBlock extends StaircaseUpBlock{
+
+    constructor(x, y){
+        super(x, y);
+        this.icon = "&#x1F4D6;";
+        this.originalIcon = "&#x1F4D6;";
+        this.iconColor = "blue";
+    }
+    getStyle(e){
+
+    }
+}
+
 class StaircaseDownBlock extends StaircaseBlock{
     constructor(x, y){
         super(x, y);
