@@ -135,6 +135,17 @@ class BookBlock extends StaircaseUpBlock{
         this.iconColor = "blue";
     }
     getStyle(e){
+        //super writes staircaseup image. super.super doesn't work,
+        //so this method is copied from MapBlock
+        if(this.creatures.length > 0){
+            if(!this.creatureSegment){
+                this.creatures[0].getTopLeftStyle(e);
+            }
+            this.creatures[0].getStyle(e);
+        }
+        if(this.creatures[0] === Game.player){
+            e.style.opacity = "0.7";
+        }
 
     }
 }
