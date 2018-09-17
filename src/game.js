@@ -16,14 +16,14 @@ var Game = {
         let level2 = new Level(50, 30);
         let level3 = new Level(50, 30);
         let level4 = new Level(50, 30);
-        //let level5 = new Level(50, 30);
+        let level5 = new Level(50, 30);
         //
         this.map.setLevel(level0, 0);
         this.map.setLevel(level1, 1);
         this.map.setLevel(level2, 2);
         this.map.setLevel(level3, 3);
         this.map.setLevel(level4, 4);
-        //this.map.setLevel(5, level5);
+        this.map.setLevel(level5, 5);
 
 
         //reality/physical/knowledge/thought&feeling/virtue
@@ -87,6 +87,9 @@ var Game = {
 
         this.map.setBlock(6,6,3, new StaircaseUpBlock(6,6,3));
         this.map.setBlock(3,3,4, new StaircaseDownBlock(3,3,4));
+
+        this.map.setBlock(6,6,4, new StaircaseUpBlock(6,6));
+        this.map.setBlock(3,3,5, new StaircaseDownBlock(3,3));
 
         this.map.setBlock(7,3,0, new BookBlock(7,3));
         this.map.setBlock(3,5,4, new GrassBlock(3,5,4));
