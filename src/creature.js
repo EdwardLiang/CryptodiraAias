@@ -1,12 +1,12 @@
 class Creature{
 
-    constructor(x, y, z, icon, iconColor){
+    constructor(x, y, level, icon, iconColor){
         this.x = x;
         this.y = y;
-        this.z = z;
+        this.z = level;
         this.width = 1;
         this.height = 1;
-        this.zLevels = 1;
+        //this.zLevels = 1;
         this.items = {};
         this.icon = icon;
         this.iconColor = iconColor;
@@ -17,6 +17,10 @@ class Creature{
         this.availableSymbols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
         this.behaviorTreeBuilder = new RandomMoveBuilder(this); 
         this.behaviorTree = this.behaviorTreeBuilder.behaviorTree;
+    }
+
+    get level(){
+        return this.z;
     }
 
     getTopLeftStyle(e){
@@ -50,7 +54,8 @@ class Creature{
     dropItem(index){
         let item = this.getItem(index);
         if(index in this.items){
-            Game.level.map[this.x][this.y][this.z].items.unshift(this.items[index]);
+            Game.map.getBlock(this.x,this.y,this.z).items.unshift(this.items[index]);
+
             delete this.items[index];
             this.availableSymbols.unshift(index);
         }
@@ -85,22 +90,22 @@ class Creature{
     }
 
     die(){
-        Game.level.creatures = Game.level.creatures.filter(e => e !== this);
+        Game.map.levels[this.z].creatures = Game.map.levels[this.z].creatures.filter(e => e !== this);
         //Game.level.map[this.x][this.y][this.z].removeCreature(this);
 
-        for(let x = 0; x < this.width; x++){
+        /*for(let x = 0; x < this.width; x++){
             for(let y = 0; y < this.height; y++){
                 for(let z = 0; z < this.zLevels; z++){
-                    Game.level.map[this.x + x][this.y + y][this.z + z]
-                        .removeCreature(this);
+                    Game.map.getBlock(this.x,this.y,this.z).removeCreature(this);
                     Game.level.map[this.x + x][this.y + y][this.z + z].creatureSegment = false;
                 }
             }
-        }
+        }*/
+        this.removeFromBlock();
 
         let itemKeys = Object.keys(this.items);
         for(let i = 0; i < itemKeys.length; i++){
-            Game.level.map[this.x][this.y][this.z].items.unshift(this.items[itemKeys[i]]);
+            Game.map.getBlock(this.x,this.y,this.z).items.unshift(this.items[itemKeys[i]]);
         }
         this.items = {};
         //Game.level.map[this.x][this.y][this.z].
@@ -109,11 +114,10 @@ class Creature{
     removeFromBlock(){
         for(let x = 0; x < this.width; x++){
             for(let y = 0; y < this.height; y++){
-                for(let z = 0; z < this.zLevels; z++){
-                    Game.level.map[this.x + x][this.y + y][this.z + z]
-                        .removeCreature(this);
-                    Game.level.map[this.x + x][this.y + y][this.z + z].creatureSegment = false;
-                }
+                //for(let z = 0; z < this.zLevels; z++){
+                Game.map.getBlock(this.x + x,this.y + y,this.z).removeCreature(this);
+                Game.map.getBlock(this.x + x,this.y + y,this.z).creatureSegment = false;
+                //}
             }
         }
     }
@@ -122,24 +126,25 @@ class Creature{
         this.x = newX;
         this.y = newY;
         this.z = newZ;
-        for(let x = 0; x < this.width; x++){
-            for(let y = 0; y < this.height; y++){
-                for(let z = 0; z < this.zLevels; z++){
-                    Game.level.map[this.x + x][this.y + y][this.z + z].creature =
-                        this;
-                    if(x == 0 && y == 0 && this.scale == 1){
-                        Game.level.map[this.x + x][this.y + y][this.z + z].creatureSegment = false;
-                    }
-                    else if(x == this.width - 1 && y == 0 && this.scale == -1){
-                        Game.level.map[this.x + x][this.y + y][this.z + z].creatureSegment = false;
-                    }
-                    else{
-                        Game.level.map[this.x + x][this.y + y][this.z + z].creatureSegment = true;
-                    }
-                }
-            }
-        }
+        Game.map.levels[newZ].setCreatureBlocks(this, this.x, this.y);
+        /*for(let x = 0; x < this.width; x++){
+          for(let y = 0; y < this.height; y++){
+          for(let z = 0; z < this.zLevels; z++){
 
+          let block = Game.map.getBlock(this.x + x, this.y + y, this.z);
+          block.creature = this;
+          if(x == 0 && y == 0 && this.scale == 1){
+          block.creatureSegment = false;
+          }
+          else if(x == this.width - 1 && y == 0 && this.scale == -1){
+          block.creatureSegment = false;
+          }
+          else{
+          block.creatureSegment = true;
+          }
+          }
+          }
+          }*/
     }
 
     move(diff){

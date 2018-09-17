@@ -1,124 +1,74 @@
-class Level {
-    constructor(width, height, levels){
-        this.map = [];
-        this.creatures = [];
+class Level{
+
+    constructor(width, height){
         this.width = width;
         this.height = height;
-        this.levels = levels;
-        this.backgroundColor = undefined;
-        //this is some bad naming here.
-        this.map = new Array(width);
-        for (let i = 0; i < this.map.length; i++){
-            this.map[i] = new Array(height);
+        this.creatures = [];
 
-            for(let j = 0; j < this.map[i].length; j++){
-                this.map[i][j] = new Array(levels);
-
-                for(let z = 0; z < this.map[i][j].length; z++){
-                    this.map[i][j][z] = new MapBlock(i, j, z);
-                }
+        this.blocks = new Array(width);
+        for (let i = 0; i < this.blocks.length; i++){
+            this.blocks[i] = new Array(height);
+            for(let j = 0; j < this.blocks[i].length; j++){
+                this.blocks[i][j] = new MapBlock(i, j);
             }
         }
     }
-    setZLevelColor(level, color){
-        this.backgroundColor = color;
+
+    setBlock(x, y, block){
+        this.blocks[x][y] = block;
     }
 
-    //also checks for water types to only go onto other water blocks.
-    checkMovable(x, y, z, c){
+    getCreature(x, y){
+        return this.blocks[x][y].creature;
+    }
+
+    checkMovable(x, y, c){
         //c for creature to check internal segments
-        if( x > this.map.length - 1 || x < 0 || y > this.map[0].length - 1 || y < 0 ||
-                z > this.map[0][0].length || z < 0){
+        if( x > this.blocks.length - 1 || x < 0 || y > this.blocks[0].length - 1 || y < 0){
             return false;
         }
-        if(!this.checkWater(x, y, z) && c instanceof WaterCreature){
+        if(!this.checkWater(x, y) && c instanceof WaterCreature){
             return false;
         }
-        if (this.map[x][y][z].checkMovable(c)){
+        if (this.blocks[x][y].checkMovable(c)){
             return true;
         }
         return false;
     }
-    checkAttackable(x, y, z){
-        if( x > this.map.length - 1 || x < 0 || y > this.map[0].length - 1 || y < 0 ||
-                z > this.map[0][0].length || z < 0){
+    checkAttackable(x, y){
+        if( x > this.blocks.length - 1 || x < 0 || y > this.blocks[0].length - 1 || y < 0){
             return false;
         }
-        if (this.map[x][y][z].checkAttackable()){
-            return this.map[x][y][z].checkAttackable();
-        }
-        return false;
-    }
-    checkWater(x, y, z){
-        if(this.map[x][y][z] instanceof WaterBlock){
-            return true;
-        }
-        return false;
+        return this.blocks[x][y].checkAttackable();
     }
 
-    addCreature(creature){
-        if(!this.map[creature.x][creature.y][creature.z].creature){
-            if(!(creature === Game.player)){
-                this.creatures.push(creature);
-            }
-            for(let x = 0; x < creature.width; x++){
-                for(let y = 0; y < creature.height; y++){
-                    for(let z = 0; z < creature.zLevels; z++){
-                        this.map[creature.x + x][creature.y + y][creature.z + z].creature =
-                            creature;
-                        if(x == 0 && y == 0 && creature.scale == 1){
-                            this.map[creature.x + x][creature.y + y][creature.z + z].creatureSegment = false;
-                        }
-                        else if(x == creature.width - 1 && y == 0 && creature.scale == -1){
-                            this.map[creature.x + x][creature.y + y][creature.z + z].creatureSegment = false;
-                        }
+    checkWater(x, y){
+        if( x > this.blocks.length - 1 || x < 0 || y > this.blocks[0].length - 1 || y < 0){
+            return false;
+        }
+        return this.blocks[x][y] instanceof WaterBlock;
+    }
 
-                        else{
-                            this.map[creature.x + x][creature.y + y][creature.z + z].creatureSegment = true;
-                        }
-                    }
+    setCreatureBlocks(creature, newX, newY){
+        for(let x = 0; x < creature.width; x++){
+            for(let y = 0; y < creature.height; y++){
+                //for(let z = 0; z < creature.zLevels; z++){
+                let block = this.blocks[creature.x + x][creature.y + y];
+                block.creature = creature;
+                if(x == 0 && y == 0 && creature.scale == 1){
+                    block.creatureSegment = false;
                 }
-            }
-
-        }
-        else{
-            console.log("Warning! Creature overwritten!");
-        }
-    }
-
-    canGoUp(x, y, z){
-        if (this.map[x][y][z] instanceof StaircaseUpBlock){
-            return true;
-        }
-        return false;
-    }
-
-    canGoDown(x, y, z){
-        if (this.map[x][y][z] instanceof StaircaseDownBlock){
-            return true;
-        }
-        return false;
-    }
-
-    creaturesAct(){
-        for(let i = 0; i < this.creatures.length; i++){
-            let dir = Math.floor(Math.random() * 8);
-            let cDir = CDIRS[dir];
-            Game.engine.addEvent(this.creatures[i].move(cDir));
-        }
-    }
-
-    clearVisible(){
-        let display = Game.display;
-        for(let i = 0; i < display.squares.length; i++){
-            for(let j = 0; j < display.squares[i].length; j++){
-                for(let z = 0; z < display.squares[i][j].length; z++){
-                    Game.level.map[i + display.view.xOffset][j + display.view.yOffset][z].clear();
+                else if(x == creature.width - 1 && y == 0 && creature.scale == -1){
+                    block.creatureSegment = false;
                 }
+
+                else{
+                    block.creatureSegment = true;
+                }
+                //}
             }
         }
+
     }
+
 }
-
-
-

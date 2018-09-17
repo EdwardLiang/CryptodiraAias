@@ -20,7 +20,7 @@ class Player extends Creature{
     move(diff){
         return () => {
             let player = this;
-            let level = Game.level;
+            let map = Game.map;
             let display = Game.display;
             let newX = player.x + diff.x;
             let newY = player.y + diff.y;
@@ -33,7 +33,7 @@ class Player extends Creature{
                 this.scale = 1;
             }
 
-            let mon = level.checkAttackable(newX, newY, newZ);
+            let mon = map.checkAttackable(newX, newY, newZ);
             if(newZ != player.z) { }
             else if(mon){
                 let messages = [];
@@ -46,7 +46,7 @@ class Player extends Creature{
                 }
                 return messages;
             }
-            else if(!level.checkMovable(newX, newY, newZ, player)) {return;}
+            else if(!map.checkMovable(newX, newY, newZ, player)) {return;}
 
             let newZTemp = newZ;
             let newYTemp = newY;
@@ -55,14 +55,16 @@ class Player extends Creature{
             let tY = player.y;
             let tZ = player.z;
 
-            level.map[player.x][player.y][player.z].removeCreature(this);
+            //level.map[player.x][player.y][player.z].removeCreature(this);
+
+            map.getBlock(player.x, player.y, player.z).removeCreature(this);
 
             player.x = newX;
             player.y = newY;
             player.z = newZ;
 
-            level.map[player.x][player.y][player.z].creature = player;
-            let items = level.map[player.x][player.y][player.z].items;
+            map.getBlock(player.x, player.y, player.z).creature = player;
+            let items = map.getBlock(player.x, player.y, player.z).items;
             let itemsSArray = [];
             if(items.length > 0){
                 for(let i = 0; i < items.length; i++){
@@ -72,24 +74,24 @@ class Player extends Creature{
             }
 
             //viewwindow setting
-            display.view.xOffset = player.x - Math.floor(display.width / 2);
-            var restWidth = (display.width) - (player.x - display.view.xOffset); 
-            if(player.x + restWidth >= level.width){
-                display.view.xOffset = level.width - display.width;
+            display.view.offsets[player.z].xOffset = player.x - Math.floor(display.width / 2);
+            var restWidth = (display.width) - (player.x - display.view.offsets[player.z].xOffset); 
+            if(player.x + restWidth >= map.levels[player.z].width){
+                display.view.offsets[player.z].xOffset = map.levels[player.z].width - display.width;
             }
-            if(display.view.xOffset < 0){
-                display.view.xOffset = 0;
-            }
-
-            display.view.yOffset = player.y - Math.floor(display.height / 2);
-            var restHeight = (display.height) - (player.y - display.view.yOffset); 
-
-            if(player.y + restHeight >= level.height){
-                display.view.yOffset = level.height - display.height;
+            if(display.view.offsets[player.z].xOffset < 0){
+                display.view.offsets[player.z].xOffset = 0;
             }
 
-            if(display.view.yOffset < 0){
-                display.view.yOffset = 0;
+            display.view.offsets[player.z].yOffset = player.y - Math.floor(display.height / 2);
+            var restHeight = (display.height) - (player.y - display.view.offsets[player.z].yOffset); 
+
+            if(player.y + restHeight >= map.levels[player.z].height){
+                display.view.offsets[player.z].yOffset = map.levels[player.z].height - display.height;
+            }
+
+            if(display.view.offsets[player.z].yOffset < 0){
+                display.view.offsets[player.z].yOffset = 0;
             }
 
             if (newZTemp > tZ){

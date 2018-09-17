@@ -42,7 +42,7 @@ function itemSelector(e){
         let item = Game.player.dropItem(index);
         if(item != null){
             Game.engine.addEvent(dropItem(item)); 
-            Game.level.creaturesAct();
+            Game.map.creaturesAct();
             Game.engine.timeStep();
         }
         else{
@@ -74,7 +74,7 @@ function refreshInventory(){
 let PlayerEventListener = {
 
     player: null,
-    level: null,
+    map: null,
     engine: null,
     display: null,
     dropping: false,
@@ -83,16 +83,16 @@ let PlayerEventListener = {
 
         let pickUp = function(){
             let player = PlayerEventListener.player;
-            let level = PlayerEventListener.level;
             let display = PlayerEventListener.display;
-            player.addItems(level.map[player.x][player.y][player.z].items);
-            let items = level.map[player.x][player.y][player.z].items;
+            let mapBlock = Game.map.getBlock(player.x, player.y, player.z);
+            player.addItems(mapBlock.items);
+            let items = mapBlock.items;
             let itemsSArray = [];
             if(items.length > 0){
                 for(let i = 0; i < items.length; i++){
                     itemsSArray.push(items[i].name);
                 }
-                level.map[player.x][player.y][player.z].clearItems();
+                mapBlock.clearItems();
 
                 refreshInventory();
                 return ["You pick up: " + itemsSArray.join(", ")];
@@ -144,13 +144,13 @@ let PlayerEventListener = {
             //pickup (,)
             this.engine.addEvent(pickUp.bind(this));
             if(!Game.realTime){
-                this.level.creaturesAct();
+                this.map.creaturesAct();
                 this.engine.timeStep();
             }
             return;
         }
         if(code == 190 && !e.shiftKey){
-            this.level.creaturesAct();
+            this.map.creaturesAct();
             this.engine.timeStep();
             return;
         }
@@ -163,19 +163,25 @@ let PlayerEventListener = {
             return;
         }
         if(code == 188 && e.shiftKey){
-            if(!this.level.canGoUp(this.player.x, this.player.y, this.player.z)){
+            if(!this.map.canGoUp(this.player.x, this.player.y, this.player.z)){
                 return;
+            }
+            if(this.map.getBlock(this.player.x, this.player.y, this.player.z) instanceof BookBlock){
+                let l = new Level(50, 30);
+                l.setBlock(1, 1, new EvergreenBlock(1, 1));
+                l.setBlock(2, 1, new StaircaseDownBlock(7, 3));
+                this.map.setLevel(l, 1);
             }
         }
         if(code == 190 && e.shiftKey){
-            if(!this.level.canGoDown(this.player.x, this.player.y, this.player.z)){
+            if(!this.map.canGoDown(this.player.x, this.player.y, this.player.z)){
                 return;
             }
         }
 
         this.engine.addEvent(PlayerEventListener.player.move(diff));
         if(!Game.realTime){
-            this.level.creaturesAct();
+            this.map.creaturesAct();
             this.engine.timeStep();
         }
     }
