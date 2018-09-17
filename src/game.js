@@ -66,7 +66,7 @@ var Game = {
         this.map.setBlock(2,2,3,new StoneBlock(2,2,3));
 
         this.map.setBlock(3,3,0,new StaircaseUpBlock(3,3,0));
-        this.map.setBlock(3,3,1,new StaircaseDownBlock(3,3,1));
+        this.map.setBlock(20,15,1,new StaircaseDownBlock(20,15,1));
         this.map.setBlock(4,4,1,new StaircaseUpBlock(4,4,1));
         this.map.setBlock(4,5,2,new StaircaseDownBlock(4,5,2));
 
