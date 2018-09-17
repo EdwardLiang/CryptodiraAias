@@ -373,8 +373,8 @@ class Display {
            */
         let solid = true;
         for(let i = newZ + 1; i < map.levels.length; i++){
-            if(!(map.getBlock(newX + Game.display.view.offsets[i].xOffset,
-                            newY + Game.display.view.offsets[i].yOffset,i) instanceof SolidBlock)){
+            if(!(map.getBlock(newX - Game.display.view.offsets[newZ].xOffset + Game.display.view.offsets[i].xOffset,
+                            newY - Game.display.view.offsets[newZ].yOffset + Game.display.view.offsets[i].yOffset,i) instanceof SolidBlock)){
                 solid = false; 
             }
             /*if(!(map.getBlock(newX, newY, i) instanceof SolidBlock)){
