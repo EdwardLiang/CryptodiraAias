@@ -7,6 +7,18 @@ class Player extends Creature{
         this.shirt = null;
         this.pants = null;
         this.shoes = null;
+        this.shield = null;
+        this.weapon = null;
+    }
+
+    wieldItem(item){
+        return () => {
+            this.weapon = item; 
+            return ["You wield the: " + item.name];
+        }
+    }
+    wieldIndex(index){
+        return this.wieldItem(this.items[index]);
     }
 
     equipIndex(index){
@@ -15,14 +27,17 @@ class Player extends Creature{
 
     equippable(index){
         let item = this.items[index];
-        if(item instanceof Shirt){
+        if(item instanceof Equipment){
             return true; 
         }
-        else if(item instanceof Pants){
-            return true;
+        else{
+            return false;
         }
-        else if(item instanceof Shoes){
-            return true;
+    }
+    unwield(index){
+        let item = this.getItem(index);
+        if(item === this.weapon){
+            this.weapon = null;
         }
         else{
             return false;
@@ -40,6 +55,10 @@ class Player extends Creature{
         else if(item instanceof Shoes){
             this.shoes = null;
         }
+        else if(item instanceof Shield){
+            this.shield = null;
+        }
+
         else{
             return false;
         }
@@ -48,6 +67,7 @@ class Player extends Creature{
 
     dropItem(index){
         this.unequip(index);
+        this.unwield(index);
         return super.dropItem(index);
     }
 
@@ -62,6 +82,9 @@ class Player extends Creature{
             else if(item instanceof Shoes){
                 this.shoes = item;
             }
+            else if(item instanceof Shield){
+                this.shield = item;
+            }
             else{
                 return ["That item cannot be equipped"];
             }
@@ -70,7 +93,13 @@ class Player extends Creature{
     }
 
     isEquipped(item){
-        if(item === this.shirt || item === this.pants || item === this.shoes){
+        if(item === this.shirt || item === this.pants || item === this.shoes || item === this.shield){
+            return true;
+        }
+        return false;
+    }
+    isWielded(item){
+        if(item === this.weapon){
             return true;
         }
         return false;

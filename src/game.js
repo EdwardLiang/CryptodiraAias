@@ -98,6 +98,8 @@ var Game = {
         this.map.getBlock(6,5,0).items.push(new BasicShirt());
         this.map.getBlock(8,5,0).items.push(new BasicPants());
         this.map.getBlock(9,5,0).items.push(new RunningShoes());
+        this.map.getBlock(10,5,0).items.push(new CryptodiraAias());
+        this.map.getBlock(11,5,0).items.push(new Pencil());
 
 
 

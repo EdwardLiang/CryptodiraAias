@@ -81,6 +81,31 @@ class RunningShoes extends Shoes{
     }
 }
 
+class Shield extends Equipment{
+    constructor(icon, iconColor, name){
+        super(icon, iconColor, name);
+    }
+}
+
+class CryptodiraAias extends Shield{
+    constructor(){
+        super("&#x1F6E1", "blue", "Cryptodira Aias");
+    }
+}
+
+class Weapon extends Equipment{
+    constructor(icon, iconColor, name){
+        super(icon, iconColor, name);
+    }
+}
+
+class Pencil extends Weapon{
+    constructor(){
+        super("&#xFE0F", "blue", "Pencil");
+    }
+}
+
+
 class Ring extends Equipment{
     constructor(icon, iconColor, name){
         super(icon, iconColor, name);

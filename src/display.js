@@ -113,7 +113,9 @@ class Display {
         th.style.color = "white";
         th.style.textAlign = "left";
         th.innerHTML = name;
-        this.inventory.append(th);
+        if(Object.keys(cat).length > 0){
+            this.inventory.append(th);
+        }
 
         for(let i in cat){
             let tr = document.createElement("tr");
@@ -124,6 +126,9 @@ class Display {
             td1.style.color = "white";
             if(Game.player.isEquipped(cat[i])){
                 td1.innerHTML = i + " - " + cat[i].name + " (worn)";
+            }
+            else if(Game.player.isWielded(cat[i])){
+                td1.innerHTML = i + " - " + cat[i].name + " (weapon in hand)";
             }
             else{
                 td1.innerHTML = i + " - " + cat[i].name;
@@ -143,6 +148,7 @@ class Display {
         let equipment = {};
         let food = {};
         let misc = {};
+        let weapon = {};
 
         for(let i in items){
             if(items[i] instanceof Equipment){
@@ -154,8 +160,12 @@ class Display {
             if(items[i] instanceof MiscItem){
                 misc[i] = items[i];
             }
+            if(items[i] instanceof Weapon){
+                weapon[i] = items[i];
+            }
         }
 
+        this.createInventoryCategory(weapon, "Weapon"); 
         this.createInventoryCategory(equipment, "Equipment"); 
         this.createInventoryCategory(food, "Food"); 
         this.createInventoryCategory(misc, "Misc"); 

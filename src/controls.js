@@ -64,6 +64,60 @@ function itemSelectorWear(e){
     }
 }
 
+function itemSelectorWield(e){
+    if(!PlayerEventListener.wielding){
+        Game.display.clearMessages();
+        Game.display.showMessage("What do you wish to wield? Type index or * to open inventory.");
+        PlayerEventListener.wielding = true;
+        return;
+    }
+
+    let code = e.keyCode;
+    if(code == 16){
+        //shift
+        return;
+    }
+    if(code == 56 && e.shiftKey){ 
+        if(Game.display.inventoryVisible){
+            Game.display.hideInventory();
+            Game.display.showInventory(Game.player.items);
+        }
+        else{
+            Game.display.showInventory(Game.player.items);
+        }
+    }
+    else{
+        let index = String.fromCharCode(code);
+        if(!e.shiftKey){
+            index = index.toLowerCase();
+        }
+
+        let hasItem = Game.player.getItem(index);
+        let isEquipped = Game.player.isEquippedIndex(index);
+
+        if(hasItem == null){
+            //item not in inventory
+            Game.display.clearMessages();
+            Game.display.showMessage("You don't have that item.");
+        }
+        else if(isEquipped){
+            //item in inventory
+            Game.display.clearMessages();
+            Game.display.showMessage("You are wearing that item.");
+        }
+        else{
+            Game.engine.addEvent(Game.player.wieldIndex(index)); 
+            Game.map.creaturesAct();
+            Game.engine.timeStep();
+        }
+        PlayerEventListener.wielding = false;
+        if(Game.display.inventoryVisible){
+            Game.display.hideInventory();
+        }
+    }
+}
+
+
 function itemSelectorUnequip(e){
     if(!PlayerEventListener.unequipping){
         Game.display.clearMessages();
@@ -186,6 +240,7 @@ let PlayerEventListener = {
     dropping: false,
     equipping: false,
     unequipping: false,
+    wielding: false,
 
     handleEvent(e){
 
@@ -235,6 +290,17 @@ let PlayerEventListener = {
                 this.display.hideInventory();
             }
         }
+
+        if(code == 87 && !e.shiftKey){
+            //w (wield)
+            itemSelectorWield(e);
+            return;
+        }
+        else if(this.wielding){
+            itemSelectorWield(e);
+            return;
+        }
+
 
         if(code == 84 && e.shiftKey){
             //T (take off)
