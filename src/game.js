@@ -95,6 +95,7 @@ var Game = {
         this.map.setBlock(7,3,0, new BookBlock(7,3));
         this.map.setBlock(3,5,4, new GrassBlock(3,5,4));
         this.map.getBlock(5,5,0).items.push(new Orange());
+        this.map.getBlock(6,5,0).items.push(new BasicShirt());
 
 
 
