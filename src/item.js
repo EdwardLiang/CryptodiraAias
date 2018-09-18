@@ -93,7 +93,7 @@ class CryptodiraAias extends Shield{
     }
 }
 
-class Weapon extends Equipment{
+class Weapon extends Item{
     constructor(icon, iconColor, name){
         super(icon, iconColor, name);
     }
@@ -101,7 +101,7 @@ class Weapon extends Equipment{
 
 class Pencil extends Weapon{
     constructor(){
-        super("&#xFE0F", "blue", "Pencil");
+        super("&#x270F", "blue", "pencil");
     }
 }
 

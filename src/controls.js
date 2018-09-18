@@ -41,6 +41,7 @@ function itemSelectorWear(e){
 
         let hasItem = Game.player.getItem(index);
         let equippable = Game.player.equippable(index);
+        let isWielded = Game.player.isWieldedIndex(index);
 
         if(hasItem == null){
             //item not in inventory
@@ -51,6 +52,10 @@ function itemSelectorWear(e){
             //item in inventory
             Game.display.clearMessages();
             Game.display.showMessage("You can't wear that item.");
+        }
+        else if(isWielded){
+            Game.display.clearMessages();
+            Game.display.showMessage("You are using that item as a weapon.");
         }
         else{
             Game.engine.addEvent(Game.player.equipIndex(index)); 

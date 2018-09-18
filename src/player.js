@@ -104,6 +104,9 @@ class Player extends Creature{
         }
         return false;
     }
+    isWieldedIndex(index){
+        return this.isWielded(this.items[index]);
+    }
     isEquippedIndex(index){
         return this.isEquipped(this.items[index]);
     }
