@@ -131,7 +131,12 @@ class Display {
             td3.style.color = "white";
             td1.innerHTML = i;
             td2.innerHTML = "-";
-            td3.innerHTML = items[i].name;
+            if(Game.player.isEquipped(items[i])){
+                td3.innerHTML = items[i].name + " (worn)";
+            }
+            else{
+                td3.innerHTML = items[i].name;
+            }
             tr.append(td1);
             tr.append(td2);
             tr.append(td3);
@@ -304,6 +309,9 @@ class Display {
         if(level.backgroundColor){
             return level.backgroundColor;
         }
+        //if(level == 4){
+         //   return "#D4AF37";
+        //} 
         if(level % 3 == 0){
             //bC = "#734";
             bC = "#" + (540 + Math.ceil(level / 3) * 5);
@@ -373,8 +381,8 @@ class Display {
            */
         let solid = true;
         for(let i = newZ + 1; i < map.levels.length; i++){
-            if(!(map.getBlock(newX + Game.display.view.offsets[i].xOffset,
-                            newY + Game.display.view.offsets[i].yOffset,i) instanceof SolidBlock)){
+            if(!(map.getBlock(newX - Game.display.view.offsets[newZ].xOffset + Game.display.view.offsets[i].xOffset,
+                            newY - Game.display.view.offsets[newZ].yOffset + Game.display.view.offsets[i].yOffset,i) instanceof SolidBlock)){
                 solid = false; 
             }
             /*if(!(map.getBlock(newX, newY, i) instanceof SolidBlock)){

@@ -133,6 +133,10 @@ class BookBlock extends StaircaseUpBlock{
         this.icon = "&#x1F4D6;";
         this.originalIcon = "&#x1F4D6;";
         this.iconColor = "blue";
+        this.lvl = new Level(50, 30);
+        this.lvl.setBlock(1, 1, new EvergreenBlock(1, 1));
+        this.lvl.setBlock(2, 1, new StaircaseDownBlock(7, 3));
+
     }
     getStyle(e){
         //super writes staircaseup image. super.super doesn't work,

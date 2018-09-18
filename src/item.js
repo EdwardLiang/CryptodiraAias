@@ -1,4 +1,3 @@
-
 class Item {
     constructor(icon, iconColor, name){
         this.icon = icon;
@@ -10,20 +9,86 @@ class Item {
     }
 }
 
-class Orange extends Item{
+class MiscItem extends Item{
+    constructor(icon, iconColor, name){
+        super(icon, iconColor, name);
+    }
+}
+
+class Food extends Item{
+    constructor(icon, iconColor, name){
+        super(icon, iconColor, name);
+    }
+}
+
+class Orange extends Food{
     constructor(){
         super("&#x1F34A;", "orange", "orange");
     }
 }
 
-class Peanut extends Item{
+class Peanut extends Food{
     constructor(){
-        super("&#x1F95C;", "peanut", "peanut");
+        super("&#x1F95C;", "brown", "peanut");
     }
 }
 
-class Battery extends Item{
+class Battery extends MiscItem{
     constructor(){
-        super("&#x1F50B;", "battery", "battery");
+        super("&#x1F50B;", "green", "battery");
+    }
+}
+
+class Equipment extends Item{
+    constructor(icon, iconColor, name){
+        super(icon, iconColor, name);
+    }
+}
+
+class Shirt extends Equipment{
+    constructor(icon, iconColor, name){
+        super(icon, iconColor, name);
+    }
+}
+
+class BasicShirt extends Shirt{
+    constructor(){
+        super("&#x1F455", "blue", "basic shirt");
+    }
+}
+
+class Pants extends Equipment{
+    constructor(icon, iconColor, name){
+        super(icon, iconColor, name);
+    }
+}
+
+class BasicPants extends Pants{
+    constructor(){
+        super("&#x1F456", "blue", "basic pants");
+    }
+}
+
+class Shoes extends Equipment{
+    constructor(icon, iconColor, name){
+        super(icon, iconColor, name);
+    }
+}
+
+class RunningShoes extends Shoes{
+    constructor(){
+        super("&#x1F45F", "blue", "running shoes");
+    }
+}
+
+class Ring extends Equipment{
+    constructor(icon, iconColor, name){
+        super(icon, iconColor, name);
+    }
+}
+
+class Book extends Item{
+    constructor(icon, iconColor, name){
+        super(icon, iconColor, name);
     }
 }

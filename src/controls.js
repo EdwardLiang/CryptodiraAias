@@ -11,7 +11,113 @@ DIRS[188] = new Distance(0, 0, 1);
 DIRS[190] = new Distance(0, 0, -1);
 
 
-function itemSelector(e){
+function itemSelectorWear(e){
+    if(!PlayerEventListener.equipping){
+        Game.display.clearMessages();
+        Game.display.showMessage("What do you wish to wear? Type index or * to open inventory.");
+        PlayerEventListener.equipping = true;
+        return;
+    }
+
+    let code = e.keyCode;
+    if(code == 16){
+        //shift
+        return;
+    }
+    if(code == 56 && e.shiftKey){ 
+        if(Game.display.inventoryVisible){
+            Game.display.hideInventory();
+            Game.display.showInventory(Game.player.items);
+        }
+        else{
+            Game.display.showInventory(Game.player.items);
+        }
+    }
+    else{
+        let index = String.fromCharCode(code);
+        if(!e.shiftKey){
+            index = index.toLowerCase();
+        }
+
+        let hasItem = Game.player.getItem(index);
+        let equippable = Game.player.equippable(index);
+
+        if(hasItem == null){
+            //item not in inventory
+            Game.display.clearMessages();
+            Game.display.showMessage("You don't have that item.");
+        }
+        else if(!equippable){
+            //item in inventory
+            Game.display.clearMessages();
+            Game.display.showMessage("You can't wear that item.");
+        }
+        else{
+            Game.engine.addEvent(Game.player.equipIndex(index)); 
+            Game.map.creaturesAct();
+            Game.engine.timeStep();
+        }
+        PlayerEventListener.equipping = false;
+        if(Game.display.inventoryVisible){
+            Game.display.hideInventory();
+        }
+    }
+}
+
+function itemSelectorUnequip(e){
+    if(!PlayerEventListener.unequipping){
+        Game.display.clearMessages();
+        Game.display.showMessage("What do you wish to take off? Type index or * to open inventory.");
+        PlayerEventListener.unequipping = true;
+        return;
+    }
+
+    let code = e.keyCode;
+    if(code == 16){
+        //shift
+        return;
+    }
+    if(code == 56 && e.shiftKey){ 
+        if(Game.display.inventoryVisible){
+            Game.display.hideInventory();
+            Game.display.showInventory(Game.player.items);
+        }
+        else{
+            Game.display.showInventory(Game.player.items);
+        }
+    }
+    else{
+        let index = String.fromCharCode(code);
+        if(!e.shiftKey){
+            index = index.toLowerCase();
+        }
+
+        let hasItem = Game.player.getItem(index);
+        let isEquipped = Game.player.isEquippedIndex(index);
+
+        if(hasItem == null){
+            //item not in inventory
+            Game.display.clearMessages();
+            Game.display.showMessage("You don't have that item.");
+        }
+        else if(!isEquipped){
+            //item in inventory
+            Game.display.clearMessages();
+            Game.display.showMessage("That item is not equipped");
+        }
+        else{
+            Game.engine.addEvent(Game.player.unequip(index)); 
+            Game.map.creaturesAct();
+            Game.engine.timeStep();
+        }
+        PlayerEventListener.unequipping = false;
+        if(Game.display.inventoryVisible){
+            Game.display.hideInventory();
+        }
+    }
+}
+
+function itemSelectorDrop(e){
     if(!PlayerEventListener.dropping){
         Game.display.clearMessages();
         Game.display.showMessage("What do you wish to drop? Type index or * to open inventory.");
@@ -78,6 +184,8 @@ let PlayerEventListener = {
     engine: null,
     display: null,
     dropping: false,
+    equipping: false,
+    unequipping: false,
 
     handleEvent(e){
 
@@ -121,12 +229,33 @@ let PlayerEventListener = {
             return;
         }
 
+        if(code == 84 && e.shiftKey){
+            //T (take off)
+            itemSelectorUnequip(e);
+            return;
+        }
+        else if(this.unequipping){
+            itemSelectorUnequip(e);
+            return;
+        }
+
+
+        if(code == 87 && e.shiftKey){
+            //W (wear)
+            itemSelectorWear(e);
+            return;
+        }
+        else if(this.equipping){
+            itemSelectorWear(e);
+            return;
+        }
+
         if(code == 68 && !e.shiftKey){
-            itemSelector(e);
+            itemSelectorDrop(e);
             return;
         }
         else if(this.dropping){
-            itemSelector(e);
+            itemSelectorDrop(e);
             return;
         }
 
@@ -166,11 +295,10 @@ let PlayerEventListener = {
             if(!this.map.canGoUp(this.player.x, this.player.y, this.player.z)){
                 return;
             }
-            if(this.map.getBlock(this.player.x, this.player.y, this.player.z) instanceof BookBlock){
-                let l = new Level(50, 30);
-                l.setBlock(1, 1, new EvergreenBlock(1, 1));
-                l.setBlock(2, 1, new StaircaseDownBlock(7, 3));
-                this.map.setLevel(l, 1);
+            let block = this.map.getBlock(this.player.x, this.player.y, this.player.z);
+            if(block instanceof BookBlock){
+                this.map.setLevel(block.lvl, 1);
+                diff = new Distance(0, 0, 1);
             }
         }
         if(code == 190 && e.shiftKey){
