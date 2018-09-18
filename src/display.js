@@ -105,42 +105,60 @@ class Display {
         this.messages.style.opacity = "0.5";
         this.messagesVisible = true;
     }
-    showInventory(items){
-        let th = document.createElement("caption");
 
+    createInventoryCategory(cat, name){
+        let th = document.createElement("tr");
         th.style.fontSize = this.expWidth * this.coeffW * 0.70  + "px";
         th.style.font = this.expWidth * this.coeffW * 0.70  + "px monospace";
         th.style.color = "white";
-        th.innerHTML = "Inventory";
+        th.style.textAlign = "left";
+        th.innerHTML = name;
         this.inventory.append(th);
-        for(let i in items){
+
+        for(let i in cat){
             let tr = document.createElement("tr");
             this.inventory.append(tr);
             let td1 = document.createElement("td");
-            let td2 = document.createElement("td");
-            let td3 = document.createElement("td");
             td1.style.fontSize = this.expWidth * this.coeffW * 0.70 + "px";
-            td2.style.fontSize = this.expWidth * this.coeffW * 0.70 + "px";
-            td3.style.fontSize = this.expWidth * this.coeffW * 0.70 + "px";
             td1.style.font = this.expWidth * this.coeffW * 0.70 + "px monospace";
-            td2.style.font = this.expWidth * this.coeffW * 0.70 + "px monospace";
-            td3.style.font = this.expWidth * this.coeffW * 0.70 + "px monospace";
-
             td1.style.color = "white";
-            td2.style.color = "white";
-            td3.style.color = "white";
-            td1.innerHTML = i;
-            td2.innerHTML = "-";
-            if(Game.player.isEquipped(items[i])){
-                td3.innerHTML = items[i].name + " (worn)";
+            if(Game.player.isEquipped(cat[i])){
+                td1.innerHTML = i + " - " + cat[i].name + " (worn)";
             }
             else{
-                td3.innerHTML = items[i].name;
+                td1.innerHTML = i + " - " + cat[i].name;
             }
             tr.append(td1);
-            tr.append(td2);
-            tr.append(td3);
         }
+    }
+    showInventory(items){
+        let th = document.createElement("caption");
+        th.style.fontSize = this.expWidth * this.coeffW * 0.70  + "px";
+        th.style.font = this.expWidth * this.coeffW * 0.70  + "px monospace";
+        th.style.color = "white";
+        th.style.textAlign = "left";
+        th.innerHTML = "Inventory";
+        this.inventory.append(th);
+
+        let equipment = {};
+        let food = {};
+        let misc = {};
+
+        for(let i in items){
+            if(items[i] instanceof Equipment){
+                equipment[i] = items[i];
+            }
+            if(items[i] instanceof Food){
+                food[i] = items[i];
+            }
+            if(items[i] instanceof MiscItem){
+                misc[i] = items[i];
+            }
+        }
+
+        this.createInventoryCategory(equipment, "Equipment"); 
+        this.createInventoryCategory(food, "Food"); 
+        this.createInventoryCategory(misc, "Misc"); 
         this.inventory.style.opacity = "0.5";
         this.inventoryVisible = true;
     }
@@ -150,7 +168,7 @@ class Display {
         canvas.style.position = "absolute";
         canvas.style.bottom =  ((9.4) - level*1) + "%";
         canvas.style.left = ((5.4) - level*.65) + "%";
-        
+
         this.canvases.push(canvas);
 
         this.coeffH = 0.025 + level*0.0007;
@@ -158,7 +176,7 @@ class Display {
 
         let bC = this.getBC(level);
         let opacity = 0.1;
-        
+
         if(level == 0){
             opacity = 1;
         }
@@ -310,7 +328,7 @@ class Display {
             return level.backgroundColor;
         }
         //if(level == 4){
-         //   return "#D4AF37";
+        //   return "#D4AF37";
         //} 
         if(level % 3 == 0){
             //bC = "#734";
@@ -386,8 +404,8 @@ class Display {
                 solid = false; 
             }
             /*if(!(map.getBlock(newX, newY, i) instanceof SolidBlock)){
-                solid = false; 
-            }*/
+              solid = false; 
+              }*/
 
             if(solid){
                 display.setLevelOpacity(i, "0.5");

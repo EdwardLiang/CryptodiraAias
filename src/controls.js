@@ -224,9 +224,16 @@ let PlayerEventListener = {
                 var message = Game.engine.messageQ.shift();
             }
             Game.display.showMessage(message);
+            return;
         }
         else if(Game.engine.messageQ.length > 0){
             return;
+        }
+
+        if(code == 32 && !(Game.engine.messageQ.length > 0)){
+            if(this.display.inventoryVisible){
+                this.display.hideInventory();
+            }
         }
 
         if(code == 84 && e.shiftKey){
